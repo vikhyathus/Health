@@ -16,17 +16,19 @@
 		DF386AEF215377550024814C /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF386AEE215377550024814C /* HealthKit.framework */; };
 		DF386AF2215377C30024814C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DF386AF1215377C30024814C /* GoogleService-Info.plist */; };
 		DF386AF721537AAF0024814C /* ConsentDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF386AF621537AAF0024814C /* ConsentDocument.swift */; };
-		DF386AF921537B670024814C /* ConsentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF386AF821537B670024814C /* ConsentViewController.swift */; };
 		DF386B0421537C930024814C /* ResearchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF386B0121537C720024814C /* ResearchKit.framework */; };
 		DF386B0521537C930024814C /* ResearchKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DF386B0121537C720024814C /* ResearchKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DF386B0F215383020024814C /* ConsentTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF386B0E215383020024814C /* ConsentTasks.swift */; };
 		DF386B11215397B00024814C /* SurveyTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF386B10215397B00024814C /* SurveyTask.swift */; };
-		DF386B162153A4260024814C /* SignUpLoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF386B152153A4260024814C /* SignUpLoginVC.swift */; };
-		DF386B182153A44C0024814C /* SignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF386B172153A44C0024814C /* SignUp.swift */; };
-		DF386B1A2153A82B0024814C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF386B192153A82B0024814C /* LoginViewController.swift */; };
-		DF386B1C2153AF510024814C /* SurveyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF386B1B2153AF510024814C /* SurveyViewController.swift */; };
-		DF386B1E2153B2740024814C /* HomeScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF386B1D2153B2740024814C /* HomeScreenViewController.swift */; };
-		DF386B202153B2E10024814C /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF386B1F2153B2E10024814C /* TabViewController.swift */; };
+		DF5613342158B9EC009A48CD /* WalkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF5613332158B9EC009A48CD /* WalkViewController.swift */; };
+		DF5613382158DDC4009A48CD /* WalkTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF5613372158DDC4009A48CD /* WalkTask.swift */; };
+		DF56133A2158F123009A48CD /* TrackWalkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF5613392158F123009A48CD /* TrackWalkViewController.swift */; };
+		DF88E6242154B9590086AFBE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF88E6232154B9590086AFBE /* LoginViewController.swift */; };
+		DF88E6262154E3A20086AFBE /* FirstAppScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF88E6252154E3A20086AFBE /* FirstAppScreenViewController.swift */; };
+		DF88E6282154E54B0086AFBE /* InitialScreen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DF88E6272154E54B0086AFBE /* InitialScreen.jpg */; };
+		DF88E62A2154EA860086AFBE /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF88E6292154EA860086AFBE /* SignUpViewController.swift */; };
+		DF88E62C2154F5B50086AFBE /* WeeklyActivitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF88E62B2154F5B50086AFBE /* WeeklyActivitiesViewController.swift */; };
+		DF88E65721551CB50086AFBE /* MyWeekViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF88E65621551CB50086AFBE /* MyWeekViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,17 +83,19 @@
 		DF386AF0215377550024814C /* Health.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Health.entitlements; sourceTree = "<group>"; };
 		DF386AF1215377C30024814C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DF386AF621537AAF0024814C /* ConsentDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentDocument.swift; sourceTree = "<group>"; };
-		DF386AF821537B670024814C /* ConsentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentViewController.swift; sourceTree = "<group>"; };
 		DF386AFA21537C710024814C /* ResearchKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ResearchKit.xcodeproj; path = "../../ResearchKit-master/ResearchKit.xcodeproj"; sourceTree = "<group>"; };
 		DF386B0B21537D280024814C /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = DEVELOPER_DIR; };
 		DF386B0E215383020024814C /* ConsentTasks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentTasks.swift; sourceTree = "<group>"; };
 		DF386B10215397B00024814C /* SurveyTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyTask.swift; sourceTree = "<group>"; };
-		DF386B152153A4260024814C /* SignUpLoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpLoginVC.swift; sourceTree = "<group>"; };
-		DF386B172153A44C0024814C /* SignUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp.swift; sourceTree = "<group>"; };
-		DF386B192153A82B0024814C /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		DF386B1B2153AF510024814C /* SurveyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyViewController.swift; sourceTree = "<group>"; };
-		DF386B1D2153B2740024814C /* HomeScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenViewController.swift; sourceTree = "<group>"; };
-		DF386B1F2153B2E10024814C /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
+		DF5613332158B9EC009A48CD /* WalkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkViewController.swift; sourceTree = "<group>"; };
+		DF5613372158DDC4009A48CD /* WalkTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkTask.swift; sourceTree = "<group>"; };
+		DF5613392158F123009A48CD /* TrackWalkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackWalkViewController.swift; sourceTree = "<group>"; };
+		DF88E6232154B9590086AFBE /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		DF88E6252154E3A20086AFBE /* FirstAppScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstAppScreenViewController.swift; sourceTree = "<group>"; };
+		DF88E6272154E54B0086AFBE /* InitialScreen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = InitialScreen.jpg; sourceTree = "<group>"; };
+		DF88E6292154EA860086AFBE /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		DF88E62B2154F5B50086AFBE /* WeeklyActivitiesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyActivitiesViewController.swift; sourceTree = "<group>"; };
+		DF88E65621551CB50086AFBE /* MyWeekViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyWeekViewController.swift; sourceTree = "<group>"; };
 		F78ACFE850EBB7E40B3D4CBF /* Pods-Health.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Health.release.xcconfig"; path = "Pods/Target Support Files/Pods-Health/Pods-Health.release.xcconfig"; sourceTree = "<group>"; };
 		FA187B9C098E4097B0D2CCB6 /* Pods-Health.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Health.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Health/Pods-Health.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -145,21 +149,15 @@
 			children = (
 				DF386AF0215377550024814C /* Health.entitlements */,
 				DF386ACE215376E90024814C /* AppDelegate.swift */,
-				DF386AF621537AAF0024814C /* ConsentDocument.swift */,
-				DF386B0E215383020024814C /* ConsentTasks.swift */,
-				DF386B10215397B00024814C /* SurveyTask.swift */,
-				DF386AF821537B670024814C /* ConsentViewController.swift */,
-				DF386AD2215376E90024814C /* Main.storyboard */,
-				DF386B1F2153B2E10024814C /* TabViewController.swift */,
-				DF386B1D2153B2740024814C /* HomeScreenViewController.swift */,
-				DF386B1B2153AF510024814C /* SurveyViewController.swift */,
-				DF386B192153A82B0024814C /* LoginViewController.swift */,
-				DF386B172153A44C0024814C /* SignUp.swift */,
-				DF386B152153A4260024814C /* SignUpLoginVC.swift */,
+				DF88E61D2154B2EE0086AFBE /* Model */,
 				DF386AD8215376EA0024814C /* Assets.xcassets */,
+				DF88E6272154E54B0086AFBE /* InitialScreen.jpg */,
 				DF386ADA215376EA0024814C /* LaunchScreen.storyboard */,
+				DF386AD2215376E90024814C /* Main.storyboard */,
+				DF5613392158F123009A48CD /* TrackWalkViewController.swift */,
 				DF386ADD215376EA0024814C /* Info.plist */,
 				DF386AF1215377C30024814C /* GoogleService-Info.plist */,
+				DF88E6212154B48F0086AFBE /* plist */,
 				DF386AD5215376E90024814C /* Health.xcdatamodeld */,
 			);
 			path = Health;
@@ -181,6 +179,38 @@
 				DF386B0321537C720024814C /* ResearchKitTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		DF88E61D2154B2EE0086AFBE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DF386B0E215383020024814C /* ConsentTasks.swift */,
+				DF386AF621537AAF0024814C /* ConsentDocument.swift */,
+				DF386B10215397B00024814C /* SurveyTask.swift */,
+				DF5613372158DDC4009A48CD /* WalkTask.swift */,
+				DF88E6222154B9370086AFBE /* Controllers */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DF88E6212154B48F0086AFBE /* plist */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = plist;
+			sourceTree = "<group>";
+		};
+		DF88E6222154B9370086AFBE /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				DF88E6232154B9590086AFBE /* LoginViewController.swift */,
+				DF88E62B2154F5B50086AFBE /* WeeklyActivitiesViewController.swift */,
+				DF88E6252154E3A20086AFBE /* FirstAppScreenViewController.swift */,
+				DF88E6292154EA860086AFBE /* SignUpViewController.swift */,
+				DF5613332158B9EC009A48CD /* WalkViewController.swift */,
+				DF88E65621551CB50086AFBE /* MyWeekViewController.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -274,6 +304,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DF386ADC215376EA0024814C /* LaunchScreen.storyboard in Resources */,
+				DF88E6282154E54B0086AFBE /* InitialScreen.jpg in Resources */,
 				DF386AD9215376EA0024814C /* Assets.xcassets in Resources */,
 				DF386AF2215377C30024814C /* GoogleService-Info.plist in Resources */,
 				DF386AD4215376E90024814C /* Main.storyboard in Resources */,
@@ -340,18 +371,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DF386B202153B2E10024814C /* TabViewController.swift in Sources */,
-				DF386B1A2153A82B0024814C /* LoginViewController.swift in Sources */,
+				DF88E6242154B9590086AFBE /* LoginViewController.swift in Sources */,
 				DF386AD7215376E90024814C /* Health.xcdatamodeld in Sources */,
-				DF386B162153A4260024814C /* SignUpLoginVC.swift in Sources */,
+				DF88E62A2154EA860086AFBE /* SignUpViewController.swift in Sources */,
 				DF386AF721537AAF0024814C /* ConsentDocument.swift in Sources */,
-				DF386B1C2153AF510024814C /* SurveyViewController.swift in Sources */,
-				DF386B1E2153B2740024814C /* HomeScreenViewController.swift in Sources */,
+				DF88E65721551CB50086AFBE /* MyWeekViewController.swift in Sources */,
 				DF386B11215397B00024814C /* SurveyTask.swift in Sources */,
 				DF386ACF215376E90024814C /* AppDelegate.swift in Sources */,
-				DF386B182153A44C0024814C /* SignUp.swift in Sources */,
-				DF386AF921537B670024814C /* ConsentViewController.swift in Sources */,
+				DF5613382158DDC4009A48CD /* WalkTask.swift in Sources */,
+				DF88E6262154E3A20086AFBE /* FirstAppScreenViewController.swift in Sources */,
+				DF5613342158B9EC009A48CD /* WalkViewController.swift in Sources */,
+				DF88E62C2154F5B50086AFBE /* WeeklyActivitiesViewController.swift in Sources */,
 				DF386B0F215383020024814C /* ConsentTasks.swift in Sources */,
+				DF56133A2158F123009A48CD /* TrackWalkViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
