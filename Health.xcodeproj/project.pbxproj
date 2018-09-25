@@ -23,6 +23,13 @@
 		DF5613342158B9EC009A48CD /* WalkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF5613332158B9EC009A48CD /* WalkViewController.swift */; };
 		DF5613382158DDC4009A48CD /* WalkTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF5613372158DDC4009A48CD /* WalkTask.swift */; };
 		DF56133A2158F123009A48CD /* TrackWalkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF5613392158F123009A48CD /* TrackWalkViewController.swift */; };
+		DF869DBC215A324A006C10E5 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF869DBB215A324A006C10E5 /* Time.swift */; };
+		DF869DC0215A3847006C10E5 /* ActivityListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF869DBF215A3847006C10E5 /* ActivityListViewController.swift */; };
+		DF869DC5215A3AB2006C10E5 /* ActivityTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF869DC4215A3AB2006C10E5 /* ActivityTableCell.swift */; };
+		DF869DC7215A3CC1006C10E5 /* WalkSleep.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF869DC6215A3CC1006C10E5 /* WalkSleep.swift */; };
+		DF869DC9215A5660006C10E5 /* ActivityListViewController+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF869DC8215A5660006C10E5 /* ActivityListViewController+TableView.swift */; };
+		DF869DCC215A7E4A006C10E5 /* HealthKitSetupAssistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF869DCB215A7E49006C10E5 /* HealthKitSetupAssistant.swift */; };
+		DF869DCE215A7EBB006C10E5 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF869DCD215A7EBB006C10E5 /* MasterViewController.swift */; };
 		DF88E6242154B9590086AFBE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF88E6232154B9590086AFBE /* LoginViewController.swift */; };
 		DF88E6262154E3A20086AFBE /* FirstAppScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF88E6252154E3A20086AFBE /* FirstAppScreenViewController.swift */; };
 		DF88E6282154E54B0086AFBE /* InitialScreen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DF88E6272154E54B0086AFBE /* InitialScreen.jpg */; };
@@ -90,6 +97,13 @@
 		DF5613332158B9EC009A48CD /* WalkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkViewController.swift; sourceTree = "<group>"; };
 		DF5613372158DDC4009A48CD /* WalkTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkTask.swift; sourceTree = "<group>"; };
 		DF5613392158F123009A48CD /* TrackWalkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackWalkViewController.swift; sourceTree = "<group>"; };
+		DF869DBB215A324A006C10E5 /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
+		DF869DBF215A3847006C10E5 /* ActivityListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityListViewController.swift; sourceTree = "<group>"; };
+		DF869DC4215A3AB2006C10E5 /* ActivityTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityTableCell.swift; sourceTree = "<group>"; };
+		DF869DC6215A3CC1006C10E5 /* WalkSleep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkSleep.swift; sourceTree = "<group>"; };
+		DF869DC8215A5660006C10E5 /* ActivityListViewController+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ActivityListViewController+TableView.swift"; sourceTree = "<group>"; };
+		DF869DCB215A7E49006C10E5 /* HealthKitSetupAssistant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthKitSetupAssistant.swift; sourceTree = "<group>"; };
+		DF869DCD215A7EBB006C10E5 /* MasterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
 		DF88E6232154B9590086AFBE /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		DF88E6252154E3A20086AFBE /* FirstAppScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstAppScreenViewController.swift; sourceTree = "<group>"; };
 		DF88E6272154E54B0086AFBE /* InitialScreen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = InitialScreen.jpg; sourceTree = "<group>"; };
@@ -148,13 +162,16 @@
 			isa = PBXGroup;
 			children = (
 				DF386AF0215377550024814C /* Health.entitlements */,
+				DF869DCA215A7CBA006C10E5 /* HealthKit */,
 				DF386ACE215376E90024814C /* AppDelegate.swift */,
 				DF88E61D2154B2EE0086AFBE /* Model */,
+				DF869DC3215A3A30006C10E5 /* View */,
+				DF88E6222154B9370086AFBE /* Controllers */,
 				DF386AD8215376EA0024814C /* Assets.xcassets */,
+				DF386AD2215376E90024814C /* Main.storyboard */,
 				DF88E6272154E54B0086AFBE /* InitialScreen.jpg */,
 				DF386ADA215376EA0024814C /* LaunchScreen.storyboard */,
-				DF386AD2215376E90024814C /* Main.storyboard */,
-				DF5613392158F123009A48CD /* TrackWalkViewController.swift */,
+				DF869DBB215A324A006C10E5 /* Time.swift */,
 				DF386ADD215376EA0024814C /* Info.plist */,
 				DF386AF1215377C30024814C /* GoogleService-Info.plist */,
 				DF88E6212154B48F0086AFBE /* plist */,
@@ -181,14 +198,31 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		DF869DC3215A3A30006C10E5 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DF869DC4215A3AB2006C10E5 /* ActivityTableCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DF869DCA215A7CBA006C10E5 /* HealthKit */ = {
+			isa = PBXGroup;
+			children = (
+				DF869DCB215A7E49006C10E5 /* HealthKitSetupAssistant.swift */,
+				DF869DCD215A7EBB006C10E5 /* MasterViewController.swift */,
+			);
+			path = HealthKit;
+			sourceTree = "<group>";
+		};
 		DF88E61D2154B2EE0086AFBE /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				DF869DC6215A3CC1006C10E5 /* WalkSleep.swift */,
 				DF386B0E215383020024814C /* ConsentTasks.swift */,
 				DF386AF621537AAF0024814C /* ConsentDocument.swift */,
 				DF386B10215397B00024814C /* SurveyTask.swift */,
 				DF5613372158DDC4009A48CD /* WalkTask.swift */,
-				DF88E6222154B9370086AFBE /* Controllers */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -207,8 +241,11 @@
 				DF88E62B2154F5B50086AFBE /* WeeklyActivitiesViewController.swift */,
 				DF88E6252154E3A20086AFBE /* FirstAppScreenViewController.swift */,
 				DF88E6292154EA860086AFBE /* SignUpViewController.swift */,
+				DF5613392158F123009A48CD /* TrackWalkViewController.swift */,
 				DF5613332158B9EC009A48CD /* WalkViewController.swift */,
 				DF88E65621551CB50086AFBE /* MyWeekViewController.swift */,
+				DF869DBF215A3847006C10E5 /* ActivityListViewController.swift */,
+				DF869DC8215A5660006C10E5 /* ActivityListViewController+TableView.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -371,17 +408,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DF869DCE215A7EBB006C10E5 /* MasterViewController.swift in Sources */,
 				DF88E6242154B9590086AFBE /* LoginViewController.swift in Sources */,
 				DF386AD7215376E90024814C /* Health.xcdatamodeld in Sources */,
+				DF869DBC215A324A006C10E5 /* Time.swift in Sources */,
 				DF88E62A2154EA860086AFBE /* SignUpViewController.swift in Sources */,
 				DF386AF721537AAF0024814C /* ConsentDocument.swift in Sources */,
+				DF869DC7215A3CC1006C10E5 /* WalkSleep.swift in Sources */,
 				DF88E65721551CB50086AFBE /* MyWeekViewController.swift in Sources */,
+				DF869DC9215A5660006C10E5 /* ActivityListViewController+TableView.swift in Sources */,
 				DF386B11215397B00024814C /* SurveyTask.swift in Sources */,
+				DF869DC5215A3AB2006C10E5 /* ActivityTableCell.swift in Sources */,
 				DF386ACF215376E90024814C /* AppDelegate.swift in Sources */,
 				DF5613382158DDC4009A48CD /* WalkTask.swift in Sources */,
+				DF869DC0215A3847006C10E5 /* ActivityListViewController.swift in Sources */,
 				DF88E6262154E3A20086AFBE /* FirstAppScreenViewController.swift in Sources */,
 				DF5613342158B9EC009A48CD /* WalkViewController.swift in Sources */,
 				DF88E62C2154F5B50086AFBE /* WeeklyActivitiesViewController.swift in Sources */,
+				DF869DCC215A7E4A006C10E5 /* HealthKitSetupAssistant.swift in Sources */,
 				DF386B0F215383020024814C /* ConsentTasks.swift in Sources */,
 				DF56133A2158F123009A48CD /* TrackWalkViewController.swift in Sources */,
 			);

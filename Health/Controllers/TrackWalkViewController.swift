@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class TrackWalkViewController: UIViewController {
 
@@ -14,18 +15,20 @@ class TrackWalkViewController: UIViewController {
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var stopButton: UIButton!
     @IBOutlet weak var resetButton: UIButton!
+    @IBOutlet weak var doneButton: UIButton!
     
-    
+    var ref: DatabaseReference?
     
     var time = 0
     var timer = Timer()
     var startTime: Date!
     var endTime: Date!
+    var presentDistance: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        doneButton.isHidden = true
     }
-    
     
     @IBAction func startButtonTapped(_ sender: Any) {
         startTime = Date()
@@ -37,6 +40,7 @@ class TrackWalkViewController: UIViewController {
     @IBAction func stopButtonTapped(_ sender: Any) {
         endTime = Date()
         timer.invalidate()
+        doneButton.isHidden = false
         startButton.isEnabled = true
         startButton.alpha = 1
     }
@@ -61,5 +65,38 @@ class TrackWalkViewController: UIViewController {
     
     @IBAction func doneButtonTapped(_ sender: Any) {
         
+        if startTime != nil && endTime != nil {
+            var totalTime = endTime.timeIntervalSince(startTime)/60
+            if let currentDistance = presentDistance as? Double {
+                totalTime += currentDistance
+            }
+            
+            totalTime += Double(presentDistance)!
+            print(presentDistance)
+            
+            updateDatabase(totalTime: totalTime)
+            print(totalTime)
+        }
+    }
+    
+    func updateDatabase(totalTime: TimeInterval) {
+        
+        ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com")
+//        let date = Date()
+//        let formatter = DateFormatter()
+//        formatter.dateFormat = "ddMMyyyy"
+//        let today = formatter.string(from: date)
+        let uid = Auth.auth().currentUser?.uid
+        
+        let userReference = ref?.child("Users").child(uid!).child("Activities").child(String(Date().ticks))
+        let values = ["Walk" : totalTime]
+        userReference?.updateChildValues(values, withCompletionBlock: { (error, ref) in
+            
+            if error != nil {
+                print(error?.localizedDescription)
+            }
+            print("saved successfully")
+            self.dismiss(animated: true, completion: nil)
+        })
     }
 }
