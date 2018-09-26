@@ -15,6 +15,7 @@ class ActivityListViewController: UIViewController {
     var isDay: Bool = true
     var activityList: [WalkSleep] = []
     var userID: String!
+    var didLoad: Bool = false
     
     @IBOutlet weak var weekDaySegmentController: UISegmentedControl!
     @IBOutlet weak var walkSleepSegmentController: UISegmentedControl!
@@ -22,16 +23,20 @@ class ActivityListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //userID = Auth.auth().currentUser?.uid
         populateList()
         tableView.delegate = self
         tableView.dataSource = self
+        didLoad = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        populateList()
-        tableView.reloadData()
+        if didLoad {
+            populateList()
+            tableView.reloadData()
+        }
+        didLoad = true
+        print("did appear")
     }
     
     @IBAction func dayWeekSegmentController(_ sender: Any) {
@@ -54,23 +59,25 @@ class ActivityListViewController: UIViewController {
         activityList.removeAll()
         if isWalk && isDay {
             walkDay()
+            activityList.sorted(by: {$0.date > $1.date })
         }
     }
     
     func walkDay() {
-        var date: String!
+        var tempDate: String!
+        var date: Date!
         var duration: Double!
         let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
         
         ref.child(userID).child("Activities").observeSingleEvent(of: .value) { (snapshot) in
             if let dict = snapshot.value as? NSDictionary {
-                for (key, value) in dict {
-                    date = key as? String
+                for (_, value) in dict {
                     if let dict2 = value as? NSDictionary {
-                        for (_,v) in dict2 {
-                            duration = v as? Double
-                            self.activityList.append(WalkSleep(duration: duration, steps: 0, date: date))
-                        }
+                        duration = dict2.value(forKey: "Walk") as? Double
+                        tempDate = dict2.value(forKey: "Date") as? String
+                        date = Date.stringToDate(str: tempDate)
+                        self.activityList.append(WalkSleep(duration: duration, steps: 0, date: date))
+                       
                     }
                 }
             }

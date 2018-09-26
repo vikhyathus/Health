@@ -1,41 +1,30 @@
 //
-//  SurveyTask.swift
+//  QuestionTask.swift
 //  Health
 //
-//  Created by Vikhyath on 20/09/18.
+//  Created by Vikhyath on 26/09/18.
 //  Copyright © 2018 Vikhyath. All rights reserved.
 //
 
 import Foundation
-
 import ResearchKit
 
-public var SurveyTask: ORKOrderedTask {
+public var QuestionTask: ORKOrderedTask {
     
     var steps = [ORKStep]()
     
-    //TODO: add instructions step
+    
     let instructionStep = ORKInstructionStep(identifier: "IntroStep")
     instructionStep.title = "The Questionary survey"
     instructionStep.text = "You just need to ask couple of question that we need to know to give you suggestions"
     steps += [instructionStep]
-
     
-    //TODO: add name question
     let nameAnswerFormat = ORKTextAnswerFormat(maximumLength: 20)
     nameAnswerFormat.multipleLines = false
     let nameQuestionStepTitle = "What is your name?"
-    let nameQuestionStep = ORKQuestionStep(identifier: "NameQuestionStep", title: nameQuestionStepTitle, answer: nameAnswerFormat)
+    let nameQuestionStep = ORKQuestionStep(identifier: "QuestionStep", title: nameQuestionStepTitle, answer: nameAnswerFormat)
     steps += [nameQuestionStep]
 
-    let ageAnswerFormat = ORKTextAnswerFormat(maximumLength: 3)
-    ageAnswerFormat.multipleLines = false
-    ageAnswerFormat.keyboardType = .numberPad
-    let ageQuestionStepTitle = "What is your age?"
-    let ageQuestionStep = ORKQuestionStep(identifier: "AgeQuestionStep", title: ageQuestionStepTitle, answer: ageAnswerFormat)
-    steps += [ageQuestionStep]
-    
-    //TODO: add 'what is your quest' question
     let questQuestionStepTitle = "What is your quest?"
     let textChoices = [
         ORKTextChoice(text: "Create a ResearchKit App", value: 0 as NSNumber),
@@ -46,16 +35,11 @@ public var SurveyTask: ORKOrderedTask {
     let questQuestionStep = ORKQuestionStep(identifier: "TextChoiceQuestionStep", title: questQuestionStepTitle, answer: questAnswerFormat)
     steps += [questQuestionStep]
 
-    
-    //TODO: add color question step
-
-    
-    //TODO: add summary step
     let summaryStep = ORKCompletionStep(identifier: "SummaryStep")
-    summaryStep.title = "There you go..!"
+    summaryStep.title = "Right. Off you go!"
     summaryStep.text = "That was easy!"
     steps += [summaryStep]
 
-    return ORKOrderedTask(identifier: "SurveyTask", steps: steps)
+    return ORKOrderedTask(identifier: "QuestionTask", steps: steps)
 }
 

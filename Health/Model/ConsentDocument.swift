@@ -13,21 +13,6 @@ public var ConsentDocument: ORKConsentDocument {
     let consentDocument = ORKConsentDocument()
     consentDocument.title = "CONSENT FORM"
     
-//    let consentSectionTypes: [ORKConsentSectionType] = [
-//        .overview,
-//        .dataGathering,
-//        .privacy,
-//        .dataUse,
-//        .timeCommitment
-//    ]
-    
-//    let consentSections: [ORKConsentSection] = consentSectionTypes.map { contentSectionType in
-//        let consentSection = ORKConsentSection(type: contentSectionType)
-//        consentSection.summary = "If you wish to complete this study..."
-//        consentSection.content = "Needs to be added"
-//        return consentSection
-//    }
-    
     var consentSections: [ORKConsentSection] = []
     
     var consentSection = ORKConsentSection(type: .overview)

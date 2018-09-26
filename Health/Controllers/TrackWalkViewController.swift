@@ -82,14 +82,14 @@ class TrackWalkViewController: UIViewController {
     func updateDatabase(totalTime: TimeInterval) {
         
         ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com")
-//        let date = Date()
-//        let formatter = DateFormatter()
-//        formatter.dateFormat = "ddMMyyyy"
-//        let today = formatter.string(from: date)
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy"
+        let today = formatter.string(from: date)
         let uid = Auth.auth().currentUser?.uid
         
         let userReference = ref?.child("Users").child(uid!).child("Activities").child(String(Date().ticks))
-        let values = ["Walk" : totalTime]
+        let values = ["Walk" : totalTime, "Date" : today] as [String : Any]
         userReference?.updateChildValues(values, withCompletionBlock: { (error, ref) in
             
             if error != nil {

@@ -30,6 +30,13 @@
 		DF869DC9215A5660006C10E5 /* ActivityListViewController+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF869DC8215A5660006C10E5 /* ActivityListViewController+TableView.swift */; };
 		DF869DCC215A7E4A006C10E5 /* HealthKitSetupAssistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF869DCB215A7E49006C10E5 /* HealthKitSetupAssistant.swift */; };
 		DF869DCE215A7EBB006C10E5 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF869DCD215A7EBB006C10E5 /* MasterViewController.swift */; };
+		DF869DD0215B572B006C10E5 /* ProfileDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF869DCF215B572B006C10E5 /* ProfileDataSource.swift */; };
+		DF869DD2215B577F006C10E5 /* UserHealthProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF869DD1215B577F006C10E5 /* UserHealthProfile.swift */; };
+		DF869DD9215B6ABC006C10E5 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF869DD8215B6ABC006C10E5 /* UserProfileViewController.swift */; };
+		DF869DDD215B6ECE006C10E5 /* HKBloodTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF869DDC215B6ECE006C10E5 /* HKBloodTypeExtension.swift */; };
+		DF869DDF215B6F64006C10E5 /* HKGenderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF869DDE215B6F64006C10E5 /* HKGenderExtension.swift */; };
+		DF869DE7215BB257006C10E5 /* InitialScreen+Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF869DE6215BB257006C10E5 /* InitialScreen+Notification.swift */; };
+		DF869DE9215BD250006C10E5 /* QuestionTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF869DE8215BD250006C10E5 /* QuestionTask.swift */; };
 		DF88E6242154B9590086AFBE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF88E6232154B9590086AFBE /* LoginViewController.swift */; };
 		DF88E6262154E3A20086AFBE /* FirstAppScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF88E6252154E3A20086AFBE /* FirstAppScreenViewController.swift */; };
 		DF88E6282154E54B0086AFBE /* InitialScreen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DF88E6272154E54B0086AFBE /* InitialScreen.jpg */; };
@@ -104,6 +111,13 @@
 		DF869DC8215A5660006C10E5 /* ActivityListViewController+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ActivityListViewController+TableView.swift"; sourceTree = "<group>"; };
 		DF869DCB215A7E49006C10E5 /* HealthKitSetupAssistant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthKitSetupAssistant.swift; sourceTree = "<group>"; };
 		DF869DCD215A7EBB006C10E5 /* MasterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
+		DF869DCF215B572B006C10E5 /* ProfileDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDataSource.swift; sourceTree = "<group>"; };
+		DF869DD1215B577F006C10E5 /* UserHealthProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHealthProfile.swift; sourceTree = "<group>"; };
+		DF869DD8215B6ABC006C10E5 /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
+		DF869DDC215B6ECE006C10E5 /* HKBloodTypeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HKBloodTypeExtension.swift; sourceTree = "<group>"; };
+		DF869DDE215B6F64006C10E5 /* HKGenderExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HKGenderExtension.swift; sourceTree = "<group>"; };
+		DF869DE6215BB257006C10E5 /* InitialScreen+Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InitialScreen+Notification.swift"; sourceTree = "<group>"; };
+		DF869DE8215BD250006C10E5 /* QuestionTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionTask.swift; sourceTree = "<group>"; };
 		DF88E6232154B9590086AFBE /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		DF88E6252154E3A20086AFBE /* FirstAppScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstAppScreenViewController.swift; sourceTree = "<group>"; };
 		DF88E6272154E54B0086AFBE /* InitialScreen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = InitialScreen.jpg; sourceTree = "<group>"; };
@@ -142,6 +156,7 @@
 			children = (
 				DF386B0B21537D280024814C /* HealthKit.framework */,
 				DF386AFA21537C710024814C /* ResearchKit.xcodeproj */,
+				DF386ACE215376E90024814C /* AppDelegate.swift */,
 				DF386AE3215377430024814C /* docs */,
 				DF386ACD215376E90024814C /* Health */,
 				DF386ACC215376E90024814C /* Products */,
@@ -163,7 +178,6 @@
 			children = (
 				DF386AF0215377550024814C /* Health.entitlements */,
 				DF869DCA215A7CBA006C10E5 /* HealthKit */,
-				DF386ACE215376E90024814C /* AppDelegate.swift */,
 				DF88E61D2154B2EE0086AFBE /* Model */,
 				DF869DC3215A3A30006C10E5 /* View */,
 				DF88E6222154B9370086AFBE /* Controllers */,
@@ -211,6 +225,11 @@
 			children = (
 				DF869DCB215A7E49006C10E5 /* HealthKitSetupAssistant.swift */,
 				DF869DCD215A7EBB006C10E5 /* MasterViewController.swift */,
+				DF869DCF215B572B006C10E5 /* ProfileDataSource.swift */,
+				DF869DD1215B577F006C10E5 /* UserHealthProfile.swift */,
+				DF869DD8215B6ABC006C10E5 /* UserProfileViewController.swift */,
+				DF869DDE215B6F64006C10E5 /* HKGenderExtension.swift */,
+				DF869DDC215B6ECE006C10E5 /* HKBloodTypeExtension.swift */,
 			);
 			path = HealthKit;
 			sourceTree = "<group>";
@@ -223,6 +242,7 @@
 				DF386AF621537AAF0024814C /* ConsentDocument.swift */,
 				DF386B10215397B00024814C /* SurveyTask.swift */,
 				DF5613372158DDC4009A48CD /* WalkTask.swift */,
+				DF869DE8215BD250006C10E5 /* QuestionTask.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -246,6 +266,7 @@
 				DF88E65621551CB50086AFBE /* MyWeekViewController.swift */,
 				DF869DBF215A3847006C10E5 /* ActivityListViewController.swift */,
 				DF869DC8215A5660006C10E5 /* ActivityListViewController+TableView.swift */,
+				DF869DE6215BB257006C10E5 /* InitialScreen+Notification.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -263,6 +284,7 @@
 				DF386AC9215376E90024814C /* Resources */,
 				72075DCA76E03FC5826CAB75 /* [CP] Embed Pods Frameworks */,
 				DF386B0821537C940024814C /* Embed Frameworks */,
+				DF869DD3215B5D41006C10E5 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -401,6 +423,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		DF869DD3215B5D41006C10E5 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: Swiftlint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -412,15 +451,22 @@
 				DF88E6242154B9590086AFBE /* LoginViewController.swift in Sources */,
 				DF386AD7215376E90024814C /* Health.xcdatamodeld in Sources */,
 				DF869DBC215A324A006C10E5 /* Time.swift in Sources */,
+				DF869DD9215B6ABC006C10E5 /* UserProfileViewController.swift in Sources */,
+				DF869DD2215B577F006C10E5 /* UserHealthProfile.swift in Sources */,
 				DF88E62A2154EA860086AFBE /* SignUpViewController.swift in Sources */,
 				DF386AF721537AAF0024814C /* ConsentDocument.swift in Sources */,
 				DF869DC7215A3CC1006C10E5 /* WalkSleep.swift in Sources */,
 				DF88E65721551CB50086AFBE /* MyWeekViewController.swift in Sources */,
 				DF869DC9215A5660006C10E5 /* ActivityListViewController+TableView.swift in Sources */,
 				DF386B11215397B00024814C /* SurveyTask.swift in Sources */,
+				DF869DD0215B572B006C10E5 /* ProfileDataSource.swift in Sources */,
+				DF869DDF215B6F64006C10E5 /* HKGenderExtension.swift in Sources */,
 				DF869DC5215A3AB2006C10E5 /* ActivityTableCell.swift in Sources */,
 				DF386ACF215376E90024814C /* AppDelegate.swift in Sources */,
+				DF869DE9215BD250006C10E5 /* QuestionTask.swift in Sources */,
+				DF869DDD215B6ECE006C10E5 /* HKBloodTypeExtension.swift in Sources */,
 				DF5613382158DDC4009A48CD /* WalkTask.swift in Sources */,
+				DF869DE7215BB257006C10E5 /* InitialScreen+Notification.swift in Sources */,
 				DF869DC0215A3847006C10E5 /* ActivityListViewController.swift in Sources */,
 				DF88E6262154E3A20086AFBE /* FirstAppScreenViewController.swift in Sources */,
 				DF5613342158B9EC009A48CD /* WalkViewController.swift in Sources */,

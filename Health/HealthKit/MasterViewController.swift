@@ -19,20 +19,10 @@ class MasterViewController: UIViewController {
         } else {
           print(baseMessage)
         }
-        
         return
       }
-      
       print("HealthKit Successfully Authorized.")
     }
     
   }
-  
-  // MARK: - UITableView Delegate
-//  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//
-//    if indexPath.section == authorizeHealthKitSection {
-//      authorizeHealthKit()
-//    }
-//  }
 }

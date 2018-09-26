@@ -13,4 +13,22 @@ extension Date {
     var ticks: UInt64 {
         return UInt64((self.timeIntervalSince1970 + 62_135_596_800) * 10_000_000)
     }
+    
+    static func stringToDate(str: String) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+        let date = dateFormatter.date(from: str)
+        
+        return date!
+    }
+    
+    static func dateToString(date: Date) -> String {
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy"
+        let dateString = formatter.string(from: date)
+        
+        return dateString
+    }
+    
 }

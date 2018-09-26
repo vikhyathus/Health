@@ -7,15 +7,16 @@
 //
 
 import Foundation
+import CoreMotion
 
 class WalkSleep {
     
     var duration: Double
     var steps: Int
-    var date: String
+    var date: Date
     
     
-    init(duration: Double, steps: Int, date: String) {
+    init(duration: Double, steps: Int, date: Date) {
         self.duration = duration
         self.steps = steps
         self.date = date
