@@ -47,7 +47,7 @@ class WalkViewController: UIViewController {
             print(dict)
             
             if let duration = dict["duration"] as? Int {
-                self.goalLabel.text = "\(duration)" + " min"
+                self.goalLabel.text = "\(duration)"
             }
         })
     }

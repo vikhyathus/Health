@@ -8,6 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		5ECF91E85D57484D0F32E8C4 /* Pods_Health.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB82D62049ED83D79241370B /* Pods_Health.framework */; };
+		DF0DB358215C978800201425 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF0DB355215C978800201425 /* CoreMotion.framework */; };
+		DF0DB381215D028400201425 /* FireBaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF0DB380215D028400201425 /* FireBaseHelper.swift */; };
+		DF0DB383215D1BF700201425 /* SleepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF0DB382215D1BF700201425 /* SleepViewController.swift */; };
+		DF0DB385215DEC7C00201425 /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF0DB384215DEC7C00201425 /* test.swift */; };
+		DF0DB387215DF48E00201425 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF0DB386215DF48E00201425 /* Article.swift */; };
+		DF0DB3A9215E0C3700201425 /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF0DB3A8215E0C3700201425 /* NewsCell.swift */; };
+		DF0DB3AB215E0E4900201425 /* News+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF0DB3AA215E0E4900201425 /* News+TableView.swift */; };
+		DF0DB3AD215E2D3300201425 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF0DB3AC215E2D3300201425 /* WebViewController.swift */; };
 		DF386ACF215376E90024814C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF386ACE215376E90024814C /* AppDelegate.swift */; };
 		DF386AD4215376E90024814C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DF386AD2215376E90024814C /* Main.storyboard */; };
 		DF386AD7215376E90024814C /* Health.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DF386AD5215376E90024814C /* Health.xcdatamodeld */; };
@@ -85,6 +93,14 @@
 
 /* Begin PBXFileReference section */
 		CB82D62049ED83D79241370B /* Pods_Health.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Health.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DF0DB355215C978800201425 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		DF0DB380215D028400201425 /* FireBaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireBaseHelper.swift; sourceTree = "<group>"; };
+		DF0DB382215D1BF700201425 /* SleepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepViewController.swift; sourceTree = "<group>"; };
+		DF0DB384215DEC7C00201425 /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
+		DF0DB386215DF48E00201425 /* Article.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = "<group>"; };
+		DF0DB3A8215E0C3700201425 /* NewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
+		DF0DB3AA215E0E4900201425 /* News+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "News+TableView.swift"; sourceTree = "<group>"; };
+		DF0DB3AC215E2D3300201425 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		DF386ACB215376E90024814C /* Health.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Health.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF386ACE215376E90024814C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DF386AD3215376E90024814C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -133,6 +149,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DF0DB358215C978800201425 /* CoreMotion.framework in Frameworks */,
 				DF386AEF215377550024814C /* HealthKit.framework in Frameworks */,
 				5ECF91E85D57484D0F32E8C4 /* Pods_Health.framework in Frameworks */,
 				DF386B0421537C930024814C /* ResearchKit.framework in Frameworks */,
@@ -149,6 +166,15 @@
 				F78ACFE850EBB7E40B3D4CBF /* Pods-Health.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		DF0DB37F215D01F600201425 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				DF869DBB215A324A006C10E5 /* Time.swift */,
+				DF0DB380215D028400201425 /* FireBaseHelper.swift */,
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 		DF386AC2215376E90024814C = {
@@ -181,11 +207,11 @@
 				DF88E61D2154B2EE0086AFBE /* Model */,
 				DF869DC3215A3A30006C10E5 /* View */,
 				DF88E6222154B9370086AFBE /* Controllers */,
+				DF0DB37F215D01F600201425 /* Helper */,
 				DF386AD8215376EA0024814C /* Assets.xcassets */,
 				DF386AD2215376E90024814C /* Main.storyboard */,
 				DF88E6272154E54B0086AFBE /* InitialScreen.jpg */,
 				DF386ADA215376EA0024814C /* LaunchScreen.storyboard */,
-				DF869DBB215A324A006C10E5 /* Time.swift */,
 				DF386ADD215376EA0024814C /* Info.plist */,
 				DF386AF1215377C30024814C /* GoogleService-Info.plist */,
 				DF88E6212154B48F0086AFBE /* plist */,
@@ -197,6 +223,7 @@
 		DF386AED215377550024814C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DF0DB355215C978800201425 /* CoreMotion.framework */,
 				DF386AEE215377550024814C /* HealthKit.framework */,
 				CB82D62049ED83D79241370B /* Pods_Health.framework */,
 			);
@@ -216,6 +243,7 @@
 			isa = PBXGroup;
 			children = (
 				DF869DC4215A3AB2006C10E5 /* ActivityTableCell.swift */,
+				DF0DB3A8215E0C3700201425 /* NewsCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -243,6 +271,7 @@
 				DF386B10215397B00024814C /* SurveyTask.swift */,
 				DF5613372158DDC4009A48CD /* WalkTask.swift */,
 				DF869DE8215BD250006C10E5 /* QuestionTask.swift */,
+				DF0DB386215DF48E00201425 /* Article.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -266,7 +295,11 @@
 				DF88E65621551CB50086AFBE /* MyWeekViewController.swift */,
 				DF869DBF215A3847006C10E5 /* ActivityListViewController.swift */,
 				DF869DC8215A5660006C10E5 /* ActivityListViewController+TableView.swift */,
+				DF0DB382215D1BF700201425 /* SleepViewController.swift */,
 				DF869DE6215BB257006C10E5 /* InitialScreen+Notification.swift */,
+				DF0DB384215DEC7C00201425 /* test.swift */,
+				DF0DB3AA215E0E4900201425 /* News+TableView.swift */,
+				DF0DB3AC215E2D3300201425 /* WebViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -451,13 +484,17 @@
 				DF88E6242154B9590086AFBE /* LoginViewController.swift in Sources */,
 				DF386AD7215376E90024814C /* Health.xcdatamodeld in Sources */,
 				DF869DBC215A324A006C10E5 /* Time.swift in Sources */,
+				DF0DB381215D028400201425 /* FireBaseHelper.swift in Sources */,
 				DF869DD9215B6ABC006C10E5 /* UserProfileViewController.swift in Sources */,
+				DF0DB3A9215E0C3700201425 /* NewsCell.swift in Sources */,
 				DF869DD2215B577F006C10E5 /* UserHealthProfile.swift in Sources */,
 				DF88E62A2154EA860086AFBE /* SignUpViewController.swift in Sources */,
 				DF386AF721537AAF0024814C /* ConsentDocument.swift in Sources */,
+				DF0DB383215D1BF700201425 /* SleepViewController.swift in Sources */,
 				DF869DC7215A3CC1006C10E5 /* WalkSleep.swift in Sources */,
 				DF88E65721551CB50086AFBE /* MyWeekViewController.swift in Sources */,
 				DF869DC9215A5660006C10E5 /* ActivityListViewController+TableView.swift in Sources */,
+				DF0DB385215DEC7C00201425 /* test.swift in Sources */,
 				DF386B11215397B00024814C /* SurveyTask.swift in Sources */,
 				DF869DD0215B572B006C10E5 /* ProfileDataSource.swift in Sources */,
 				DF869DDF215B6F64006C10E5 /* HKGenderExtension.swift in Sources */,
@@ -470,6 +507,9 @@
 				DF869DC0215A3847006C10E5 /* ActivityListViewController.swift in Sources */,
 				DF88E6262154E3A20086AFBE /* FirstAppScreenViewController.swift in Sources */,
 				DF5613342158B9EC009A48CD /* WalkViewController.swift in Sources */,
+				DF0DB387215DF48E00201425 /* Article.swift in Sources */,
+				DF0DB3AB215E0E4900201425 /* News+TableView.swift in Sources */,
+				DF0DB3AD215E2D3300201425 /* WebViewController.swift in Sources */,
 				DF88E62C2154F5B50086AFBE /* WeeklyActivitiesViewController.swift in Sources */,
 				DF869DCC215A7E4A006C10E5 /* HealthKitSetupAssistant.swift in Sources */,
 				DF386B0F215383020024814C /* ConsentTasks.swift in Sources */,
@@ -633,6 +673,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3RFXA3YHL9;
 				INFOPLIST_FILE = Health/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -654,6 +695,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3RFXA3YHL9;
 				INFOPLIST_FILE = Health/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

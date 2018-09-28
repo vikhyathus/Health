@@ -16,7 +16,7 @@ extension ActivityListViewController: UITableViewDelegate, UITableViewDataSource
         let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityTableCell", for: indexPath) as! ActivityTableCell
         let row = activityList[indexPath.row]
         cell.dateLabel.text =  Date.dateToString(date: row.date)
-        let temp = String(format: "Duration: %.2f min", row.duration)
+        let temp = "Steps: \(row.steps)"
         cell.durationLabel.text = temp
         
         return cell

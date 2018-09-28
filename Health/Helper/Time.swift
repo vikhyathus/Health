@@ -31,4 +31,20 @@ extension Date {
         return dateString
     }
     
+    static func getTodaysDate() -> Date {
+        
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy"
+        return date
+    }
+    
+    static func getKeyFromDate() -> Date {
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "ddMMyyyy"
+        
+        return date
+    }
+    
 }

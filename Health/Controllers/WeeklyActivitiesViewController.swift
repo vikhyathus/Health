@@ -59,7 +59,7 @@ class WeeklyActivitiesViewController: UIViewController {
         content.body = "Please answer few questions for research purposes"
         content.sound = UNNotificationSound.default
 
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 60, repeats: true)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 3600, repeats: true)
         let request = UNNotificationRequest(identifier: "Identifier", content: content, trigger: trigger)
         UNUserNotificationCenter.current().add(request) { (error) in
             print("This is title \(request.content.title)")
@@ -104,7 +104,6 @@ class WeeklyActivitiesViewController: UIViewController {
             
             print("HealthKit Successfully Authorized.")
         }
-        
     }
     
 }
@@ -112,6 +111,7 @@ class WeeklyActivitiesViewController: UIViewController {
 extension WeeklyActivitiesViewController: UNUserNotificationCenterDelegate, ORKTaskViewControllerDelegate {
     
     func taskViewController(_ taskViewController: ORKTaskViewController, didFinishWith reason: ORKTaskViewControllerFinishReason, error: Error?) {
+        print(taskViewController.result)
         taskViewController.dismiss(animated: true, completion: nil)
     }
     

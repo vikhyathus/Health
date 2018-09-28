@@ -59,25 +59,26 @@ class ActivityListViewController: UIViewController {
         activityList.removeAll()
         if isWalk && isDay {
             walkDay()
-            activityList.sorted(by: {$0.date > $1.date })
         }
     }
     
     func walkDay() {
         var tempDate: String!
         var date: Date!
-        var duration: Double!
+        let duration: Double = 0
+        var steps: Int = 0
         let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
         
         ref.child(userID).child("Activities").observeSingleEvent(of: .value) { (snapshot) in
             if let dict = snapshot.value as? NSDictionary {
                 for (_, value) in dict {
                     if let dict2 = value as? NSDictionary {
-                        duration = dict2.value(forKey: "Walk") as? Double
-                        tempDate = dict2.value(forKey: "Date") as? String
-                        date = Date.stringToDate(str: tempDate)
-                        self.activityList.append(WalkSleep(duration: duration, steps: 0, date: date))
-                       
+                        if let walkTask = dict2["Walk"] as? NSDictionary {
+                            steps = walkTask.value(forKey: "steps") as! Int
+                            tempDate = walkTask.value(forKey: "date") as? String
+                            date = Date.stringToDate(str: tempDate)
+                            self.activityList.append(WalkSleep(duration: duration, steps: steps, date: date))
+                        }
                     }
                 }
             }

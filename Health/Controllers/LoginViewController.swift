@@ -20,8 +20,6 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-
     }
     
     @IBAction func signInButtonTapped(_ sender: Any) {
