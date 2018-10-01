@@ -39,12 +39,14 @@ extension Date {
         return date
     }
     
-    static func getKeyFromDate() -> Date {
+    static func getKeyFromDate() -> String {
+        
         let date = Date()
         let formatter = DateFormatter()
         formatter.dateFormat = "ddMMyyyy"
+        let key = formatter.string(from: date)
         
-        return date
+        return key
     }
     
 }

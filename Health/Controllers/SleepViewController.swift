@@ -86,14 +86,31 @@ class SleepViewController: UIViewController {
     }
     
     @IBAction func saveTapped(_ sender: Any) {
-        
-        updateDatabase(sleepCount: sleepCount)
+    
+        getPreviousSleepCount { (pre) in
+            self.sleepCount+=pre
+            self.updateDatabase(sleepCount: self.sleepCount)
+        }
         dismiss(animated: true, completion: nil)
     }
     
     @objc func action()  {
         time+=1
         timeLabel.text = String(time)
+    }
+    
+    func getPreviousSleepCount(completion: @escaping (Int) -> Void) {
+        
+        var previousSleepDetail = 0
+        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users/pA7l0khhOVanqUHODOkjPMX08XG2/Activities/Sleep")
+        ref.child(Date.getKeyFromDate()).observeSingleEvent(of: .value) { (snapshot) in
+            
+            guard let sleepDetails = snapshot.value as? NSDictionary else { print("error"); return }
+            previousSleepDetail = sleepDetails["duration"] as! Int
+            print("Inside \(previousSleepDetail)")
+            completion(previousSleepDetail)
+        }
+        print("Outside \(previousSleepDetail)")
     }
     
     func removeSavedData() {
@@ -107,13 +124,9 @@ class SleepViewController: UIViewController {
         var ref: DatabaseReference?
         ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com")
         let uid = Auth.auth().currentUser?.uid
+        let key = Date.getKeyFromDate()
         
-        let today = Date()
-        let formatter = DateFormatter()
-        formatter.dateFormat = "ddmmyyyy"
-        let key = formatter.string(from: today)
-        
-        let userReference = ref?.child("Users").child(uid!).child("Activities").child(key).child("Sleep")
+        let userReference = ref?.child("Users").child(uid!).child("Activities").child("Sleep").child(key)
         let values = ["duration" : sleepCount, "date" : Date.dateToString(date: Date()), "steps" : 0] as [String : Any]
         userReference?.updateChildValues(values, withCompletionBlock: { (error, ref) in
             

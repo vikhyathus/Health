@@ -10,80 +10,43 @@ import UIKit
 import Firebase
 
 class ActivityListViewController: UIViewController {
-
-    var isWalk: Bool = true
-    var isDay: Bool = true
+    
     var activityList: [WalkSleep] = []
     var userID: String!
     var didLoad: Bool = false
     
-    @IBOutlet weak var weekDaySegmentController: UISegmentedControl!
-    @IBOutlet weak var walkSleepSegmentController: UISegmentedControl!
+    
+    @IBOutlet weak var walkButtonView: UIView!
+    @IBOutlet weak var sleepButtonView: UIView!
+    
+    
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        populateList()
+        walkButtonView.backgroundColor = .white
         tableView.delegate = self
         tableView.dataSource = self
-        didLoad = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if didLoad {
-            populateList()
             tableView.reloadData()
         }
         didLoad = true
-        print("did appear")
     }
     
-    @IBAction func dayWeekSegmentController(_ sender: Any) {
-        
-        isDay = !isDay
-        populateList()
-        tableView.reloadData()
+    
+    @IBAction func walkButtonTapped(_ sender: Any) {
+        walkButtonView.backgroundColor = .white
+        sleepButtonView.backgroundColor = .blue
     }
     
-    @IBAction func walkSleepSegmentControllerAction(_ sender: Any) {
-        
-        isWalk = !isWalk
-        populateList()
-        tableView.reloadData()
+    @IBAction func sleepButtonTapped(_ sender: Any) {
+        sleepButtonView.backgroundColor = .white
+        walkButtonView.backgroundColor = .blue
     }
     
-    func populateList() {
-        
-        userID = Auth.auth().currentUser?.uid
-        activityList.removeAll()
-        if isWalk && isDay {
-            walkDay()
-        }
-    }
-    
-    func walkDay() {
-        var tempDate: String!
-        var date: Date!
-        let duration: Double = 0
-        var steps: Int = 0
-        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
-        
-        ref.child(userID).child("Activities").observeSingleEvent(of: .value) { (snapshot) in
-            if let dict = snapshot.value as? NSDictionary {
-                for (_, value) in dict {
-                    if let dict2 = value as? NSDictionary {
-                        if let walkTask = dict2["Walk"] as? NSDictionary {
-                            steps = walkTask.value(forKey: "steps") as! Int
-                            tempDate = walkTask.value(forKey: "date") as? String
-                            date = Date.stringToDate(str: tempDate)
-                            self.activityList.append(WalkSleep(duration: duration, steps: steps, date: date))
-                        }
-                    }
-                }
-            }
-            self.tableView.reloadData()
-        }
-    }
 }
 

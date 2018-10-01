@@ -19,6 +19,8 @@ extension News: UITableViewDelegate, UITableViewDataSource {
         
         let row = newsArticles[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCell") as! NewsCell
+        cell.setNeedsUpdateConstraints()
+        cell.updateConstraints()
         cell.setUpCell(row: row)
         
         return cell
@@ -26,7 +28,7 @@ extension News: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        return 292.0
+        return 300.0
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

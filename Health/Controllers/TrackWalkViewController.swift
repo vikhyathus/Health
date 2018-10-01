@@ -118,8 +118,26 @@ class TrackWalkViewController: UIViewController {
     }
     
     @IBAction func doneButtonTapped(_ sender: Any) {
-        updateDatabase(stepCount: stepCount)
+        
+        getPreviousWalkCount { (pre) in
+            
+            self.stepCount+=pre
+            self.updateDatabase(stepCount: self.stepCount)
+        }
         dismiss(animated: true, completion: nil)
+    }
+    
+    func getPreviousWalkCount(completion: @escaping (Int) -> Void) {
+        
+        var previousWalkDetails = 0
+        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users/pA7l0khhOVanqUHODOkjPMX08XG2/Activities/Walk")
+        ref.child(Date.getKeyFromDate()).observeSingleEvent(of: .value) { (snapshot) in
+            
+            guard let walkDetails = snapshot.value as? NSDictionary else { print("error"); return }
+            previousWalkDetails = walkDetails["steps"] as! Int
+            completion(previousWalkDetails)
+        }
+        print("Outside \(previousWalkDetails)")
     }
     
     func updateDatabase(stepCount: Int) {
@@ -127,12 +145,10 @@ class TrackWalkViewController: UIViewController {
         ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com")
         let uid = Auth.auth().currentUser?.uid
         
-        let today = Date()
-        let formatter = DateFormatter()
-        formatter.dateFormat = "ddmmyyyy"
-        let key = formatter.string(from: today)
+    
+        let key = Date.getKeyFromDate()
         
-        let userReference = ref?.child("Users").child(uid!).child("Activities").child(key).child("Walk")
+        let userReference = ref?.child("Users").child(uid!).child("Activities").child("Walk").child(key)
         let values = ["duration" : 0, "date" : Date.dateToString(date: Date()), "steps" : stepCount] as [String : Any]
         userReference?.updateChildValues(values, withCompletionBlock: { (error, ref) in
             
