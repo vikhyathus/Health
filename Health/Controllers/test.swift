@@ -21,6 +21,10 @@ class News: UIViewController {
         tableView.dataSource = self
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     func fetchArticles() {
         
         let session = URLSession(configuration: .default)
@@ -35,8 +39,8 @@ class News: UIViewController {
             
             //json serialisation
             do {
-                let json = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as! [String : AnyObject]
-                if let articles = json["articles"] as? [[String : AnyObject]] {
+                let json = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as? [String : AnyObject]
+                if let articles = json?["articles"] as? [[String : AnyObject]] {
                     
                     for article in articles {
                         if let title = article["title"] as? String, let description = article["description"] as? String, let urlToImage = article["urlToImage"] as? String, let webUrl = article["url"] as? String {

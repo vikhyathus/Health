@@ -107,7 +107,7 @@ class TrackWalkViewController: UIViewController {
         startButton.alpha = 1
     }
     
-    @objc func action()  {
+    @objc func action() {
         time+=1
         timeLabel.text = String(time)
     }
@@ -134,7 +134,8 @@ class TrackWalkViewController: UIViewController {
         ref.child(Date.getKeyFromDate()).observeSingleEvent(of: .value) { (snapshot) in
             
             guard let walkDetails = snapshot.value as? NSDictionary else { print("error"); return }
-            previousWalkDetails = walkDetails["steps"] as! Int
+            previousWalkDetails = walkDetails["steps"] as? Int ?? 0
+            print(previousWalkDetails)
             completion(previousWalkDetails)
         }
         print("Outside \(previousWalkDetails)")
@@ -144,12 +145,10 @@ class TrackWalkViewController: UIViewController {
         
         ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com")
         let uid = Auth.auth().currentUser?.uid
-        
-    
         let key = Date.getKeyFromDate()
         
         let userReference = ref?.child("Users").child(uid!).child("Activities").child("Walk").child(key)
-        let values = ["duration" : 0, "date" : Date.dateToString(date: Date()), "steps" : stepCount] as [String : Any]
+        let values = ["duration" : 0, "date" : Date.dateToString(date: Date()), "steps": stepCount] as [String: Any]
         userReference?.updateChildValues(values, withCompletionBlock: { (error, ref) in
             
             if error != nil {

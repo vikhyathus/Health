@@ -27,9 +27,9 @@ public var QuestionTask: ORKOrderedTask {
 
     let questQuestionStepTitle = "What is your quest?"
     let textChoices = [
-        ORKTextChoice(text: "Create a ResearchKit App", value: 0 as NSNumber),
-        ORKTextChoice(text: "Seek the Holy Grail", value: 1 as NSNumber),
-        ORKTextChoice(text: "Find a shrubbery", value: 2 as NSNumber)
+        ORKTextChoice(text: "Create a ResearchKit App", value: "Create a ResearchKit App" as NSString),
+        ORKTextChoice(text: "Seek the Holy Grail", value: "Seek the Holy Grail" as NSString),
+        ORKTextChoice(text: "Find a shrubbery", value: "Find a shrubbery" as NSString)
     ]
     let questAnswerFormat: ORKTextChoiceAnswerFormat = ORKAnswerFormat.choiceAnswerFormat(with: .singleChoice, textChoices: textChoices)
     let questQuestionStep = ORKQuestionStep(identifier: "TextChoiceQuestionStep", title: questQuestionStepTitle, answer: questAnswerFormat)

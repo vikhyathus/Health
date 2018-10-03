@@ -16,16 +16,18 @@
 
 import UIKit
 import HealthKit
+import Firebase
 
 class UserProfileViewController: UIViewController {
     
-    @IBOutlet weak var ageLabel: UILabel!
-    @IBOutlet weak var genderLabel: UILabel!
-    @IBOutlet weak var bloodTypeLabel: UILabel!
-    @IBOutlet weak var weightLabel: UILabel!
-    @IBOutlet weak var heightLabel: UILabel!
-    @IBOutlet weak var bmiLabel: UILabel!
     
+    var userDetails: [[String]] = []
+    var physicalData: [String] = []
+    var sampleTypes: [String] = []
+    
+    @IBOutlet weak var tableView: UITableView!
+    
+    var tableLabels = [ ["Weight", "Height", "BMI"], ["Age", "Gender", "Blood Type"]]
     let userHealthProfile = UserHealthProfile()
     
     private enum ProfileDataError: Error {
@@ -42,25 +44,35 @@ class UserProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateHealthInfo()
+        updateHealthInfo { (height, weight, bodymassIndex) in
+            self.userDetails.append([String(height), String(weight), String(bodymassIndex)])
+            self.userDetails.append(self.sampleTypes)
+            self.tableView.reloadData()
+        }
+        print(userDetails)
+        tableView.delegate = self
+        tableView.dataSource = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        updateHealthInfo()
+        //updateHealthInfo()
+    
     }
     
-    func updateHealthInfo() {
+    func updateHealthInfo(completion: @escaping (Double, Double, Double) -> Void) {
         loadAndDisplayAgeSexAndBloodType()
         loadAndDisplayMostRecentWeight()
         loadAndDisplayMostRecentHeight()
+        saveBodyMassIndexToHealthKit()
+        completion(userHealthProfile.heightInMeters!, userHealthProfile.weightInKilograms!, userHealthProfile.bodyMassIndex!)
     }
     
     private func loadAndDisplayAgeSexAndBloodType() {
         
         do {
             let userAgeSexAndBloodType = try ProfileDataStore.getAgeSexAndBloodType()
-                userHealthProfile.age = userAgeSexAndBloodType.age
+            userHealthProfile.age = userAgeSexAndBloodType.age
             userHealthProfile.biologicalSex = userAgeSexAndBloodType.biologicalSex
             userHealthProfile.bloodType = userAgeSexAndBloodType.bloodType
             updateLabels()
@@ -72,31 +84,34 @@ class UserProfileViewController: UIViewController {
     private func updateLabels() {
         
         if let age = userHealthProfile.age {
-            ageLabel.text = "\(age)"
+            sampleTypes.append("\(age)")
         }
         
         if let biologicalSex = userHealthProfile.biologicalSex {
-            genderLabel.text = biologicalSex.stringRepresentation
+            sampleTypes.append(biologicalSex.stringRepresentation)
         }
         
         if let bloodType = userHealthProfile.bloodType {
-            bloodTypeLabel.text = bloodType.stringRepresentation
+            sampleTypes.append(bloodType.stringRepresentation)
         }
+    }
+    
+    private func updateSamples() {
         
         if let weight = userHealthProfile.weightInKilograms {
             let weightFormatter = MassFormatter()
             weightFormatter.isForPersonMassUse = true
-            weightLabel.text = weightFormatter.string(fromKilograms: weight)
+            physicalData.append(weightFormatter.string(fromKilograms: weight))
         }
         
         if let height = userHealthProfile.heightInMeters {
             let heightFormatter = LengthFormatter()
             heightFormatter.isForPersonHeightUse = true
-            heightLabel.text = heightFormatter.string(fromMeters: height)
+            physicalData.append(heightFormatter.string(fromMeters: height))
         }
         
         if let bodyMassIndex = userHealthProfile.bodyMassIndex {
-            bmiLabel.text = String(format: "%.02f", bodyMassIndex)
+            physicalData.append(String(format: "%.02f", bodyMassIndex))
         }
     }
     
@@ -123,7 +138,6 @@ class UserProfileViewController: UIViewController {
             //   and update the user interface.
             let heightInMeters = sample.quantity.doubleValue(for: HKUnit.meter())
             self.userHealthProfile.heightInMeters = heightInMeters
-            self.updateLabels()
         }
     }
     
@@ -146,7 +160,6 @@ class UserProfileViewController: UIViewController {
             
             let weightInKilograms = sample.quantity.doubleValue(for: HKUnit.gramUnit(with: .kilo))
             self.userHealthProfile.weightInKilograms = weightInKilograms
-            self.updateLabels()
         }
     }
     
@@ -156,9 +169,9 @@ class UserProfileViewController: UIViewController {
             displayAlert(for: ProfileDataError.missingBodyMassIndex)
             return
         }
-        
         ProfileDataStore.saveBodyMassIndexSample(bodyMassIndex: bodyMassIndex,
                                                  date: Date())
+        
     }
     
     private func displayAlert(for error: Error) {
@@ -174,5 +187,14 @@ class UserProfileViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
+    @IBAction func logoutTapped(_ sender: Any) {
+        
+            do {
+                try? Auth.auth().signOut()
+                self.dismiss(animated: true, completion: nil)
+            }
+    }
+ }
     
-}
+    
+

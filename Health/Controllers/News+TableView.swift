@@ -18,12 +18,12 @@ extension News: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let row = newsArticles[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCell") as! NewsCell
-        cell.setNeedsUpdateConstraints()
-        cell.updateConstraints()
-        cell.setUpCell(row: row)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCell") as? NewsCell
+        cell?.setNeedsUpdateConstraints()
+        cell?.updateConstraints()
+        cell?.setUpCell(row: row)
         
-        return cell
+        return cell!
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -33,8 +33,8 @@ extension News: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let webvc = storyboard?.instantiateViewController(withIdentifier: "web") as! WebViewController
-        webvc.urlString = newsArticles[indexPath.row].url
-        present(webvc, animated: true, completion: nil)
+        let webvc = storyboard?.instantiateViewController(withIdentifier: "web") as? WebViewController
+        webvc?.urlString = newsArticles[indexPath.row].url
+        present(webvc!, animated: true, completion: nil)
     }
 }

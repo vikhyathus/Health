@@ -91,6 +91,7 @@ class SleepViewController: UIViewController {
             self.sleepCount+=pre
             self.updateDatabase(sleepCount: self.sleepCount)
         }
+        
         dismiss(animated: true, completion: nil)
     }
     
@@ -106,7 +107,8 @@ class SleepViewController: UIViewController {
         ref.child(Date.getKeyFromDate()).observeSingleEvent(of: .value) { (snapshot) in
             
             guard let sleepDetails = snapshot.value as? NSDictionary else { print("error"); return }
-            previousSleepDetail = sleepDetails["duration"] as! Int
+            print(sleepDetails["duration"])
+            previousSleepDetail = sleepDetails["duration"] as? Int ?? 0
             print("Inside \(previousSleepDetail)")
             completion(previousSleepDetail)
         }

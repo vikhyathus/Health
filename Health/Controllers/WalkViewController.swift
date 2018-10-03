@@ -43,10 +43,10 @@ class WalkViewController: UIViewController {
     func updateTaskLabels() {
         
         ref?.child("Task1").observeSingleEvent(of: .value, with: { (snapshot) in
-            let dict = snapshot.value as! NSDictionary
-            print(dict)
+            let dict = snapshot.value as? NSDictionary
+            print(dict as Any)
             
-            if let duration = dict["duration"] as? Int {
+            if let duration = dict?["duration"] as? Int {
                 self.goalLabel.text = "\(duration)"
             }
         })
@@ -86,8 +86,8 @@ class WalkViewController: UIViewController {
     }
     
     @IBAction func walkTapped(_ sender: UIButton) {
-        let nextScreen = storyboard?.instantiateViewController(withIdentifier: "TrackWalkViewController") as! TrackWalkViewController
-        nextScreen.presentDistance = coveredLabel.text
-        present(nextScreen, animated: true)
+        let nextScreen = storyboard?.instantiateViewController(withIdentifier: "TrackWalkViewController") as? TrackWalkViewController
+        nextScreen?.presentDistance = coveredLabel.text
+        present(nextScreen!, animated: true)
     }
 }
