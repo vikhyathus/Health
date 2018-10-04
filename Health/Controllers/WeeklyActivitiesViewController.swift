@@ -27,7 +27,7 @@ class WeeklyActivitiesViewController: UIViewController {
         UNUserNotificationCenter.current().delegate = self
         setUpNotification()
         createNotification()
-        view.setGradientBackground(colorOne: Colors.blue, colorTwo: Colors.green)
+        view.setGradientBackground(colorOne: Colors.blue, colorTwo: Colors.white)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -103,21 +103,32 @@ extension WeeklyActivitiesViewController: UNUserNotificationCenterDelegate, ORKT
     
     func taskViewController(_ taskViewController: ORKTaskViewController, didFinishWith reason: ORKTaskViewControllerFinishReason, error: Error?) {
         guard let results = taskViewController.result.results as? [ORKStepResult] else { return }
+        let userID = Auth.auth().currentUser?.uid
+        var values = [String:String]()
+        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
         for stepResult: ORKStepResult in results {
             let stepResultCast = stepResult.results
             for result in stepResultCast!  {
                 if let questionResult = result as? ORKQuestionResult {
-                    
-                    print(questionResult.isMember(of: ORKChoiceQuestionResult.self))
                     if questionResult.isMember(of: ORKChoiceQuestionResult.self) {
-                        guard let choiceAnswers = questionResult.answer as? NSArray else { return }
-                        guard let choiceIs = choiceAnswers.firstObject as? String else { return }
-                        print(choiceIs)
+                        if let choiceAnswers = questionResult.answer as? NSArray {
+                            let choiceIs = choiceAnswers.firstObject as? String
+                            values[questionResult.identifier] = choiceIs
+                            print(choiceIs)
+                        }
                     }
                 }
             }
         }
-            
+        print(values)
+        ref.child(userID!).child("survey").child(Date.getKeyFromDate()).updateChildValues(values) { error, ref in
+            if error != nil {
+                print("error saing user data!")
+                taskViewController.dismiss(animated: true, completion: nil)
+                return
+            }
+            print("Successfull saved survey details")
+        }
         taskViewController.dismiss(animated: true, completion: nil)
     }
     

@@ -41,7 +41,7 @@ class ActivityListViewController: UIViewController {
         sleepButtonView.backgroundColor = UIColor.init(red: 26/255, green: 26/255, blue: 255/255, alpha: 1)
         headerView.backgroundColor = UIColor.init(red: 26/255, green: 26/255, blue: 255/255, alpha: 1)
         walkButtonView.backgroundColor = .white
-        
+        //tableView.setGradientBackground(colorOne: Colors.blue, colorTwo: Colors.white)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -68,7 +68,7 @@ class ActivityListViewController: UIViewController {
         activityList.removeAll()
         let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
         ref.child(userID!).child("Activities").child(activity).observeSingleEvent(of: .value) { (snapshot) in
-        guard let days = snapshot.value as? NSDictionary else { return }
+            guard let days = snapshot.value as? NSDictionary else { self.tableView.reloadData(); return }
             
             for ( _, value) in days {
                 
@@ -80,7 +80,7 @@ class ActivityListViewController: UIViewController {
             }
             self.tableView.reloadData()
         }
-        
+        tableView.reloadData()
     }
     
     

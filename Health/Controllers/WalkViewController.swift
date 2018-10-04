@@ -26,6 +26,7 @@ class WalkViewController: UIViewController {
         super.viewDidLoad()
         ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Tasks")
         _ = assignTask()
+        view.setGradientBackground(colorOne: Colors.blue, colorTwo: Colors.white)
         updateTaskLabels()
         updateCoveredLabel()
     }
@@ -64,13 +65,11 @@ class WalkViewController: UIViewController {
         ref.child(uid!).child("Activities").child(today).observeSingleEvent(of: .value, with: { (snapshot) in
             if let dict = snapshot.value as? NSDictionary {
                 if let covered = dict["Walk"] as? Double {
-                        self.coveredLabel.text = String(covered.rounded())
-                }
-                else {
+                    self.coveredLabel.text = String(covered.rounded())
+                } else {
                     print("Cannot convert")
                 }
-            }
-            else {
+            } else {
                 self.coveredLabel.text = "0.0"
                 print("Error")
             }

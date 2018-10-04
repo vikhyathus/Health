@@ -87,7 +87,7 @@ class SleepViewController: UIViewController {
     
     @IBAction func saveTapped(_ sender: Any) {
     
-        getPreviousSleepCount { (pre) in
+        getPreviousSleepCount { pre in
             self.sleepCount+=pre
             self.updateDatabase(sleepCount: self.sleepCount)
         }
@@ -112,6 +112,7 @@ class SleepViewController: UIViewController {
             print("Inside \(previousSleepDetail)")
             completion(previousSleepDetail)
         }
+        completion(previousSleepDetail)
         print("Outside \(previousSleepDetail)")
     }
     

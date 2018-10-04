@@ -27,7 +27,7 @@ class UserProfileViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
-    var tableLabels = [ ["Weight", "Height", "BMI"], ["Age", "Gender", "Blood Type"]]
+    var tableLabels = [ ["Age", "Gender", "Blood Type"], ["Weight", "Height", "BMI"]]
     let userHealthProfile = UserHealthProfile()
     
     private enum ProfileDataError: Error {
@@ -44,11 +44,8 @@ class UserProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateHealthInfo { (height, weight, bodymassIndex) in
-            self.userDetails.append([String(height), String(weight), String(bodymassIndex)])
-            self.userDetails.append(self.sampleTypes)
-            self.tableView.reloadData()
-        }
+        tableView.separatorStyle = .none
+        updateHealthInfo()
         print(userDetails)
         tableView.delegate = self
         tableView.dataSource = self
@@ -60,12 +57,16 @@ class UserProfileViewController: UIViewController {
     
     }
     
-    func updateHealthInfo(completion: @escaping (Double, Double, Double) -> Void) {
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
+    func updateHealthInfo() {
+        
         loadAndDisplayAgeSexAndBloodType()
+        userDetails.append(sampleTypes)
         loadAndDisplayMostRecentWeight()
         loadAndDisplayMostRecentHeight()
-        saveBodyMassIndexToHealthKit()
-        completion(userHealthProfile.heightInMeters!, userHealthProfile.weightInKilograms!, userHealthProfile.bodyMassIndex!)
     }
     
     private func loadAndDisplayAgeSexAndBloodType() {
@@ -78,6 +79,7 @@ class UserProfileViewController: UIViewController {
             updateLabels()
         } catch let error {
             self.displayAlert(for: error)
+            print("From load age sex and blood")
         }
     }
     
@@ -123,12 +125,13 @@ class UserProfileViewController: UIViewController {
             return
         }
         
-        ProfileDataStore.getMostRecentSample(for: heightSampleType) { (sample, error) in
+        ProfileDataStore.getMostRecentSample(for: heightSampleType) { sample, error in
             
             guard let sample = sample else {
                 
                 if let error = error {
                     self.displayAlert(for: error)
+                    print("From height")
                 }
                 
                 return
@@ -138,6 +141,14 @@ class UserProfileViewController: UIViewController {
             //   and update the user interface.
             let heightInMeters = sample.quantity.doubleValue(for: HKUnit.meter())
             self.userHealthProfile.heightInMeters = heightInMeters
+            self.physicalData.append(String(format: "%.2f m", heightInMeters))
+            if self.physicalData.count == 2 {
+                self.saveBodyMassIndexToHealthKit()
+                let bmi = String(format: "%.2f", self.userHealthProfile.bodyMassIndex!)
+                self.physicalData.append(bmi)
+                self.userDetails.append(self.physicalData)
+                self.tableView.reloadData()
+            }
         }
     }
     
@@ -148,18 +159,26 @@ class UserProfileViewController: UIViewController {
             return
         }
         
-        ProfileDataStore.getMostRecentSample(for: weightSampleType) { (sample, error) in
+        ProfileDataStore.getMostRecentSample(for: weightSampleType) { sample, error in
             
             guard let sample = sample else {
-                
                 if let error = error {
                     self.displayAlert(for: error)
+                    print("From weight")
                 }
                 return
             }
             
             let weightInKilograms = sample.quantity.doubleValue(for: HKUnit.gramUnit(with: .kilo))
             self.userHealthProfile.weightInKilograms = weightInKilograms
+            self.physicalData.append(String(format: "%.2f kg", weightInKilograms))
+            if self.physicalData.count == 2 {
+                self.saveBodyMassIndexToHealthKit()
+                let bmi = String(format: "%.2f", self.userHealthProfile.bodyMassIndex!)
+                self.physicalData.append(bmi)
+                self.userDetails.append(self.physicalData)
+                self.tableView.reloadData()
+            }
         }
     }
     

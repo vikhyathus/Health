@@ -25,18 +25,30 @@ extension UserProfileViewController: UITableViewDelegate, UITableViewDataSource 
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileViewCell") as? ProfileViewCell
         cell?.titleLabel.text = tableLabels[indexPath.section][indexPath.row]
-        cell?.valueLabel.text = userDetails[indexPath.section][indexPath.row]
-        
+        if indexPath.section == 1 {
+            cell?.valueLabel.text = userDetails[indexPath.section][indexPath.row]
+        } else {
+            cell?.valueLabel.text = userDetails[indexPath.section][indexPath.row]
+        }
         return cell!
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let label = UILabel()
-        label.text = "HEADER"
-        label.backgroundColor = UIColor.blue
+        if section == 0 {
+            label.text = "USER DETAILS"
+        } else {
+            label.text = "PHYSICAL DETAIL"
+        }
+        label.backgroundColor = Colors.blue
+        label.textAlignment = .center
         label.textColor = .white
         
         return label
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 50.0
     }
 }

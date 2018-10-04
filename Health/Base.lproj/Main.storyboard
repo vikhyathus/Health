@@ -902,6 +902,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ibQ-4I-mPC">
                                 <rect key="frame" x="0.0" y="200" width="375" height="418"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProfileViewCell" rowHeight="91" id="7q5-xt-lbe" customClass="ProfileViewCell" customModule="Health" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="91"/>
@@ -925,10 +926,12 @@
                                                         <constraint firstAttribute="width" constant="80" id="Wsw-tv-SQm"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
-                                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstAttribute="bottomMargin" secondItem="D1s-gO-yyL" secondAttribute="bottom" constant="12" id="9FJ-jQ-MMa"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="3NB-aZ-3OV" secondAttribute="bottom" constant="12" id="HAS-SQ-vR3"/>
@@ -1263,7 +1266,7 @@
     </scenes>
     <resources>
         <image name="Eat-1" width="48" height="48"/>
-        <image name="Health" width="992" height="558"/>
+        <image name="Health" width="600" height="275"/>
         <image name="InitialScreen" width="480" height="344"/>
         <image name="Profile" width="48" height="48"/>
         <image name="To-do" width="48" height="48"/>
