@@ -16,11 +16,16 @@
 		DF0DB3A9215E0C3700201425 /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF0DB3A8215E0C3700201425 /* NewsCell.swift */; };
 		DF0DB3AB215E0E4900201425 /* News+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF0DB3AA215E0E4900201425 /* News+TableView.swift */; };
 		DF0DB3AD215E2D3300201425 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF0DB3AC215E2D3300201425 /* WebViewController.swift */; };
+		DF251986216726C3000E58F7 /* AlertMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF251983216726C2000E58F7 /* AlertMessages.swift */; };
+		DF25198C2167937E000E58F7 /* WeeklyActivities+tableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF25198B2167937E000E58F7 /* WeeklyActivities+tableView.swift */; };
+		DF25198E216794C7000E58F7 /* TasksIdentifierCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF25198D216794C7000E58F7 /* TasksIdentifierCell.swift */; };
 		DF257BFA21623057002B858E /* UserProfileDetails + tableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF257BF921623057002B858E /* UserProfileDetails + tableView.swift */; };
 		DF257BFE21623B70002B858E /* ProfileViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF257BFD21623B70002B858E /* ProfileViewCell.swift */; };
 		DF257C0021626475002B858E /* GradientColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF257BFF21626475002B858E /* GradientColor.swift */; };
 		DF257C022162685A002B858E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF257C012162685A002B858E /* Constants.swift */; };
 		DF257C042164D1F6002B858E /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = DF257C032164D1F6002B858E /* .swiftlint.yml */; };
+		DF257C0721663679002B858E /* FormValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF257C0621663679002B858E /* FormValidation.swift */; };
+		DF257C0D216643C9002B858E /* KeyBoardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF257C0C216643C9002B858E /* KeyBoardHandler.swift */; };
 		DF386ACF215376E90024814C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF386ACE215376E90024814C /* AppDelegate.swift */; };
 		DF386AD4215376E90024814C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DF386AD2215376E90024814C /* Main.storyboard */; };
 		DF386AD7215376E90024814C /* Health.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DF386AD5215376E90024814C /* Health.xcdatamodeld */; };
@@ -106,11 +111,16 @@
 		DF0DB3A8215E0C3700201425 /* NewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
 		DF0DB3AA215E0E4900201425 /* News+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "News+TableView.swift"; sourceTree = "<group>"; };
 		DF0DB3AC215E2D3300201425 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		DF251983216726C2000E58F7 /* AlertMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertMessages.swift; sourceTree = "<group>"; };
+		DF25198B2167937E000E58F7 /* WeeklyActivities+tableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WeeklyActivities+tableView.swift"; sourceTree = "<group>"; };
+		DF25198D216794C7000E58F7 /* TasksIdentifierCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksIdentifierCell.swift; sourceTree = "<group>"; };
 		DF257BF921623057002B858E /* UserProfileDetails + tableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserProfileDetails + tableView.swift"; sourceTree = "<group>"; };
 		DF257BFD21623B70002B858E /* ProfileViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewCell.swift; sourceTree = "<group>"; };
 		DF257BFF21626475002B858E /* GradientColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientColor.swift; sourceTree = "<group>"; };
 		DF257C012162685A002B858E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		DF257C032164D1F6002B858E /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = "<group>"; };
+		DF257C0621663679002B858E /* FormValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormValidation.swift; sourceTree = "<group>"; };
+		DF257C0C216643C9002B858E /* KeyBoardHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBoardHandler.swift; sourceTree = "<group>"; };
 		DF386ACB215376E90024814C /* Health.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Health.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF386ACE215376E90024814C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DF386AD3215376E90024814C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -181,6 +191,9 @@
 		DF0DB37F215D01F600201425 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				DF257C0621663679002B858E /* FormValidation.swift */,
+				DF257C0C216643C9002B858E /* KeyBoardHandler.swift */,
+				DF251983216726C2000E58F7 /* AlertMessages.swift */,
 				DF869DBB215A324A006C10E5 /* Time.swift */,
 				DF257C012162685A002B858E /* Constants.swift */,
 				DF257BFF21626475002B858E /* GradientColor.swift */,
@@ -218,7 +231,6 @@
 				DF386AF0215377550024814C /* Health.entitlements */,
 				DF869DCA215A7CBA006C10E5 /* HealthKit */,
 				DF88E61D2154B2EE0086AFBE /* Model */,
-				DF869DC3215A3A30006C10E5 /* View */,
 				DF88E6222154B9370086AFBE /* Controllers */,
 				DF0DB37F215D01F600201425 /* Helper */,
 				DF386AD8215376EA0024814C /* Assets.xcassets */,
@@ -258,6 +270,7 @@
 				DF869DC4215A3AB2006C10E5 /* ActivityTableCell.swift */,
 				DF257BFD21623B70002B858E /* ProfileViewCell.swift */,
 				DF0DB3A8215E0C3700201425 /* NewsCell.swift */,
+				DF25198D216794C7000E58F7 /* TasksIdentifierCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -307,14 +320,16 @@
 				DF88E6292154EA860086AFBE /* SignUpViewController.swift */,
 				DF5613392158F123009A48CD /* TrackWalkViewController.swift */,
 				DF5613332158B9EC009A48CD /* WalkViewController.swift */,
-				DF88E65621551CB50086AFBE /* MyWeekViewController.swift */,
 				DF869DBF215A3847006C10E5 /* ActivityListViewController.swift */,
 				DF869DC8215A5660006C10E5 /* ActivityListViewController+TableView.swift */,
-				DF0DB382215D1BF700201425 /* SleepViewController.swift */,
-				DF869DE6215BB257006C10E5 /* InitialScreen+Notification.swift */,
 				DF0DB384215DEC7C00201425 /* test.swift */,
+				DF869DE6215BB257006C10E5 /* InitialScreen+Notification.swift */,
+				DF0DB382215D1BF700201425 /* SleepViewController.swift */,
+				DF25198B2167937E000E58F7 /* WeeklyActivities+tableView.swift */,
 				DF0DB3AA215E0E4900201425 /* News+TableView.swift */,
 				DF0DB3AC215E2D3300201425 /* WebViewController.swift */,
+				DF88E65621551CB50086AFBE /* MyWeekViewController.swift */,
+				DF869DC3215A3A30006C10E5 /* View */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -511,16 +526,21 @@
 				DF386AF721537AAF0024814C /* ConsentDocument.swift in Sources */,
 				DF0DB383215D1BF700201425 /* SleepViewController.swift in Sources */,
 				DF869DC7215A3CC1006C10E5 /* WalkSleep.swift in Sources */,
+				DF257C0721663679002B858E /* FormValidation.swift in Sources */,
 				DF88E65721551CB50086AFBE /* MyWeekViewController.swift in Sources */,
 				DF869DC9215A5660006C10E5 /* ActivityListViewController+TableView.swift in Sources */,
+				DF25198C2167937E000E58F7 /* WeeklyActivities+tableView.swift in Sources */,
 				DF0DB385215DEC7C00201425 /* test.swift in Sources */,
 				DF386B11215397B00024814C /* SurveyTask.swift in Sources */,
 				DF869DD0215B572B006C10E5 /* ProfileDataSource.swift in Sources */,
+				DF251986216726C3000E58F7 /* AlertMessages.swift in Sources */,
 				DF869DDF215B6F64006C10E5 /* HKGenderExtension.swift in Sources */,
 				DF869DC5215A3AB2006C10E5 /* ActivityTableCell.swift in Sources */,
+				DF257C0D216643C9002B858E /* KeyBoardHandler.swift in Sources */,
 				DF386ACF215376E90024814C /* AppDelegate.swift in Sources */,
 				DF869DE9215BD250006C10E5 /* QuestionTask.swift in Sources */,
 				DF257BFA21623057002B858E /* UserProfileDetails + tableView.swift in Sources */,
+				DF25198E216794C7000E58F7 /* TasksIdentifierCell.swift in Sources */,
 				DF869DDD215B6ECE006C10E5 /* HKBloodTypeExtension.swift in Sources */,
 				DF5613382158DDC4009A48CD /* WalkTask.swift in Sources */,
 				DF869DE7215BB257006C10E5 /* InitialScreen+Notification.swift in Sources */,

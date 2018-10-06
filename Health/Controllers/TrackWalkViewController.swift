@@ -28,10 +28,13 @@ class TrackWalkViewController: UIViewController {
     var endTime: Date!
     var presentDistance: String!
     var stepCount: Int = 0
+    var isStart: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        doneButton.isHidden = true
+        //doneButton.backgroundColor = Colors.lightBlue
+        startButton.layer.borderWidth = 1.0
+        startButton.layer.borderColor = Colors.orange.cgColor
     }
     
     private func startTrackingActivityType() {
@@ -41,8 +44,7 @@ class TrackWalkViewController: UIViewController {
             
             guard let activity = activity else { return }
                 if activity.walking {
-                    print("your ae walking")
-                
+                    print("your are walking")
                 } else if activity.stationary {
                    print("you are stationary")
                 } else if activity.running {
@@ -79,22 +81,29 @@ class TrackWalkViewController: UIViewController {
     }
 
     
-    @IBAction func startButtonTapped(_ sender: Any) {
+    @IBAction private func startButtonTapped(_ sender: Any) {
         //startTime = Date()
 //        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(action), userInfo: nil, repeats: false)
-        startButton.isEnabled = false
-        startButton.alpha = 0.3
-        startUpdating()
+        if !isStart {
+            startButton.backgroundColor = Colors.orange
+            startButton.setTitle("Stop", for: .normal)
+            startButton.setTitleColor(Colors.white, for: .normal)
+            startUpdating()
+            isStart = !isStart
+        } else {
+            startButton.backgroundColor = Colors.white
+            activity.stopActivityUpdates()
+            startButton.setTitleColor(Colors.orange, for: .normal)
+            startButton.setTitle("Start", for: .normal)
+            stepCount = Int(timeLabel.text!)!
+            isStart = !isStart
+        }
     }
     
     @IBAction func stopButtonTapped(_ sender: Any) {
         //endTime = Date()
         //timer.invalidate()
-        doneButton.isHidden = false
-        startButton.isEnabled = true
-        startButton.alpha = 1
-        activity.stopActivityUpdates()
-        stepCount = Int(timeLabel.text!)!
+
         print(stepCount)
     }
     

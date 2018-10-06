@@ -551,6 +551,8 @@
 		DDA0E5D00CAE01640EECE8C5AA3C8F92 /* FIRVerifyClientResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 072C297D2BF8F1CAD5535C9124AAC172 /* FIRVerifyClientResponse.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		DDB6BE5A8FC7DEB61C111AB4724B7D7C /* table_builder.h in Headers */ = {isa = PBXBuildFile; fileRef = CF82D876DC4A7B3D8E9947D74BB67ECB /* table_builder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DE022F579438ECFEF61B2EE6FE592F5B /* FIRUser_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C99D101DB1481ABE7152A1287A7EBA3 /* FIRUser_Internal.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		DF25198221671D3F000E58F7 /* AlertMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF25198121671D3F000E58F7 /* AlertMessages.swift */; };
+		DF257C0B2166438C002B858E /* KeyBoardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF257C0A2166438C002B858E /* KeyBoardHandler.swift */; };
 		DFAF699A9E7E5D23CA2FC45672CC1C8A /* FEventGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = A6172557BE08737AF04F39D4C2E96376 /* FEventGenerator.m */; };
 		E0787D601A8A4FB95F6F21AD30185C32 /* FEventRaiser.h in Headers */ = {isa = PBXBuildFile; fileRef = B13948454CF391681BD3E2AF543B660A /* FEventRaiser.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		E0D436E32410E92935C41E6512CC666A /* FEventEmitter.h in Headers */ = {isa = PBXBuildFile; fileRef = 497F1203D4F408C702D7F023D0A2598B /* FEventEmitter.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1308,6 +1310,8 @@
 		DE23D7FE6177E565161345A0B2A35671 /* FPersistentConnection.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FPersistentConnection.m; path = Firebase/Database/Core/FPersistentConnection.m; sourceTree = "<group>"; };
 		DEE9D862E9E942C9DF0636911B5B99DC /* FIRErrors.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRErrors.h; path = Firebase/Core/Private/FIRErrors.h; sourceTree = "<group>"; };
 		DF1BFCA404B8CDC6D56B4D23BE468AD4 /* FSRWebSocket.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FSRWebSocket.m; path = Firebase/Database/third_party/SocketRocket/FSRWebSocket.m; sourceTree = "<group>"; };
+		DF25198121671D3F000E58F7 /* AlertMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AlertMessages.swift; path = ../Health/Helper/AlertMessages.swift; sourceTree = "<group>"; };
+		DF257C0A2166438C002B858E /* KeyBoardHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KeyBoardHandler.swift; path = ../Health/Helper/KeyBoardHandler.swift; sourceTree = "<group>"; };
 		DFDFF675B8D1572080CFAEB7E1485B73 /* FIRAuthSerialTaskQueue.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRAuthSerialTaskQueue.m; path = Firebase/Auth/Source/FIRAuthSerialTaskQueue.m; sourceTree = "<group>"; };
 		E001DEB5444260F183E0E7CCFD558028 /* nanopb.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = nanopb.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E08F638854416BD701F2DA266BEFC1BB /* FTupleObjectNode.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FTupleObjectNode.m; path = Firebase/Database/Utilities/Tuples/FTupleObjectNode.m; sourceTree = "<group>"; };
@@ -1618,6 +1622,8 @@
 		7DB346D0F39D3F0E887471402A8071AB = {
 			isa = PBXGroup;
 			children = (
+				DF25198121671D3F000E58F7 /* AlertMessages.swift */,
+				DF257C0A2166438C002B858E /* KeyBoardHandler.swift */,
 				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
 				14B8B9B15ECBE87983FF987239AB2D7B /* Frameworks */,
 				A537FBCB55C3959A6A820349326C89E9 /* Pods */,
@@ -3144,6 +3150,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C13802C7B2D3F36C163D04831EE810FA /* FIRActionCodeSettings.m in Sources */,
+				DF257C0B2166438C002B858E /* KeyBoardHandler.swift in Sources */,
 				62193FF50B22AF53FA1BD798C0AD3446 /* FIRAdditionalUserInfo.m in Sources */,
 				81AFA658102B68D9DFADA4824A7B3F4E /* FIRAuth.m in Sources */,
 				C5CE7FA8C8EB3D8374E03A4DB5D3AA96 /* FIRAuthAPNSToken.m in Sources */,
@@ -3164,6 +3171,7 @@
 				842D22FB26A9A9D141FB4CDE1D8EBD5E /* FIRAuthProvider.m in Sources */,
 				1EE4395F25501DF7E3227841BD86989F /* FIRAuthRequestConfiguration.m in Sources */,
 				B18844AF1E64C595691A030FA318B199 /* FIRAuthSerialTaskQueue.m in Sources */,
+				DF25198221671D3F000E58F7 /* AlertMessages.swift in Sources */,
 				48E61A2081023A296DEAF24A154DB91E /* FIRAuthSettings.m in Sources */,
 				B145DD741979E142016844D494B0E07A /* FIRAuthTokenResult.m in Sources */,
 				8C4274992087D2362DB5F83E70C5DD84 /* FIRAuthURLPresenter.m in Sources */,

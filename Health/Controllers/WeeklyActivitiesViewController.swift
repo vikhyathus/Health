@@ -14,6 +14,7 @@ import ResearchKit
 
 class WeeklyActivitiesViewController: UIViewController {
     
+    @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
         let  alert = UIAlertController(title: "Permission", message: "We need to accesss you health repo", preferredStyle: UIAlertController.Style.alert)
@@ -28,6 +29,8 @@ class WeeklyActivitiesViewController: UIViewController {
         setUpNotification()
         createNotification()
         view.setGradientBackground(colorOne: Colors.blue, colorTwo: Colors.white)
+        tableView.delegate = self
+        tableView.dataSource = self
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -104,11 +107,11 @@ extension WeeklyActivitiesViewController: UNUserNotificationCenterDelegate, ORKT
     func taskViewController(_ taskViewController: ORKTaskViewController, didFinishWith reason: ORKTaskViewControllerFinishReason, error: Error?) {
         guard let results = taskViewController.result.results as? [ORKStepResult] else { return }
         let userID = Auth.auth().currentUser?.uid
-        var values = [String:String]()
+        var values = [String: String]()
         let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
         for stepResult: ORKStepResult in results {
             let stepResultCast = stepResult.results
-            for result in stepResultCast!  {
+            for result in stepResultCast! {
                 if let questionResult = result as? ORKQuestionResult {
                     if questionResult.isMember(of: ORKChoiceQuestionResult.self) {
                         if let choiceAnswers = questionResult.answer as? NSArray {

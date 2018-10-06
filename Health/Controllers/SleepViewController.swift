@@ -21,16 +21,26 @@ class SleepViewController: UIViewController {
     var startTime: Date!
     var endTime: Date!
     var time = 0
+    var sec: Int = 0
+    var min: Int = 0
+    var hour: Int = 0
     var sleepCount: Int = 0
+    var timeLabelString: String!
+    var hourStr: String!
+    var minStr: String!
+    var secStr: String!
+    var isStart = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(pauseWhenBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeGround), name: UIApplication.willEnterForegroundNotification, object: nil)
-        
+        startButton.layer.borderColor = Colors.orange.cgColor
+        startButton.setTitleColor(Colors.orange, for: .normal)
+        startButton.layer.borderWidth = 1.0
     }
     
-    @objc func pauseWhenBackground()  {
+    @objc func pauseWhenBackground() {
         timer.invalidate()
         let shared = UserDefaults.standard
         shared.set(Date(), forKey: "savedTime")
@@ -55,56 +65,78 @@ class SleepViewController: UIViewController {
     func getTimeDifference(savedData: Date) -> TimeInterval {
         
         let diff = Date().timeIntervalSince(savedData)
-
         return diff
     }
     
     @IBAction func startTapped(_ sender: Any) {
         
-        startButton.isEnabled = false
-        startButton.alpha = 0.4
-        startTime = Date()
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(action), userInfo: nil, repeats: true)
-    }
-    
-    @IBAction func stopTapped(_ sender: Any) {
-        
-        startButton.isEnabled = true
-        startButton.alpha = 1
-        timer.invalidate()
-        sleepCount  = time
-    }
-    
-    @IBAction func resetTapped(_ sender: UIButton) {
-        removeSavedData()
-        time = 0
-        timeLabel.text = "\(time)"
+        if !isStart {
+            startButton.setTitle("Stop", for: .normal)
+            startButton.backgroundColor = Colors.orange
+            startButton.setTitleColor(Colors.white, for: .normal)
+            startTime = Date()
+            timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(action), userInfo: nil, repeats: true)
+            isStart = !isStart
+        } else {
+            startButton.setTitle("Start", for: .normal)
+            startButton.backgroundColor = .white
+            startButton.setTitleColor(Colors.orange, for: .normal)
+            timer.invalidate()
+            sleepCount  = time
+            isStart = !isStart
+        }
     }
     
     @IBAction func cancelTapped(_ sender: Any) {
+        removeSavedData()
         dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func saveTapped(_ sender: Any) {
+    @IBAction private func saveTapped(_ sender: Any) {
     
         getPreviousSleepCount { pre in
-            self.sleepCount+=pre
+            self.sleepCount += pre
             self.updateDatabase(sleepCount: self.sleepCount)
         }
-        
         dismiss(animated: true, completion: nil)
     }
     
-    @objc func action()  {
-        time+=1
-        timeLabel.text = String(time)
+    @objc func action() {
+        
+        time += 1
+        sec += 1
+        if sec == 60 {
+            min += 1
+            sec = 0
+            if min == 60 {
+                hour += 1
+                min = 0
+            }
+        }
+        if String(sec).count == 1 {
+            secStr = "0\(sec)"
+        } else {
+            secStr = "\(sec)"
+        }
+        if String(hour).count == 1 {
+            hourStr = "0\(hour)"
+        } else {
+            hourStr = "\(hour)"
+        }
+        if String(min).count == 1 {
+            minStr = "0\(min)"
+        } else {
+            minStr = "\(min)"
+        }
+        timeLabelString = "\(hourStr!):\(minStr!):\(secStr!)"
+        timeLabel.text = timeLabelString
     }
     
     func getPreviousSleepCount(completion: @escaping (Int) -> Void) {
         
         var previousSleepDetail = 0
         let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users/pA7l0khhOVanqUHODOkjPMX08XG2/Activities/Sleep")
-        ref.child(Date.getKeyFromDate()).observeSingleEvent(of: .value) { (snapshot) in
+        ref.child(Date.getKeyFromDate()).observeSingleEvent(of: .value) { snapshot in
             
             guard let sleepDetails = snapshot.value as? NSDictionary else { print("error"); return }
             print(sleepDetails["duration"])
