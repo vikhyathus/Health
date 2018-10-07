@@ -30,6 +30,7 @@ class SleepViewController: UIViewController {
     var minStr: String!
     var secStr: String!
     var isStart = false
+    let goal = 200
     let shapeLayer = CAShapeLayer()
     let trackLayer = CAShapeLayer()
     
@@ -56,6 +57,48 @@ class SleepViewController: UIViewController {
         view.addSubview(percentageLabel)
         percentageLabel.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
         percentageLabel.center = view.center
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        updateUIwithPreviousData()
+    }
+    
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        updateUIwithPreviousData()
+//    }
+    
+    func updateUIwithPreviousData() {
+        
+        let userID = Auth.auth().currentUser?.uid
+        var previousSleepDetail = 0
+        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com")
+        
+        ref.child("Users").child(userID!).child("Activities").child("Sleep").observeSingleEvent(of: .value) { snapshot in
+            if snapshot.hasChild(Date.getKeyFromDate()) {
+                let snapshotData = snapshot.childSnapshot(forPath: Date.getKeyFromDate())
+                guard let sleepDetails = snapshotData.value as? NSDictionary else { print("error"); return }
+                print(sleepDetails["duration"])
+                previousSleepDetail = sleepDetails["duration"] as? Int ?? 0
+                print("Inside \(previousSleepDetail)")
+                self.sleepCount = previousSleepDetail
+                self.time = previousSleepDetail
+                self.sec = (Int(self.time) % 60)
+                self.min = (Int(self.time) / 60)
+                self.hour = (Int(self.time) / 3600)
+                let percent = CGFloat(self.sleepCount)/CGFloat(self.goal)
+                self.shapeLayer.strokeEnd = percent
+                self.percentageLabel.text = "\(Int(percent*100))%"
+                self.updateUI()
+                return
+            } else {
+                self.sleepCount = previousSleepDetail
+                return
+            }
+        }
+        return
+            print("Outside \(previousSleepDetail)")
     }
     
     func setUpProgressView() {
@@ -99,9 +142,10 @@ class SleepViewController: UIViewController {
         print(time)
         print(timeDiff)
         time += Int(timeDiff)
-        sec += (Int(time) % 60)
-        min += (Int(time) / 60)
-        hour += (Int(time) / 3600)
+        sec = (Int(time) % 60)
+        min = (Int(time) / 60)
+        hour = (Int(time) / 3600)
+        updateUI()
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(action), userInfo: nil, repeats: true)
     }
     
@@ -138,7 +182,7 @@ class SleepViewController: UIViewController {
     @IBAction private func saveTapped(_ sender: Any) {
     
         sleepCount = time
-        getPreviousSleepCount()
+        updateDatabase(sleepCount: sleepCount)
         dismiss(animated: true, completion: nil)
     }
     
@@ -146,9 +190,13 @@ class SleepViewController: UIViewController {
         
         var percent = 0.0
         time += 1
-        percent = Double(time)/60.0
+        percent = Double(time)/Double(goal)
         self.shapeLayer.strokeEnd = CGFloat(percent)
         self.percentageLabel.text = "\(Int(percent*100))%"
+        updateUI()
+    }
+    
+    func updateUI() {
         sec += 1
         if sec >= 60 {
             if sec == 60 {
