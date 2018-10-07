@@ -15,6 +15,7 @@ class ActivityListViewController: UIViewController {
     var didLoad: Bool = false
     let userID = Auth.auth().currentUser?.uid
     var iswalk = true
+    var activityIndicator: UIActivityIndicatorView!
     
     @IBOutlet weak var walkButtonView: UIView!
     @IBOutlet weak var sleepButtonView: UIView!
@@ -25,11 +26,28 @@ class ActivityListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setActivityIndicator()
+        activityIndicator.startAnimating()
         setUpViews()
         populateList(activity: "Walk", property: "steps")
         sort()
         tableView.delegate = self
         tableView.dataSource = self
+    }
+    
+    func setActivityIndicator() {
+        
+        activityIndicator = {
+            
+            let activity = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+            activity.center = view.center
+            activity.style = UIActivityIndicatorView.Style.gray
+            activity.center = view.center
+            activity.hidesWhenStopped = true
+            //activity.isHidden = true
+            return activity
+        }()
+        tableView.addSubview(activityIndicator)
     }
     
     func setUpViews() {
@@ -39,6 +57,7 @@ class ActivityListViewController: UIViewController {
         sleepButtonView.backgroundColor = Colors.orange
         headerView.backgroundColor = Colors.orange
         walkButtonView.backgroundColor = .white
+        tableView.backgroundColor = UIColor.clear
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -78,6 +97,7 @@ class ActivityListViewController: UIViewController {
             }
             self.sort()
             self.tableView.reloadData()
+            self.activityIndicator.stopAnimating()
         }
         sort()
         tableView.reloadData()

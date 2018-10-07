@@ -11,14 +11,14 @@ import UIKit
 class NewsCell: UITableViewCell {
 
     @IBOutlet weak var newsImage: UIImageView!
-    @IBOutlet weak var titleText: UITextView!
-    @IBOutlet weak var descriptionText: UITextView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
     
     
     func setUpCell(row: Article) {
         
         self.newsImage.downloadImage(from: row.urlToImage)
-        self.titleText.text = row.title
-        self.descriptionText.text = row.description
+        self.titleLabel.text = row.title
+        self.descriptionLabel.text = row.description
     }
 }

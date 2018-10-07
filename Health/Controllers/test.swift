@@ -22,11 +22,13 @@ class News: UIViewController {
         activityIndicator.backgroundColor = .white
         activityIndicator.isHidden = false
         fetchArticles()
+        tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+        tableView.estimatedRowHeight = 400
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.delegate = self
         tableView.dataSource = self
-        //activityIndicator.isHidden = true
-        //activityIndicator.stopAnimating()
         
+        //activityIndicator.stopAnimating()
     }
     
     func setActivityIndicator() {
@@ -37,6 +39,7 @@ class News: UIViewController {
             activity.center = view.center
             activity.style = UIActivityIndicatorView.Style.gray
             activity.center = view.center
+            activity.hidesWhenStopped = true
             //activity.isHidden = true
             return activity
         }()
@@ -75,6 +78,7 @@ class News: UIViewController {
                 }
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
+                    self.activityIndicator.stopAnimating()
                 }
             } catch let error {
                 print(error)
@@ -104,4 +108,5 @@ extension UIImageView {
         }
         task.resume()
     }
+    
 }

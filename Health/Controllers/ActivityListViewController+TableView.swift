@@ -20,12 +20,27 @@ extension ActivityListViewController: UITableViewDelegate, UITableViewDataSource
         var temp: String!
         if iswalk {
             temp = "Steps: \(row.steps)"
+            if row.steps >= 200 {
+                cell?.statusImage.tintColor = .green
+                cell?.statusImage.image = UIImage(named: "icons8-checkmark-96")
+            } else {
+                cell?.statusImage.tintColor = .red
+                cell?.statusImage.image = UIImage(named: "icons8-delete-96 copy")
+            }
         } else {
+            if row.steps >= 200 {
+                cell?.statusImage.tintColor = .green
+                cell?.statusImage.image = UIImage(named: "icons8-checkmark-96")
+            } else {
+                cell?.statusImage.tintColor = .red
+                cell?.statusImage.image = UIImage(named: "icons8-delete-96 copy")
+            }
             let hour = Double(row.steps)/3600
             temp = String(format: "Duration: %.2f hr", hour)
         }
         cell?.durationLabel.text = temp
-        
+        cell?.selectionStyle = .none
+        cell?.backgroundColor = UIColor.clear
         return cell!
     }
     
