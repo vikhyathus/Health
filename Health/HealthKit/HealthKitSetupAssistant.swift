@@ -28,11 +28,11 @@ class HealthKitSetupAssistant {
     }
     
    
-    let healthKitTypesToWrite: Set<HKSampleType> = [bodyMassIndex,
+     let healthKitTypesToWrite: Set<HKSampleType> = [bodyMassIndex,
                                                     activeEnergy,
                                                     HKObjectType.workoutType()]
     
-    let healthKitTypesToRead: Set<HKObjectType> = [dateOfBirth,
+     let healthKitTypesToRead: Set<HKObjectType> = [dateOfBirth,
                                                    bloodType,
                                                    biologicalSex,
                                                    bodyMassIndex,

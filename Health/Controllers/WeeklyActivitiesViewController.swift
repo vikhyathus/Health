@@ -15,15 +15,11 @@ import ResearchKit
 class WeeklyActivitiesViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        let  alert = UIAlertController(title: "Permission", message: "We need to accesss you health repo", preferredStyle: UIAlertController.Style.alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
-            self.authorizeHealthKit()
-        }))
         
-        alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
-        self.present(alert, animated: true, completion: nil)
+        accessHealthKit()
         
         UNUserNotificationCenter.current().delegate = self
         setUpNotification()
@@ -31,6 +27,50 @@ class WeeklyActivitiesViewController: UIViewController {
         view.setGradientBackground(colorOne: Colors.blue, colorTwo: Colors.white)
         tableView.delegate = self
         tableView.dataSource = self
+    }
+    
+    func accessHealthKit() {
+        
+        guard   let dateOfBirth = HKObjectType.characteristicType(forIdentifier: .dateOfBirth),
+            let bloodType = HKObjectType.characteristicType(forIdentifier: .bloodType),
+            let biologicalSex = HKObjectType.characteristicType(forIdentifier: .biologicalSex),
+            let bodyMassIndex = HKObjectType.quantityType(forIdentifier: .bodyMassIndex),
+            let height = HKObjectType.quantityType(forIdentifier: .height),
+            let bodyMass = HKObjectType.quantityType(forIdentifier: .bodyMass),
+            let activeEnergy = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned),
+            let stepCount = HKObjectType.quantityType(forIdentifier: .stepCount) else {
+                
+            return
+        }
+        let healthKitTypesToWrite: Set<HKSampleType> = [bodyMassIndex,
+                                                        activeEnergy,
+                                                        HKObjectType.workoutType()]
+        
+        let healthKitTypesToRead: Set<HKObjectType> = [dateOfBirth,
+                                                       bloodType,
+                                                       biologicalSex,
+                                                       bodyMassIndex,
+                                                       height,
+                                                       bodyMass,
+                                                       stepCount,
+                                                       HKObjectType.workoutType()]
+        
+        if #available(iOS 12.0, *) {
+            HKHealthStore().getRequestStatusForAuthorization(toShare: healthKitTypesToWrite, read: healthKitTypesToRead) { requestStatus, error in
+                print(requestStatus)
+                if requestStatus == .shouldRequest {
+                    let alert = UIAlertController(title: "Permission", message: "We need to accesss you health repo", preferredStyle: UIAlertController.Style.alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+                        self.authorizeHealthKit()
+                    }))
+                    
+                    alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }
+        } else {
+            // Fallback on earlier versions
+        }
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {

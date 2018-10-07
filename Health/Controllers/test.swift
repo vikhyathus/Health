@@ -13,12 +13,34 @@ class News: UIViewController {
     
     var newsArticles: [Article] = []
     @IBOutlet weak var tableView: UITableView!
+    var activityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setActivityIndicator()
+        activityIndicator.startAnimating()
+        activityIndicator.backgroundColor = .white
+        activityIndicator.isHidden = false
         fetchArticles()
         tableView.delegate = self
         tableView.dataSource = self
+        //activityIndicator.isHidden = true
+        //activityIndicator.stopAnimating()
+        
+    }
+    
+    func setActivityIndicator() {
+        
+        activityIndicator = {
+            
+            let activity = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+            activity.center = view.center
+            activity.style = UIActivityIndicatorView.Style.gray
+            activity.center = view.center
+            //activity.isHidden = true
+            return activity
+        }()
+        tableView.addSubview(activityIndicator)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -39,15 +61,14 @@ class News: UIViewController {
             
             //json serialisation
             do {
-                let json = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as? [String : AnyObject]
-                if let articles = json?["articles"] as? [[String : AnyObject]] {
+                let json = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as? [String: AnyObject]
+                if let articles = json?["articles"] as? [[String: AnyObject]] {
                     
                     for article in articles {
                         if let title = article["title"] as? String, let description = article["description"] as? String, let urlToImage = article["urlToImage"] as? String, let webUrl = article["url"] as? String {
                             print(urlToImage)
                             self.newsArticles.append(Article(title: title, description: description, urlToImage: urlToImage, url: webUrl))
-                        }
-                        else {
+                        } else {
                             print("error")
                         }
                     }
@@ -55,8 +76,7 @@ class News: UIViewController {
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
-            }
-            catch let error {
+            } catch let error {
                 print(error)
             }
         }

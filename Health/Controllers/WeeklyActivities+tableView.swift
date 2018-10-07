@@ -31,7 +31,7 @@ extension WeeklyActivitiesViewController: UITableViewDelegate, UITableViewDataSo
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.row == 0 {
-            let walk = storyboard?.instantiateViewController(withIdentifier: "WalkViewController") as? WalkViewController
+            let walk = storyboard?.instantiateViewController(withIdentifier: "TrackWalkViewController") as? TrackWalkViewController
             present(walk!, animated: true, completion: nil)
         } else {
             let sleep = storyboard?.instantiateViewController(withIdentifier: "SleepViewController") as? SleepViewController

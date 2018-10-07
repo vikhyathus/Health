@@ -65,7 +65,7 @@ class ActivityListViewController: UIViewController {
         
         activityList.removeAll()
         let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
-        ref.child(userID!).child("Activities").child(activity).observeSingleEvent(of: .value) { (snapshot) in
+        ref.child(userID!).child("Activities").child(activity).observeSingleEvent(of: .value) { snapshot in
             guard let days = snapshot.value as? NSDictionary else { self.tableView.reloadData(); return }
             
             for ( _, value) in days {
@@ -94,10 +94,11 @@ class ActivityListViewController: UIViewController {
         if iswalk {
             return
         }
+        activityList.removeAll()
         populateList(activity: "Walk", property: "steps")
-        iswalk = !iswalk
         walkButtonView.backgroundColor = .white
         sleepButtonView.backgroundColor = Colors.orange
+        iswalk = !iswalk
     }
     
     @IBAction func sleepButtonTapped(_ sender: Any) {
@@ -105,11 +106,10 @@ class ActivityListViewController: UIViewController {
         if !iswalk {
             return
         }
-        iswalk = !iswalk
+        activityList.removeAll()
         populateList(activity: "Sleep", property: "duration")
         sleepButtonView.backgroundColor = .white
         walkButtonView.backgroundColor = Colors.orange
+        iswalk = !iswalk
     }
-    
 }
-

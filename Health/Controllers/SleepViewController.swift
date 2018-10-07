@@ -30,14 +30,53 @@ class SleepViewController: UIViewController {
     var minStr: String!
     var secStr: String!
     var isStart = false
+    let shapeLayer = CAShapeLayer()
+    let trackLayer = CAShapeLayer()
+    
+    let percentageLabel: UILabel = {
+        
+        let label = UILabel()
+        label.text = "0%"
+        label.textColor = Colors.orange
+        label.textAlignment = .center
+        label.font = UIFont.boldSystemFont(ofSize: CGFloat(20))
+        
+        return label
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         NotificationCenter.default.addObserver(self, selector: #selector(pauseWhenBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeGround), name: UIApplication.willEnterForegroundNotification, object: nil)
         startButton.layer.borderColor = Colors.orange.cgColor
         startButton.setTitleColor(Colors.orange, for: .normal)
         startButton.layer.borderWidth = 1.0
+        setUpProgressView()
+        view.addSubview(percentageLabel)
+        percentageLabel.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+        percentageLabel.center = view.center
+    }
+    
+    func setUpProgressView() {
+        
+        let center = view.center
+        let circularPath = UIBezierPath(arcCenter: center, radius: 100, startAngle: -CGFloat.pi/2, endAngle: 3*CGFloat.pi/2, clockwise: true)
+        
+        
+        trackLayer.path = circularPath.cgPath
+        trackLayer.strokeColor = Colors.lightorange.cgColor
+        trackLayer.lineWidth = 10
+        trackLayer.fillColor = UIColor.clear.cgColor
+        
+        shapeLayer.path = circularPath.cgPath
+        shapeLayer.strokeColor = Colors.orange.cgColor
+        shapeLayer.lineWidth = 10
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.strokeEnd = 0
+        
+        view.layer.addSublayer(trackLayer)
+        view.layer.addSublayer(shapeLayer)
     }
     
     @objc func pauseWhenBackground() {
@@ -57,8 +96,12 @@ class SleepViewController: UIViewController {
     }
     
     func refresh(timeDiff: TimeInterval) {
+        print(time)
+        print(timeDiff)
         time += Int(timeDiff)
-        timeLabel.text = "\(time)"
+        sec += (Int(time) % 60)
+        min += (Int(time) / 60)
+        hour += (Int(time) / 3600)
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(action), userInfo: nil, repeats: true)
     }
     
@@ -94,19 +137,23 @@ class SleepViewController: UIViewController {
     
     @IBAction private func saveTapped(_ sender: Any) {
     
-        getPreviousSleepCount { pre in
-            self.sleepCount += pre
-            self.updateDatabase(sleepCount: self.sleepCount)
-        }
+        sleepCount = time
+        getPreviousSleepCount()
         dismiss(animated: true, completion: nil)
     }
     
     @objc func action() {
         
+        var percent = 0.0
         time += 1
+        percent = Double(time)/60.0
+        self.shapeLayer.strokeEnd = CGFloat(percent)
+        self.percentageLabel.text = "\(Int(percent*100))%"
         sec += 1
-        if sec == 60 {
-            min += 1
+        if sec >= 60 {
+            if sec == 60 {
+                min += 1
+            }
             sec = 0
             if min == 60 {
                 hour += 1
@@ -132,19 +179,28 @@ class SleepViewController: UIViewController {
         timeLabel.text = timeLabelString
     }
     
-    func getPreviousSleepCount(completion: @escaping (Int) -> Void) {
+    func getPreviousSleepCount() {
         
+        let userID = Auth.auth().currentUser?.uid
         var previousSleepDetail = 0
-        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users/pA7l0khhOVanqUHODOkjPMX08XG2/Activities/Sleep")
-        ref.child(Date.getKeyFromDate()).observeSingleEvent(of: .value) { snapshot in
-            
-            guard let sleepDetails = snapshot.value as? NSDictionary else { print("error"); return }
-            print(sleepDetails["duration"])
-            previousSleepDetail = sleepDetails["duration"] as? Int ?? 0
-            print("Inside \(previousSleepDetail)")
-            completion(previousSleepDetail)
+        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com")
+        
+        ref.child("Users").child(userID!).child("Activities").child("Sleep").observeSingleEvent(of: .value) { snapshot in
+            if snapshot.hasChild(Date.getKeyFromDate()) {
+                let snapshotData = snapshot.childSnapshot(forPath: Date.getKeyFromDate())
+                guard let sleepDetails = snapshotData.value as? NSDictionary else { print("error"); return }
+                print(sleepDetails["duration"])
+                previousSleepDetail = sleepDetails["duration"] as? Int ?? 0
+                print("Inside \(previousSleepDetail)")
+                self.sleepCount += previousSleepDetail
+                self.updateDatabase(sleepCount: self.sleepCount)
+                return
+            } else {
+                self.updateDatabase(sleepCount: self.sleepCount)
+                return
+            }
         }
-        completion(previousSleepDetail)
+        return
         print("Outside \(previousSleepDetail)")
     }
     
@@ -162,14 +218,13 @@ class SleepViewController: UIViewController {
         let key = Date.getKeyFromDate()
         
         let userReference = ref?.child("Users").child(uid!).child("Activities").child("Sleep").child(key)
-        let values = ["duration" : sleepCount, "date" : Date.dateToString(date: Date()), "steps" : 0] as [String : Any]
-        userReference?.updateChildValues(values, withCompletionBlock: { (error, ref) in
-            
+        let values = ["duration": sleepCount, "date": Date.dateToString(date: Date()), "steps": 0] as [String: Any]
+        
+        userReference?.updateChildValues(values, withCompletionBlock: { error, _ in
             if error != nil {
                 print(error?.localizedDescription)
             }
             print("saved successfully")
-            
         })
     }
     

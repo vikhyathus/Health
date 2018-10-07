@@ -17,6 +17,8 @@
 import UIKit
 import HealthKit
 import Firebase
+import NotificationCenter
+import UserNotifications
 
 class UserProfileViewController: UIViewController {
     
@@ -209,6 +211,7 @@ class UserProfileViewController: UIViewController {
     @IBAction func logoutTapped(_ sender: Any) {
         
             do {
+                UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
                 try? Auth.auth().signOut()
                 self.dismiss(animated: true, completion: nil)
             }

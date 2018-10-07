@@ -17,6 +17,8 @@ class TrackWalkViewController: UIViewController {
     @IBOutlet weak var stopButton: UIButton!
     @IBOutlet weak var resetButton: UIButton!
     @IBOutlet weak var doneButton: UIButton!
+    @IBOutlet weak var goalLabel: UILabel!
+    @IBOutlet weak var goalView: UIView!
     
     var ref: DatabaseReference?
     let activity = CMMotionActivityManager()
@@ -29,12 +31,87 @@ class TrackWalkViewController: UIViewController {
     var presentDistance: String!
     var stepCount: Int = 0
     var isStart: Bool = false
+    let shapeLayer = CAShapeLayer()
+    let trackLayer = CAShapeLayer()
+    let goal: Int = 200
+    
+    let percentageLabel: UILabel = {
+        
+        let label = UILabel()
+        label.text = "0%"
+        label.textColor = Colors.orange
+        label.textAlignment = .center
+        label.font = UIFont.boldSystemFont(ofSize: CGFloat(20))
+        
+        return label
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         //doneButton.backgroundColor = Colors.lightBlue
         startButton.layer.borderWidth = 1.0
         startButton.layer.borderColor = Colors.orange.cgColor
+        setUpProgressView()
+        view.addSubview(percentageLabel)
+        percentageLabel.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+        percentageLabel.center = view.center
+        goalLabel.layer.cornerRadius = 10.0
+        goalView.layer.cornerRadius = 10.0
+        //view.setGradientBackground(colorOne: Colors.blue, colorTwo: Colors.white)
+        updateUIwithWalkDetails()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateUIwithWalkDetails()
+    }
+    
+    func updateUIwithWalkDetails() {
+        
+        let userID = Auth.auth().currentUser?.uid
+        var previousWalkDetails = 0
+        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
+        ref.child(userID!).child("Activities").child("Walk").observeSingleEvent(of: .value) { (snapshot) in
+            
+            if snapshot.hasChild(Date.getKeyFromDate()) {
+                let snapshotData = snapshot.childSnapshot(forPath: Date.getKeyFromDate())
+                guard let sleepDetails = snapshotData.value as? NSDictionary else { print("error"); return }
+                print(sleepDetails["steps"])
+                previousWalkDetails = sleepDetails["steps"] as? Int ?? 0
+                print("Inside \(previousWalkDetails)")
+                self.timeLabel.text = String(previousWalkDetails)
+                self.stepCount = previousWalkDetails
+                let percent = CGFloat(previousWalkDetails)/CGFloat(self.goal)
+                self.shapeLayer.strokeEnd = CGFloat(percent)
+                self.percentageLabel.text = "\(Int(percent*100))%"
+                return
+            } else {
+                self.timeLabel.text = String(previousWalkDetails)
+                return
+            }
+        }
+        print("Outside \(previousWalkDetails)")
+        
+    }
+    
+    func setUpProgressView() {
+        
+        let center = view.center
+        let circularPath = UIBezierPath(arcCenter: center, radius: 100, startAngle: -CGFloat.pi/2, endAngle: 3*CGFloat.pi/2, clockwise: true)
+        
+        trackLayer.path = circularPath.cgPath
+        trackLayer.strokeColor = Colors.lightorange.cgColor
+        trackLayer.lineWidth = 10
+        trackLayer.fillColor = UIColor.clear.cgColor
+        
+        shapeLayer.path = circularPath.cgPath
+        shapeLayer.strokeColor = Colors.orange.cgColor
+        shapeLayer.lineWidth = 10
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.strokeEnd = 0
+        
+        view.layer.addSublayer(trackLayer)
+        view.layer.addSublayer(shapeLayer)
     }
     
     private func startTrackingActivityType() {
@@ -56,7 +133,6 @@ class TrackWalkViewController: UIViewController {
     }
     
     private func startCountingSteps() {
-        
         pedometer.startUpdates(from: Date()) {
             [weak self] pedometerData, error in
             guard let pedometerData = pedometerData, error == nil else {
@@ -64,7 +140,13 @@ class TrackWalkViewController: UIViewController {
                 return
             }
             DispatchQueue.main.async {
-                self?.timeLabel.text = pedometerData.numberOfSteps.stringValue
+                let str = pedometerData.numberOfSteps.stringValue
+                if let steps = Int(str) {
+                    self?.timeLabel.text = "\(steps + self!.stepCount)"
+                    let percent = CGFloat(steps + self!.stepCount)/CGFloat(self!.goal)
+                    self?.shapeLayer.strokeEnd = CGFloat(percent)
+                    self?.percentageLabel.text = "\(Int(percent*100))%"
+                }
             }
         }
     }
@@ -100,13 +182,6 @@ class TrackWalkViewController: UIViewController {
         }
     }
     
-    @IBAction func stopButtonTapped(_ sender: Any) {
-        //endTime = Date()
-        //timer.invalidate()
-
-        print(stepCount)
-    }
-    
     @IBAction func resetButtonTapped(_ sender: Any) {
         timer.invalidate()
         time = 0
@@ -128,24 +203,32 @@ class TrackWalkViewController: UIViewController {
     
     @IBAction func doneButtonTapped(_ sender: Any) {
         
-        getPreviousWalkCount { (pre) in
-            
-            self.stepCount+=pre
-            self.updateDatabase(stepCount: self.stepCount)
-        }
+        stepCount = Int(timeLabel.text!)!
+        updateDatabase(stepCount: stepCount)
+        //getPreviousWalkCount()
         dismiss(animated: true, completion: nil)
     }
     
-    func getPreviousWalkCount(completion: @escaping (Int) -> Void) {
+    func getPreviousWalkCount() {
         
+        let userID = Auth.auth().currentUser?.uid
         var previousWalkDetails = 0
-        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users/pA7l0khhOVanqUHODOkjPMX08XG2/Activities/Walk")
-        ref.child(Date.getKeyFromDate()).observeSingleEvent(of: .value) { (snapshot) in
+        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
+        ref.child(userID!).child("Activities").child("Walk").observeSingleEvent(of: .value) { (snapshot) in
             
-            guard let walkDetails = snapshot.value as? NSDictionary else { print("error"); return }
-            previousWalkDetails = walkDetails["steps"] as? Int ?? 0
-            print(previousWalkDetails)
-            completion(previousWalkDetails)
+            if snapshot.hasChild(Date.getKeyFromDate()) {
+                let snapshotData = snapshot.childSnapshot(forPath: Date.getKeyFromDate())
+                guard let sleepDetails = snapshotData.value as? NSDictionary else { print("error"); return }
+                print(sleepDetails["steps"])
+                previousWalkDetails = sleepDetails["steps"] as? Int ?? 0
+                print("Inside \(previousWalkDetails)")
+                self.stepCount += previousWalkDetails
+                self.updateDatabase(stepCount: self.stepCount)
+                return
+            } else {
+                self.updateDatabase(stepCount: self.stepCount)
+                return
+            }
         }
         print("Outside \(previousWalkDetails)")
     }
@@ -157,9 +240,9 @@ class TrackWalkViewController: UIViewController {
         let key = Date.getKeyFromDate()
         
         let userReference = ref?.child("Users").child(uid!).child("Activities").child("Walk").child(key)
-        let values = ["duration" : 0, "date" : Date.dateToString(date: Date()), "steps": stepCount] as [String: Any]
-        userReference?.updateChildValues(values, withCompletionBlock: { (error, ref) in
-            
+        let values = ["duration": 0, "date": Date.dateToString(date: Date()), "steps": stepCount] as [String: Any]
+        
+        userReference?.updateChildValues(values, withCompletionBlock: { error, _ in
             if error != nil {
                 print(error?.localizedDescription)
             }

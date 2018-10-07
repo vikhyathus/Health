@@ -230,6 +230,7 @@
 			children = (
 				DF386AF0215377550024814C /* Health.entitlements */,
 				DF869DCA215A7CBA006C10E5 /* HealthKit */,
+				DF869DC3215A3A30006C10E5 /* View */,
 				DF88E61D2154B2EE0086AFBE /* Model */,
 				DF88E6222154B9370086AFBE /* Controllers */,
 				DF0DB37F215D01F600201425 /* Helper */,
@@ -329,7 +330,6 @@
 				DF0DB3AA215E0E4900201425 /* News+TableView.swift */,
 				DF0DB3AC215E2D3300201425 /* WebViewController.swift */,
 				DF88E65621551CB50086AFBE /* MyWeekViewController.swift */,
-				DF869DC3215A3A30006C10E5 /* View */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";

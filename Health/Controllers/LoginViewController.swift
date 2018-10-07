@@ -31,7 +31,7 @@ class LoginViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(textDidChange(_:)), name: UITextField.textDidChangeNotification, object: nil)
     }
     
-    @IBAction func signInButtonTapped(_ sender: Any) {
+    @IBAction private func signInButtonTapped(_ sender: Any) {
         activityIndicator.startAnimating()
         activityIndicator.isHidden = false
         guard let user = userName.text, let password = passwordField.text else {

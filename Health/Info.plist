@@ -27,7 +27,7 @@
 	<key>NSHealthUpdateUsageDescription</key>
 	<string>We will use your health information to track your Prancercise workouts better</string>
 	<key>NSMotionUsageDescription</key>
-	<string>In order to count steps I need an access to your pedometer</string>
+	<string>In order to count steps I need access to your pedometer</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
