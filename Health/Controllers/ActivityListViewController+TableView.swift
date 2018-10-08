@@ -27,6 +27,8 @@ extension ActivityListViewController: UITableViewDelegate, UITableViewDataSource
                 cell?.statusImage.tintColor = .red
                 cell?.statusImage.image = UIImage(named: "icons8-delete-96 copy")
             }
+                 cell?.durationLabel.text = temp
+            
         } else {
             if row.steps >= 200 {
                 cell?.statusImage.tintColor = .green
@@ -35,10 +37,12 @@ extension ActivityListViewController: UITableViewDelegate, UITableViewDataSource
                 cell?.statusImage.tintColor = .red
                 cell?.statusImage.image = UIImage(named: "icons8-delete-96 copy")
             }
-            let hour = Double(row.steps)/3600
-            temp = String(format: "Duration: %.2f hr", hour)
+            let hour = row.steps / 3600
+            let minutes = row.steps / 60
+            let seconds = row.steps % 60
+            temp = "\(hour)h : \(minutes)min : \(seconds)sec"
+                cell?.durationLabel.text = temp
         }
-        cell?.durationLabel.text = temp
         cell?.selectionStyle = .none
         cell?.backgroundColor = UIColor.clear
         return cell!

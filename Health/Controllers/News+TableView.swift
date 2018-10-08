@@ -15,24 +15,22 @@ extension News: UITableViewDelegate, UITableViewDataSource {
         return newsArticles.count
     }
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 5
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let row = newsArticles[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCell") as? NewsCell
+        cell?.setUpCell(row: row)
         cell?.setNeedsUpdateConstraints()
         cell?.updateConstraints()
-        cell?.setUpCell(row: row)
-        
+        //cell?.selectionStyle = .gray
+        //cell?.focusStyle = .custom
+        cell?.separatorInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         return cell!
     }
-    
-////    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-////        return UITableView.automaticDimension
-////    }
-//    
-//    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 300
-//    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         

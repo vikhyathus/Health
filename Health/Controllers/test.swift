@@ -22,7 +22,8 @@ class News: UIViewController {
         activityIndicator.backgroundColor = .white
         activityIndicator.isHidden = false
         fetchArticles()
-        tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+        tableView.separatorStyle = .singleLine
+        tableView.separatorColor = Colors.lightBlue
         tableView.estimatedRowHeight = 400
         tableView.rowHeight = UITableView.automaticDimension
         tableView.delegate = self

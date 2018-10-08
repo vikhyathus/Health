@@ -205,6 +205,7 @@ class TrackWalkViewController: UIViewController {
         
         stepCount = Int(timeLabel.text!)!
         updateDatabase(stepCount: stepCount)
+        ProfileDataStore.saveStepCountSample(steps: stepCount, date: Date())
         //getPreviousWalkCount()
         dismiss(animated: true, completion: nil)
     }

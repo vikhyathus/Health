@@ -22,12 +22,14 @@ import UserNotifications
 
 class UserProfileViewController: UIViewController {
     
-    
     var userDetails: [[String]] = []
     var physicalData: [String] = []
     var sampleTypes: [String] = []
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var emailLabel: UILabel!
+    @IBOutlet weak var NameLabel: UILabel!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     var tableLabels = [ ["Age", "Gender", "Blood Type"], ["Weight", "Height", "BMI"]]
     let userHealthProfile = UserHealthProfile()
@@ -48,7 +50,10 @@ class UserProfileViewController: UIViewController {
         super.viewDidLoad()
         tableView.separatorStyle = .none
         updateHealthInfo()
+        activityIndicator.startAnimating()
         print(userDetails)
+        activityIndicator.hidesWhenStopped = true
+        getUserNameEmail()
         tableView.delegate = self
         tableView.dataSource = self
     }
@@ -57,6 +62,29 @@ class UserProfileViewController: UIViewController {
         super.viewDidAppear(animated)
         //updateHealthInfo()
     
+    }
+    
+    func getUserNameEmail() {
+        
+        let userId = Auth.auth().currentUser?.uid
+        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
+        ref.child(userId!).observeSingleEvent(of: .value) { (snapshot) in
+            
+            guard let dataSnap = snapshot.value as? NSDictionary else {
+                print("error fetching")
+                return
+            }
+            guard let email = dataSnap.value(forKey: "email") as? String,
+                let name = dataSnap.value(forKey: "name") as? String else {
+                    self.activityIndicator.stopAnimating()
+                    self.emailLabel.text = "Not available"
+                    self.NameLabel.text = "Not available"
+                    return
+            }
+            self.activityIndicator.stopAnimating()
+            self.emailLabel.text = email
+            self.NameLabel.text = name
+        }
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {

@@ -1012,7 +1012,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T6N-jF-Ga5">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="250"/>
                                 <subviews>
                                     <navigationBar contentMode="scaleToFill" fixedFrame="YES" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XxB-Hd-vSB">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
@@ -1033,14 +1033,36 @@
                                             </navigationItem>
                                         </items>
                                     </navigationBar>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="uvn-sW-h3M">
+                                        <rect key="frame" x="187.5" y="121" width="0.0" height="8"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JIi-ge-3yf">
+                                                <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="20"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nqq-pa-bts">
+                                                <rect key="frame" x="0.0" y="8" width="0.0" height="0.0"/>
+                                                <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="17"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="XcJ-Qd-Wvk">
+                                        <rect key="frame" x="177" y="115" width="20" height="20"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </activityIndicatorView>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="200" id="kPf-cX-GZu"/>
+                                    <constraint firstItem="uvn-sW-h3M" firstAttribute="centerX" secondItem="T6N-jF-Ga5" secondAttribute="centerX" id="MY7-Hv-G6Q"/>
+                                    <constraint firstAttribute="height" constant="250" id="kPf-cX-GZu"/>
+                                    <constraint firstItem="uvn-sW-h3M" firstAttribute="centerY" secondItem="T6N-jF-Ga5" secondAttribute="centerY" id="mpA-bX-Gtv"/>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ibQ-4I-mPC">
-                                <rect key="frame" x="0.0" y="200" width="375" height="418"/>
+                                <rect key="frame" x="0.0" y="250" width="375" height="368"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -1103,12 +1125,15 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Profile" image="Profile" id="cJP-G9-3dc"/>
                     <connections>
+                        <outlet property="NameLabel" destination="Nqq-pa-bts" id="QPN-hO-uHv"/>
+                        <outlet property="activityIndicator" destination="XcJ-Qd-Wvk" id="Fst-tK-2dm"/>
+                        <outlet property="emailLabel" destination="JIi-ge-3yf" id="pWs-fp-0PP"/>
                         <outlet property="tableView" destination="ibQ-4I-mPC" id="efv-VF-g8J"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rrk-a1-BUm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-8276" y="-3769"/>
+            <point key="canvasLocation" x="-8479" y="-3784"/>
         </scene>
         <!--Track Walk View Controller-->
         <scene sceneID="DuX-lp-bpw">
@@ -1148,7 +1173,7 @@
                                                 <rect key="frame" x="0.0" y="45" width="335" height="35"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l8T-ju-4kb">
-                                                        <rect key="frame" x="0.0" y="0.0" width="105" height="35"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="162.5" height="35"/>
                                                         <color key="backgroundColor" red="0.30106731180000001" green="0.84825199559999998" blue="0.97309248100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <state key="normal" title="Save">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1157,18 +1182,8 @@
                                                             <action selector="doneButtonTapped:" destination="VeM-aR-5tB" eventType="touchUpInside" id="pIO-Xz-CWB"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="11V-1b-jua">
-                                                        <rect key="frame" x="115" y="0.0" width="105" height="35"/>
-                                                        <color key="backgroundColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <state key="normal" title="Reset">
-                                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="resetButtonTapped:" destination="VeM-aR-5tB" eventType="touchUpInside" id="OeS-xr-7za"/>
-                                                        </connections>
-                                                    </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N3w-s3-VJk">
-                                                        <rect key="frame" x="230" y="0.0" width="105" height="35"/>
+                                                        <rect key="frame" x="172.5" y="0.0" width="162.5" height="35"/>
                                                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="17"/>
                                                         <state key="normal" title="Cancel">
@@ -1221,7 +1236,7 @@
                             <view alpha="0.55000000000000004" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l29-bL-E4A">
                                 <rect key="frame" x="20" y="457" width="335" height="100"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Goal : 2000 steps" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NIx-OR-bTm">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Goal : 200 steps" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NIx-OR-bTm">
                                         <rect key="frame" x="0.0" y="0.0" width="335" height="100"/>
                                         <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="30"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1269,7 +1284,6 @@
                         <outlet property="doneButton" destination="l8T-ju-4kb" id="szJ-Qz-7Zd"/>
                         <outlet property="goalLabel" destination="NIx-OR-bTm" id="VCK-58-zd8"/>
                         <outlet property="goalView" destination="l29-bL-E4A" id="FPE-7Y-rnj"/>
-                        <outlet property="resetButton" destination="11V-1b-jua" id="ykc-jN-frG"/>
                         <outlet property="startButton" destination="aAQ-yZ-cka" id="wkw-iH-rDr"/>
                         <outlet property="timeLabel" destination="bOw-0k-F9l" id="wcc-pr-p1r"/>
                     </connections>

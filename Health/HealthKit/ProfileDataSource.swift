@@ -47,7 +47,7 @@ class ProfileDataStore {
         let sampleQuery = HKSampleQuery(sampleType: sampleType,
                                         predicate: mostRecentPredicate,
                                         limit: limit,
-                                        sortDescriptors: [sortDescriptor]) { (query, samples, error) in
+                                        sortDescriptors: [sortDescriptor]) { _, samples, error in
                                             
                                             DispatchQueue.main.async {
                                                 
@@ -79,7 +79,30 @@ class ProfileDataStore {
                                                    start: date,
                                                    end: date)
         
-        HKHealthStore().save(bodyMassIndexSample) { (success, error) in
+        HKHealthStore().save(bodyMassIndexSample) { _, error in
+            
+            if let error = error {
+                print("Error Saving BMI Sample: \(error.localizedDescription)")
+            } else {
+                print("Successfully saved BMI Sample")
+            }
+        }
+    }
+    
+    class func saveStepCountSample(steps: Int, date: Date) {
+        
+        guard let stepCount = HKQuantityType.quantityType(forIdentifier: .stepCount) else {
+            fatalError("Body Mass Index Type is no longer available in HealthKit")
+        }
+        
+        let stepQuantity = HKQuantity(unit: HKUnit.count(), doubleValue: Double(steps))
+        
+        let stepCountSample = HKQuantitySample(type: stepCount,
+                                               quantity: stepQuantity,
+                                               start: date,
+                                               end: date)
+        
+        HKHealthStore().save(stepCountSample) { _, error in
             
             if let error = error {
                 print("Error Saving BMI Sample: \(error.localizedDescription)")
@@ -89,5 +112,3 @@ class ProfileDataStore {
         }
     }
 }
-
-
