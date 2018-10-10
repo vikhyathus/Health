@@ -15,9 +15,9 @@ class ProfileDataStore {
             let healthKitStore = HKHealthStore()
             
             do {
-                let birthdayComponents =  try healthKitStore.dateOfBirthComponents()
-                let biologicalSex =       try healthKitStore.biologicalSex()
-                let bloodType =           try healthKitStore.bloodType()
+                let birthdayComponents = try healthKitStore.dateOfBirthComponents()
+                let biologicalSex = try healthKitStore.biologicalSex()
+                let bloodType = try healthKitStore.bloodType()
                 
                 let today = Date()
                 let calendar = Calendar.current
@@ -105,9 +105,9 @@ class ProfileDataStore {
         HKHealthStore().save(stepCountSample) { _, error in
             
             if let error = error {
-                print("Error Saving BMI Sample: \(error.localizedDescription)")
+                print("Error Saving steps: \(error.localizedDescription)")
             } else {
-                print("Successfully saved BMI Sample")
+                print("Successfully saved stepcount")
             }
         }
     }

@@ -8,7 +8,3 @@
 
 import Foundation
 import Firebase
-
-//class FireBaseHelper {
-//    
-//}

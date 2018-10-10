@@ -27,7 +27,6 @@ class ActivityListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setActivityIndicator()
-        activityIndicator.startAnimating()
         setUpViews()
         populateList(activity: "Walk", property: "steps")
         sort()
@@ -82,11 +81,13 @@ class ActivityListViewController: UIViewController {
     
     func populateList(activity: String, property: String) {
         
+        var isInside: Bool = false
         activityList.removeAll()
         let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
         ref.child(userID!).child("Activities").child(activity).observeSingleEvent(of: .value) { snapshot in
+            isInside = true
             guard let days = snapshot.value as? NSDictionary else { self.tableView.reloadData(); return }
-            
+            self.activityIndicator.startAnimating()
             for ( _, value) in days {
                 
                 guard let walkDetails = value as? NSDictionary,
@@ -96,8 +97,9 @@ class ActivityListViewController: UIViewController {
                 self.activityList.append(WalkSleep(duration: 0, steps: propertyTemp, date: date))
             }
             self.sort()
+            self.view.isUserInteractionEnabled = true
             self.tableView.reloadData()
-            self.activityIndicator.stopAnimating()
+
         }
         sort()
         tableView.reloadData()
@@ -114,6 +116,7 @@ class ActivityListViewController: UIViewController {
         if iswalk {
             return
         }
+        view.isUserInteractionEnabled = false
         activityList.removeAll()
         populateList(activity: "Walk", property: "steps")
         walkButtonView.backgroundColor = .white
@@ -126,6 +129,7 @@ class ActivityListViewController: UIViewController {
         if !iswalk {
             return
         }
+        view.isUserInteractionEnabled = false
         activityList.removeAll()
         populateList(activity: "Sleep", property: "duration")
         sleepButtonView.backgroundColor = .white

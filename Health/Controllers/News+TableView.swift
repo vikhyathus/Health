@@ -23,6 +23,9 @@ extension News: UITableViewDelegate, UITableViewDataSource {
         
         let row = newsArticles[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCell") as? NewsCell
+        if isError {
+            cell?.imageView?.image = UIImage(data: imageData[indexPath.row] as Data)
+        }
         cell?.setUpCell(row: row)
         cell?.setNeedsUpdateConstraints()
         cell?.updateConstraints()

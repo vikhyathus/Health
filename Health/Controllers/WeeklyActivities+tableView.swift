@@ -19,10 +19,10 @@ extension WeeklyActivitiesViewController: UITableViewDelegate, UITableViewDataSo
         let cell = tableView.dequeueReusableCell(withIdentifier: "TasksIdentifierCell") as? TasksIdentifierCell
         if indexPath.row == 0 {
             cell?.taskLabel.text = "Walk Tracker"
-            cell?.imageView?.image = UIImage(named: "icons8-walking-96")
+            cell?.imageView?.image = UIImage(named: "group6")
         } else {
             cell?.taskLabel.text = "Sleep Tracker"
-            cell?.imageView?.image = UIImage(named: "icons8-sleep-96")
+            cell?.imageView?.image = UIImage(named: "group11")
         }
         cell?.selectionStyle = .none
         return cell!
@@ -37,6 +37,10 @@ extension WeeklyActivitiesViewController: UITableViewDelegate, UITableViewDataSo
             let sleep = storyboard?.instantiateViewController(withIdentifier: "SleepViewController") as? SleepViewController
             present(sleep!, animated: true, completion: nil)
         }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return (view.frame.height - headerView.frame.height) / 2
     }
     
 }

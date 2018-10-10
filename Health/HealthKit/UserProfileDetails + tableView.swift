@@ -41,7 +41,8 @@ extension UserProfileViewController: UITableViewDelegate, UITableViewDataSource 
         } else {
             label.text = "PHYSICAL DETAIL"
         }
-        label.backgroundColor = Colors.lightBlue
+
+        label.backgroundColor = Colors.orange
         label.textAlignment = .center
         label.textColor = .white
         

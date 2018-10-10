@@ -61,7 +61,6 @@ class UserProfileViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         //updateHealthInfo()
-    
     }
     
     func getUserNameEmail() {
@@ -108,6 +107,7 @@ class UserProfileViewController: UIViewController {
             userHealthProfile.bloodType = userAgeSexAndBloodType.bloodType
             updateLabels()
         } catch let error {
+            sampleTypes = ["unknown", "unknown", "unknown"]
             self.displayAlert(for: error)
             print("From load age sex and blood")
         }
@@ -117,14 +117,20 @@ class UserProfileViewController: UIViewController {
         
         if let age = userHealthProfile.age {
             sampleTypes.append("\(age)")
+        } else {
+            sampleTypes.append("Not available")
         }
         
         if let biologicalSex = userHealthProfile.biologicalSex {
             sampleTypes.append(biologicalSex.stringRepresentation)
+        } else {
+            sampleTypes.append("Not available")
         }
         
         if let bloodType = userHealthProfile.bloodType {
             sampleTypes.append(bloodType.stringRepresentation)
+        } else {
+            sampleTypes.append("Not available")
         }
     }
     
@@ -161,9 +167,26 @@ class UserProfileViewController: UIViewController {
                 
                 if let error = error {
                     self.displayAlert(for: error)
+                    self.physicalData.append("Not available")
                     print("From height")
+                    if self.physicalData.count == 2 {
+                        self.saveBodyMassIndexToHealthKit()
+                        //let bmi = String(format: "%.2f", self.userHealthProfile.bodyMassIndex!)
+                        //self.physicalData.append(bmi)
+                        self.userDetails.append(self.physicalData)
+                        self.tableView.reloadData()
+                        return
+                    }
                 }
-                
+                self.physicalData.append("Not available")
+                if self.physicalData.count == 2 {
+                    self.saveBodyMassIndexToHealthKit()
+                    //let bmi = String(format: "%.2f", self.userHealthProfile.bodyMassIndex!)
+                    //self.physicalData.append(bmi)
+                    self.userDetails.append(self.physicalData)
+                    self.tableView.reloadData()
+                    return
+                }
                 return
             }
             
@@ -174,8 +197,12 @@ class UserProfileViewController: UIViewController {
             self.physicalData.append(String(format: "%.2f m", heightInMeters))
             if self.physicalData.count == 2 {
                 self.saveBodyMassIndexToHealthKit()
-                let bmi = String(format: "%.2f", self.userHealthProfile.bodyMassIndex!)
-                self.physicalData.append(bmi)
+                if let bmi = self.userHealthProfile.bodyMassIndex {
+                    let bmi2 = String(format: "%.2f", bmi)
+                    self.physicalData.append(bmi2)
+                } else {
+                     self.physicalData.append("Unknown")
+                }
                 self.userDetails.append(self.physicalData)
                 self.tableView.reloadData()
             }
@@ -195,6 +222,24 @@ class UserProfileViewController: UIViewController {
                 if let error = error {
                     self.displayAlert(for: error)
                     print("From weight")
+                    self.physicalData.append("Not available")
+                    if self.physicalData.count == 2 {
+                        self.saveBodyMassIndexToHealthKit()
+                        //let bmi = String(format: "%.2f", self.userHealthProfile.bodyMassIndex!)
+                        //self.physicalData.append(bmi)
+                        self.userDetails.append(self.physicalData)
+                        self.tableView.reloadData()
+                        return
+                    }
+                }
+                self.physicalData.append("Not available")
+                if self.physicalData.count == 2 {
+                    self.saveBodyMassIndexToHealthKit()
+                    //let bmi = String(format: "%.2f", self.userHealthProfile.bodyMassIndex!)
+                    //self.physicalData.append(bmi)
+                    self.userDetails.append(self.physicalData)
+                    self.tableView.reloadData()
+                    return
                 }
                 return
             }
@@ -204,8 +249,12 @@ class UserProfileViewController: UIViewController {
             self.physicalData.append(String(format: "%.2f kg", weightInKilograms))
             if self.physicalData.count == 2 {
                 self.saveBodyMassIndexToHealthKit()
-                let bmi = String(format: "%.2f", self.userHealthProfile.bodyMassIndex!)
-                self.physicalData.append(bmi)
+                if let bmi = self.userHealthProfile.bodyMassIndex {
+                    let bmi2 = String(format: "%.2f", bmi)
+                    self.physicalData.append(bmi2)
+                } else {
+                    self.physicalData.append("Unknown")
+                }
                 self.userDetails.append(self.physicalData)
                 self.tableView.reloadData()
             }
@@ -215,7 +264,8 @@ class UserProfileViewController: UIViewController {
     private func saveBodyMassIndexToHealthKit() {
         
         guard let bodyMassIndex = userHealthProfile.bodyMassIndex else {
-            displayAlert(for: ProfileDataError.missingBodyMassIndex)
+            //self.physicalData.append("Not available")
+            //displayAlert(for: ProfileDataError.missingBodyMassIndex)
             return
         }
         ProfileDataStore.saveBodyMassIndexSample(bodyMassIndex: bodyMassIndex,

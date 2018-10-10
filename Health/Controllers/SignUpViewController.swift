@@ -94,16 +94,27 @@ extension SignUpViewController: ORKTaskViewControllerDelegate {
                     taskViewController.dismiss(animated: true, completion: nil)
                     return
                 }
-                let signatureDoc = signatureResult?.first?.signature
-                print(signatureDoc)
-                signUpTheUser()
+                signUpTheUser {
+                    let userID = Auth.auth().currentUser?.uid
+                    signatureResult?.first?.apply(to: ConsentDocument)
+                    ConsentDocument.makePDF { data, error in
+                        let storageRef = Storage.storage().reference()
+                        let consentDocRef = storageRef.child("consentDocs")
+                        let userDoc = consentDocRef.child("\(String(describing: userID)).pdf").putData(data!, metadata: nil, completion: { (metadata, error) in
+                                guard metadata != nil else {
+                                print(error)
+                                return
+                            }
+                            print("Saved")
+                        })
+                    }
+                }
             }
-         
         }
         taskViewController.dismiss(animated: true, completion: nil)
     }
     
-    func signUpTheUser() {
+    func signUpTheUser(completion: @escaping () -> ()) {
         
         guard let email = emailField.text, let pass = passwordField.text, let name = nameField.text else {
             print("Not all the fields are filled!")
@@ -134,6 +145,8 @@ extension SignUpViewController: ORKTaskViewControllerDelegate {
                     return
                 }
                 print("saved user sucessfully")
+                completion()
+                return
             })
         }
     }

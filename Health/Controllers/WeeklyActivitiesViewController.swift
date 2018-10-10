@@ -15,11 +15,15 @@ import ResearchKit
 class WeeklyActivitiesViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var pageControl: UIPageControl!
+    @IBOutlet weak var headerView: UIView!
+    
+    let shapeLayer = CAShapeLayer()
+    let trackLayer = CAShapeLayer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        accessHealthKit()
         
         UNUserNotificationCenter.current().delegate = self
         setUpNotification()
@@ -29,6 +33,15 @@ class WeeklyActivitiesViewController: UIViewController {
         tableView.dataSource = self
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        collectionView.reloadData()
+        accessHealthKit()
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     func accessHealthKit() {
         
         guard   let dateOfBirth = HKObjectType.characteristicType(forIdentifier: .dateOfBirth),
@@ -44,6 +57,7 @@ class WeeklyActivitiesViewController: UIViewController {
         }
         let healthKitTypesToWrite: Set<HKSampleType> = [bodyMassIndex,
                                                         activeEnergy,
+                                                        stepCount,
                                                         HKObjectType.workoutType()]
         
         let healthKitTypesToRead: Set<HKObjectType> = [dateOfBirth,
@@ -55,7 +69,7 @@ class WeeklyActivitiesViewController: UIViewController {
                                                        stepCount,
                                                        HKObjectType.workoutType()]
         
-        if #available(iOS 12.0, *) {
+        /*if #available(iOS 12.0, *) {
             HKHealthStore().getRequestStatusForAuthorization(toShare: healthKitTypesToWrite, read: healthKitTypesToRead) { requestStatus, error in
                 print(requestStatus)
                 if requestStatus == .shouldRequest {
@@ -68,14 +82,16 @@ class WeeklyActivitiesViewController: UIViewController {
                     self.present(alert, animated: true, completion: nil)
                 }
             }
-        } else {
-            // Fallback on earlier versions
+        } else {*/
+            HKHealthStore().requestAuthorization(toShare: healthKitTypesToWrite, read: healthKitTypesToRead) { (status, error) in
+                print(error)
+            //}
         }
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
+//    override var preferredStatusBarStyle: UIStatusBarStyle {
+//        return .lightContent
+//    }
 
     func setUpNotification() {
         
@@ -185,4 +201,34 @@ extension WeeklyActivitiesViewController: UNUserNotificationCenterDelegate, ORKT
         taskViewController.delegate = self
         present(taskViewController, animated: true, completion: nil)
     }
+}
+
+// MARK: - UICollectionViewDelegate, UICollectionViewDataSource
+extension WeeklyActivitiesViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 2
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeScreenCVCell", for: indexPath) as? HomeScreenCVCell
+        
+        if indexPath.row == 0 {
+           cell?.setUpCellForSteps()
+        } else {
+            cell?.setUpCellForSleep()
+        }
+        return cell!
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let contentOffset = scrollView.contentOffset.x
+        if contentOffset < UIScreen.main.bounds.width {
+            pageControl.currentPage = 0
+        } else {
+            pageControl.currentPage = 1
+        }
+        print(contentOffset)
+    }
+    
 }

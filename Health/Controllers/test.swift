@@ -12,6 +12,8 @@ import UIKit
 class News: UIViewController {
     
     var newsArticles: [Article] = []
+    var imageData: [NSData] = []
+    var isError:Bool = false
     @IBOutlet weak var tableView: UITableView!
     var activityIndicator: UIActivityIndicatorView!
     
@@ -28,8 +30,6 @@ class News: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.delegate = self
         tableView.dataSource = self
-        
-        //activityIndicator.stopAnimating()
     }
     
     func setActivityIndicator() {
@@ -59,7 +59,11 @@ class News: UIViewController {
         let task = session.dataTask(with: newsUrl) { (data,response,error) in
             
             if error != nil {
+                self.isError = true
                 print(error?.localizedDescription)
+                //self.populateFromCoreData()
+                //self.tableView.reloadData()
+                //self.isError = false
                 return
             }
             
@@ -77,6 +81,7 @@ class News: UIViewController {
                         }
                     }
                 }
+                //self.addToCoreData()
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                     self.activityIndicator.stopAnimating()
