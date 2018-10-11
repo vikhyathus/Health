@@ -16,6 +16,7 @@ class SleepViewController: UIViewController {
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var stopButton: UIButton!
     @IBOutlet weak var saveButton: UIButton!
+    @IBOutlet weak var goalLabel: UILabel!
     
     var timer = Timer()
     var startTime: Date!
@@ -30,7 +31,7 @@ class SleepViewController: UIViewController {
     var minStr: String!
     var secStr: String!
     var isStart = false
-    let goal = 200
+    var goal = 200
     let shapeLayer = CAShapeLayer()
     let trackLayer = CAShapeLayer()
     
@@ -68,6 +69,40 @@ class SleepViewController: UIViewController {
 //        super.viewWillAppear(animated)
 //        updateUIwithPreviousData()
 //    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateGoalLabel()
+    }
+    
+    func updateGoalLabel() {
+        
+        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
+        let (status, message) = FireBaseHelper.getUserID()
+        guard status else {
+            print(message)
+            return
+        }
+        
+        ref.child(message).observeSingleEvent(of: .value, with: { (data) in
+            
+            guard data.hasChild("goal") else {
+                self.goalLabel.text = "4 hrs"
+                return
+            }
+            let goalValue = data.childSnapshot(forPath: "goal")
+            guard let goalDictionary = goalValue.value as? NSDictionary else {
+                return
+            }
+            guard let previousSleep = goalDictionary["sleepgoal"] as? Int else {
+                return
+            }
+            self.goal = previousSleep * 3600
+            self.goalLabel.text = "Goal \(previousSleep) hrs"
+        }) { error in
+            print(error.localizedDescription)
+        }
+    }
     
     func updateUIwithPreviousData() {
         

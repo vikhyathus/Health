@@ -64,8 +64,15 @@
 		DF88E62A2154EA860086AFBE /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF88E6292154EA860086AFBE /* SignUpViewController.swift */; };
 		DF88E62C2154F5B50086AFBE /* WeeklyActivitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF88E62B2154F5B50086AFBE /* WeeklyActivitiesViewController.swift */; };
 		DF88E65721551CB50086AFBE /* MyWeekViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF88E65621551CB50086AFBE /* MyWeekViewController.swift */; };
-		DFE1361B216F140300FC47B4 /* NewsArticle+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE13615216F140300FC47B4 /* NewsArticle+CoreDataProperties.swift */; };
-		DFE1361C216F140300FC47B4 /* NewsArticle+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE13616216F140300FC47B4 /* NewsArticle+CoreDataClass.swift */; };
+		DFB41A69216F5616002CADB4 /* HomeTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFB41A68216F5616002CADB4 /* HomeTabController.swift */; };
+		DFB41A6B216F5920002CADB4 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DFB41A6A216F5920002CADB4 /* LoginViewController.xib */; };
+		DFE13626216F174000FC47B4 /* SleepDetail+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE13621216F174000FC47B4 /* SleepDetail+CoreDataProperties.swift */; };
+		DFE13627216F174000FC47B4 /* WalkDetail+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE13622216F174000FC47B4 /* WalkDetail+CoreDataProperties.swift */; };
+		DFE13628216F174000FC47B4 /* SleepDetail+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE13623216F174000FC47B4 /* SleepDetail+CoreDataClass.swift */; };
+		DFE13629216F174000FC47B4 /* WalkDetail+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE13624216F174000FC47B4 /* WalkDetail+CoreDataClass.swift */; };
+		DFE1362D216F17C300FC47B4 /* NewsArticle+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE1362B216F17C200FC47B4 /* NewsArticle+CoreDataClass.swift */; };
+		DFE1362E216F17C300FC47B4 /* NewsArticle+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE1362C216F17C300FC47B4 /* NewsArticle+CoreDataProperties.swift */; };
+		DFE13630216F191A00FC47B4 /* CoreDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE1362F216F191A00FC47B4 /* CoreDataHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -168,8 +175,15 @@
 		DF88E6292154EA860086AFBE /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		DF88E62B2154F5B50086AFBE /* WeeklyActivitiesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyActivitiesViewController.swift; sourceTree = "<group>"; };
 		DF88E65621551CB50086AFBE /* MyWeekViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyWeekViewController.swift; sourceTree = "<group>"; };
-		DFE13615216F140300FC47B4 /* NewsArticle+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NewsArticle+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
-		DFE13616216F140300FC47B4 /* NewsArticle+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NewsArticle+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		DFB41A68216F5616002CADB4 /* HomeTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabController.swift; sourceTree = "<group>"; };
+		DFB41A6A216F5920002CADB4 /* LoginViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+		DFE13621216F174000FC47B4 /* SleepDetail+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SleepDetail+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		DFE13622216F174000FC47B4 /* WalkDetail+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WalkDetail+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		DFE13623216F174000FC47B4 /* SleepDetail+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SleepDetail+CoreDataClass.swift"; sourceTree = "<group>"; };
+		DFE13624216F174000FC47B4 /* WalkDetail+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WalkDetail+CoreDataClass.swift"; sourceTree = "<group>"; };
+		DFE1362B216F17C200FC47B4 /* NewsArticle+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "NewsArticle+CoreDataClass.swift"; path = "../../NewsArticle+CoreDataClass.swift"; sourceTree = "<group>"; };
+		DFE1362C216F17C300FC47B4 /* NewsArticle+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "NewsArticle+CoreDataProperties.swift"; path = "../../NewsArticle+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		DFE1362F216F191A00FC47B4 /* CoreDataHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataHelper.swift; sourceTree = "<group>"; };
 		F78ACFE850EBB7E40B3D4CBF /* Pods-Health.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Health.release.xcconfig"; path = "Pods/Target Support Files/Pods-Health/Pods-Health.release.xcconfig"; sourceTree = "<group>"; };
 		FA187B9C098E4097B0D2CCB6 /* Pods-Health.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Health.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Health/Pods-Health.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -201,6 +215,7 @@
 		DF0DB37F215D01F600201425 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				DFE1362F216F191A00FC47B4 /* CoreDataHelper.swift */,
 				DF257C0621663679002B858E /* FormValidation.swift */,
 				DF257C0C216643C9002B858E /* KeyBoardHandler.swift */,
 				DF251983216726C2000E58F7 /* AlertMessages.swift */,
@@ -278,8 +293,12 @@
 		DF751D96216B2ADB001E2D9B /* Core Data Files */ = {
 			isa = PBXGroup;
 			children = (
-				DFE13616216F140300FC47B4 /* NewsArticle+CoreDataClass.swift */,
-				DFE13615216F140300FC47B4 /* NewsArticle+CoreDataProperties.swift */,
+				DFE1362B216F17C200FC47B4 /* NewsArticle+CoreDataClass.swift */,
+				DFE1362C216F17C300FC47B4 /* NewsArticle+CoreDataProperties.swift */,
+				DFE13623216F174000FC47B4 /* SleepDetail+CoreDataClass.swift */,
+				DFE13621216F174000FC47B4 /* SleepDetail+CoreDataProperties.swift */,
+				DFE13624216F174000FC47B4 /* WalkDetail+CoreDataClass.swift */,
+				DFE13622216F174000FC47B4 /* WalkDetail+CoreDataProperties.swift */,
 			);
 			path = "Core Data Files";
 			sourceTree = "<group>";
@@ -330,6 +349,7 @@
 			children = (
 				DF3477D2216DF55500D8E3C7 /* SetGoalViewController.swift */,
 				DF88E6232154B9590086AFBE /* LoginViewController.swift */,
+				DFB41A6A216F5920002CADB4 /* LoginViewController.xib */,
 				DF88E62B2154F5B50086AFBE /* WeeklyActivitiesViewController.swift */,
 				DF88E6252154E3A20086AFBE /* FirstAppScreenViewController.swift */,
 				DF88E6292154EA860086AFBE /* SignUpViewController.swift */,
@@ -345,6 +365,7 @@
 				DF0DB3AC215E2D3300201425 /* WebViewController.swift */,
 				DF88E65621551CB50086AFBE /* MyWeekViewController.swift */,
 				DF751D9D216B2D63001E2D9B /* News+CoreData.swift */,
+				DFB41A68216F5616002CADB4 /* HomeTabController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -442,6 +463,7 @@
 			files = (
 				DF257C042164D1F6002B858E /* .swiftlint.yml in Resources */,
 				DF386ADC215376EA0024814C /* LaunchScreen.storyboard in Resources */,
+				DFB41A6B216F5920002CADB4 /* LoginViewController.xib in Resources */,
 				DF88E6282154E54B0086AFBE /* InitialScreen.jpg in Resources */,
 				DF386AD9215376EA0024814C /* Assets.xcassets in Resources */,
 				DF386AF2215377C30024814C /* GoogleService-Info.plist in Resources */,
@@ -549,18 +571,24 @@
 				DF25198C2167937E000E58F7 /* WeeklyActivities+tableView.swift in Sources */,
 				DF0DB385215DEC7C00201425 /* test.swift in Sources */,
 				DF386B11215397B00024814C /* SurveyTask.swift in Sources */,
+				DFE1362E216F17C300FC47B4 /* NewsArticle+CoreDataProperties.swift in Sources */,
 				DF869DD0215B572B006C10E5 /* ProfileDataSource.swift in Sources */,
+				DFE13630216F191A00FC47B4 /* CoreDataHelper.swift in Sources */,
 				DF251986216726C3000E58F7 /* AlertMessages.swift in Sources */,
 				DF869DDF215B6F64006C10E5 /* HKGenderExtension.swift in Sources */,
+				DFB41A69216F5616002CADB4 /* HomeTabController.swift in Sources */,
 				DF869DC5215A3AB2006C10E5 /* ActivityTableCell.swift in Sources */,
 				DF751D9E216B2D63001E2D9B /* News+CoreData.swift in Sources */,
 				DF257C0D216643C9002B858E /* KeyBoardHandler.swift in Sources */,
+				DFE1362D216F17C300FC47B4 /* NewsArticle+CoreDataClass.swift in Sources */,
 				DF386ACF215376E90024814C /* AppDelegate.swift in Sources */,
 				DF869DE9215BD250006C10E5 /* QuestionTask.swift in Sources */,
 				DF257BFA21623057002B858E /* UserProfileDetails + tableView.swift in Sources */,
-				DFE1361B216F140300FC47B4 /* NewsArticle+CoreDataProperties.swift in Sources */,
+				DFE13628216F174000FC47B4 /* SleepDetail+CoreDataClass.swift in Sources */,
 				DF25198E216794C7000E58F7 /* TasksIdentifierCell.swift in Sources */,
 				DF869DDD215B6ECE006C10E5 /* HKBloodTypeExtension.swift in Sources */,
+				DFE13626216F174000FC47B4 /* SleepDetail+CoreDataProperties.swift in Sources */,
+				DFE13627216F174000FC47B4 /* WalkDetail+CoreDataProperties.swift in Sources */,
 				DF5613382158DDC4009A48CD /* WalkTask.swift in Sources */,
 				DF869DE7215BB257006C10E5 /* InitialScreen+Notification.swift in Sources */,
 				DF869DC0215A3847006C10E5 /* ActivityListViewController.swift in Sources */,
@@ -573,7 +601,7 @@
 				DF869DCC215A7E4A006C10E5 /* HealthKitSetupAssistant.swift in Sources */,
 				DF386B0F215383020024814C /* ConsentTasks.swift in Sources */,
 				DF56133A2158F123009A48CD /* TrackWalkViewController.swift in Sources */,
-				DFE1361C216F140300FC47B4 /* NewsArticle+CoreDataClass.swift in Sources */,
+				DFE13629216F174000FC47B4 /* WalkDetail+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -730,6 +758,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Health/Health.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3RFXA3YHL9;
 				INFOPLIST_FILE = Health/Info.plist;
@@ -740,6 +769,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = Ymedia.Health;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -752,6 +782,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Health/Health.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3RFXA3YHL9;
 				INFOPLIST_FILE = Health/Info.plist;
@@ -762,6 +793,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = Ymedia.Health;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

@@ -37,6 +37,9 @@ class SetGoalViewController: UIViewController {
     
     @IBAction private func doneTapped(_ sender: Any) {
         updateDatabase()
+        let shared = UserDefaults.standard
+        shared.set(sleepGoal, forKey: "sleep")
+        shared.set(walkGoal, forKey: "walk")
         dismiss(animated: true, completion: nil)
     }
     

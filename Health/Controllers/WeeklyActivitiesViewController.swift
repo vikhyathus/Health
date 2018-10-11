@@ -29,9 +29,14 @@ class WeeklyActivitiesViewController: UIViewController {
         setUpNotification()
         createNotification()
         view.setGradientBackground(colorOne: Colors.blue, colorTwo: Colors.white)
+        pageControl.pageIndicatorTintColor = Colors.lightorange
+        pageControl.currentPageIndicatorTintColor = Colors.brightOrange
         tableView.delegate = self
         tableView.dataSource = self
+        collectionView.backgroundColor = UIColor.clear
+        headerView.setGradientBackground(colorOne: Colors.lightorange, colorTwo: Colors.brightOrange)
     }
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -69,7 +74,7 @@ class WeeklyActivitiesViewController: UIViewController {
                                                        stepCount,
                                                        HKObjectType.workoutType()]
         
-        /*if #available(iOS 12.0, *) {
+        if #available(iOS 12.0, *) {
             HKHealthStore().getRequestStatusForAuthorization(toShare: healthKitTypesToWrite, read: healthKitTypesToRead) { requestStatus, error in
                 print(requestStatus)
                 if requestStatus == .shouldRequest {
@@ -82,10 +87,10 @@ class WeeklyActivitiesViewController: UIViewController {
                     self.present(alert, animated: true, completion: nil)
                 }
             }
-        } else {*/
-            HKHealthStore().requestAuthorization(toShare: healthKitTypesToWrite, read: healthKitTypesToRead) { (status, error) in
+        } else {
+            HKHealthStore().requestAuthorization(toShare: healthKitTypesToWrite, read: healthKitTypesToRead) { _, error in
                 print(error)
-            //}
+            }
         }
     }
     
@@ -148,14 +153,11 @@ class WeeklyActivitiesViewController: UIViewController {
                 } else {
                     print(baseMessage)
                 }
-                
                 return
             }
-            
             print("HealthKit Successfully Authorized.")
         }
     }
-    
 }
 
 extension WeeklyActivitiesViewController: UNUserNotificationCenterDelegate, ORKTaskViewControllerDelegate {

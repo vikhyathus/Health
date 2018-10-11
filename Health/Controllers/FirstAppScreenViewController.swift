@@ -17,10 +17,6 @@ class FirstAppScreenViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-//        if Auth.auth().currentUser != nil {
-//            self.performSegue(withIdentifier: "WeeklyScreen", sender: self)
-//        }
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -29,8 +25,5 @@ class FirstAppScreenViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if Auth.auth().currentUser != nil {
-            self.performSegue(withIdentifier: "WeeklyScreen", sender: self)
-        }
     }
 }

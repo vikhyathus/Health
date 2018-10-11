@@ -2,7 +2,7 @@
 //  NewsArticle+CoreDataProperties.swift
 //  
 //
-//  Created by Vikhyath on 08/10/18.
+//  Created by Vikhyath on 11/10/18.
 //
 //
 
@@ -16,8 +16,8 @@ extension NewsArticle {
         return NSFetchRequest<NewsArticle>(entityName: "NewsArticle")
     }
 
-    @NSManaged public var title: String?
     @NSManaged public var detailednews: String?
     @NSManaged public var image: NSData?
+    @NSManaged public var title: String?
 
 }

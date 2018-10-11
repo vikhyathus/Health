@@ -133,7 +133,10 @@ extension SignUpViewController: ORKTaskViewControllerDelegate {
             guard let uid = user?.user.uid else {
                 return
             }
-            self.dismiss(animated: true, completion: nil)
+            //self.dismiss(animated: true, completion: nil)
+            let homeScreen = self.storyboard?.instantiateViewController(withIdentifier: "TabViewController") as? HomeTabController
+            self.present(homeScreen!, animated: true, completion: nil)
+            //self.dismiss(animated: true, completion: nil)
             //if user authenticated sucessfully
             let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com")
             let userReference = ref.child("Users").child(uid)

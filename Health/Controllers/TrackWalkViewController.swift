@@ -17,8 +17,7 @@ class TrackWalkViewController: UIViewController {
     @IBOutlet weak var stopButton: UIButton!
     @IBOutlet weak var resetButton: UIButton!
     @IBOutlet weak var doneButton: UIButton!
-    @IBOutlet weak var goalLabel: UILabel!
-    @IBOutlet weak var goalView: UIView!
+    @IBOutlet weak var stepGoal: UILabel!
     
     var ref: DatabaseReference?
     let activity = CMMotionActivityManager()
@@ -33,7 +32,7 @@ class TrackWalkViewController: UIViewController {
     var isStart: Bool = false
     let shapeLayer = CAShapeLayer()
     let trackLayer = CAShapeLayer()
-    let goal: Int = 200
+    var goal: Int = 200
     var thisInterval: Int = 0
     
     let percentageLabel: UILabel = {
@@ -55,15 +54,43 @@ class TrackWalkViewController: UIViewController {
         view.addSubview(percentageLabel)
         percentageLabel.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
         percentageLabel.center = view.center
-        goalLabel.layer.cornerRadius = 10.0
-        goalView.layer.cornerRadius = 10.0
-        goalLabel.textColor = UIColor.orange
         updateUIwithWalkDetails()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateUIwithWalkDetails()
+        updateGoalLabel()
+    }
+    
+    func updateGoalLabel() {
+        
+        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
+        let (status, message) = FireBaseHelper.getUserID()
+        guard status else {
+            print(message)
+            return
+        }
+        
+        ref.child(message).observeSingleEvent(of: .value, with: { data in
+            
+            guard data.hasChild("goal") else {
+                self.stepGoal.text = "200 steps"
+                self.goal = 200
+                return
+            }
+            let goalValue = data.childSnapshot(forPath: "goal")
+            guard let goalDictionary = goalValue.value as? NSDictionary else {
+                return
+            }
+            guard let previousWalk = goalDictionary["walkgoal"] as? Int else {
+                return
+            }
+            self.stepGoal.text = "Goal \(previousWalk) steps"
+            self.goal = previousWalk
+        }) { error in
+            print("completion block at error")
+        }
     }
     
     func updateUIwithWalkDetails() {

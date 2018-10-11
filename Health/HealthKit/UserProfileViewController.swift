@@ -14,13 +14,12 @@
 //  Copyright © 2018 researchkit.org. All rights reserved.
 //
 
-
-
 import UIKit
 import HealthKit
 import Firebase
 import NotificationCenter
 import UserNotifications
+import CoreData
 
 class UserProfileViewController: UIViewController {
     
@@ -32,6 +31,9 @@ class UserProfileViewController: UIViewController {
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var NameLabel: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var headerView: UIView!
+    @IBOutlet weak var navBar: UINavigationItem!
+    @IBOutlet weak var navigationBar: UINavigationBar!
     
     var tableLabels = [ ["Age", "Gender", "Blood Type"], ["Weight", "Height", "BMI"], ["Walk Goal", "Sleep Goal"]]
     let userHealthProfile = UserHealthProfile()
@@ -58,8 +60,15 @@ class UserProfileViewController: UIViewController {
         getUserNameEmail()
         tableView.delegate = self
         tableView.dataSource = self
-        emailLabel.textColor = Colors.orange
-        NameLabel.textColor = Colors.orange
+        emailLabel.textColor = Colors.white
+        NameLabel.textColor = Colors.white
+        headerView.setGradientBackground(colorOne: Colors.orange, colorTwo: Colors.brightOrange)
+        //navigationBar.setGradientBackground(colorOne: Colors.brightOrange, colorTwo: Colors.orange)
+        navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationBar.shadowImage = UIImage()
+        navigationBar.isTranslucent = true
+        navigationBar.backgroundColor = .clear
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -209,6 +218,8 @@ class UserProfileViewController: UIViewController {
             self.userHealthProfile.heightInMeters = heightInMeters
             self.physicalData.append(String(format: "%.2f m", heightInMeters))
             if self.physicalData.count == 2 {
+                self.tableLabels[1][1] = "Height"
+                self.tableLabels[1][0] = "Weight"
                 self.saveBodyMassIndexToHealthKit()
                 if let bmi = self.userHealthProfile.bodyMassIndex {
                     let bmi2 = String(format: "%.2f", bmi)
@@ -264,6 +275,8 @@ class UserProfileViewController: UIViewController {
             self.userHealthProfile.weightInKilograms = weightInKilograms
             self.physicalData.append(String(format: "%.2f kg", weightInKilograms))
             if self.physicalData.count == 2 {
+                self.tableLabels[1][1] = "Weight"
+                self.tableLabels[1][0] = "Height"
                 self.saveBodyMassIndexToHealthKit()
                 if let bmi = self.userHealthProfile.bodyMassIndex {
                     let bmi2 = String(format: "%.2f", bmi)
@@ -308,7 +321,10 @@ class UserProfileViewController: UIViewController {
         
             do {
                 UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+                deleteObject()
                 try? Auth.auth().signOut()
+                let appDelegate = UIApplication.shared.delegate as? AppDelegate
+                appDelegate?.openHomeScreen()
                 self.dismiss(animated: true, completion: nil)
             }
     }
@@ -337,4 +353,41 @@ class UserProfileViewController: UIViewController {
             print("saved successfully")
         })
     }
+    
+    func deleteObject() {
+        
+            let request1 = NSFetchRequest<WalkDetail>(entityName: "WalkDetail")
+            let context1 = managedObjectContext()
+            do {
+                let obj = try context1.fetch(request1)
+                for item in obj {
+                    context1.delete(item)
+                }
+                try context1.save()
+            } catch {
+                print("error fetching walk")
+            }
+     
+            let request2 = NSFetchRequest<SleepDetail>(entityName: "SleepDetail")
+            let context2 = managedObjectContext()
+            do {
+                let obj = try context2.fetch(request2)
+                for item in obj {
+                    context2.delete(item)
+                }
+                try context2.save()
+            } catch {
+                print("error fetching sleep")
+            }
+    }
+    
+    func managedObjectContext() -> NSManagedObjectContext {
+        
+        let appdelegate = UIApplication.shared.delegate as? AppDelegate
+        let context = appdelegate?.persistentContainer.viewContext
+        
+        return context!
+        
+    }
+    
  }

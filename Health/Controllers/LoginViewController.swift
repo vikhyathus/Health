@@ -46,7 +46,9 @@ class LoginViewController: UIViewController {
                 self.present(alert, animated: true, completion: nil)
             } else {
                 print("User logged in successfuly!")
-                self.dismiss(animated: true, completion: nil)
+                let homeScreen = self.storyboard?.instantiateViewController(withIdentifier: "TabViewController") as? HomeTabController
+                self.present(homeScreen!, animated: true, completion: nil)
+                //self.dismiss(animated: true, completion: nil)
             }
         }
     }
