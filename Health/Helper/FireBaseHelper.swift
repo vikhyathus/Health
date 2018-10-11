@@ -8,3 +8,15 @@
 
 import Foundation
 import Firebase
+
+class FireBaseHelper {
+    
+    static func getUserID() -> (Bool, String) {
+        
+        guard let userID = Auth.auth().currentUser?.uid else {
+            return (false, "Error fetching user Id")
+        }
+        
+        return (true, userID)
+    }
+}

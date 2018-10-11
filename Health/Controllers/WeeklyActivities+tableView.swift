@@ -39,8 +39,13 @@ extension WeeklyActivitiesViewController: UITableViewDelegate, UITableViewDataSo
         }
     }
     
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView()
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return (view.frame.height - headerView.frame.height) / 2
+        
+        return 100.0
     }
     
 }

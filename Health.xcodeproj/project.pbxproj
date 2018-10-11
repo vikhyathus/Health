@@ -26,7 +26,7 @@
 		DF257C042164D1F6002B858E /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = DF257C032164D1F6002B858E /* .swiftlint.yml */; };
 		DF257C0721663679002B858E /* FormValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF257C0621663679002B858E /* FormValidation.swift */; };
 		DF257C0D216643C9002B858E /* KeyBoardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF257C0C216643C9002B858E /* KeyBoardHandler.swift */; };
-		DF3477CF216CA6A000D8E3C7 /* NewsArticle+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3477CC216CA6A000D8E3C7 /* NewsArticle+CoreDataProperties.swift */; };
+		DF3477D3216DF55500D8E3C7 /* SetGoalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3477D2216DF55500D8E3C7 /* SetGoalViewController.swift */; };
 		DF386ACF215376E90024814C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF386ACE215376E90024814C /* AppDelegate.swift */; };
 		DF386AD4215376E90024814C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DF386AD2215376E90024814C /* Main.storyboard */; };
 		DF386AD7215376E90024814C /* Health.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DF386AD5215376E90024814C /* Health.xcdatamodeld */; };
@@ -43,7 +43,6 @@
 		DF5613382158DDC4009A48CD /* WalkTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF5613372158DDC4009A48CD /* WalkTask.swift */; };
 		DF56133A2158F123009A48CD /* TrackWalkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF5613392158F123009A48CD /* TrackWalkViewController.swift */; };
 		DF751D9E216B2D63001E2D9B /* News+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF751D9D216B2D63001E2D9B /* News+CoreData.swift */; };
-		DF751DA5216B35F7001E2D9B /* NewsArticle+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF751DA3216B35F7001E2D9B /* NewsArticle+CoreDataClass.swift */; };
 		DF869DBC215A324A006C10E5 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF869DBB215A324A006C10E5 /* Time.swift */; };
 		DF869DC0215A3847006C10E5 /* ActivityListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF869DBF215A3847006C10E5 /* ActivityListViewController.swift */; };
 		DF869DC5215A3AB2006C10E5 /* ActivityTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF869DC4215A3AB2006C10E5 /* ActivityTableCell.swift */; };
@@ -65,6 +64,8 @@
 		DF88E62A2154EA860086AFBE /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF88E6292154EA860086AFBE /* SignUpViewController.swift */; };
 		DF88E62C2154F5B50086AFBE /* WeeklyActivitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF88E62B2154F5B50086AFBE /* WeeklyActivitiesViewController.swift */; };
 		DF88E65721551CB50086AFBE /* MyWeekViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF88E65621551CB50086AFBE /* MyWeekViewController.swift */; };
+		DFE1361B216F140300FC47B4 /* NewsArticle+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE13615216F140300FC47B4 /* NewsArticle+CoreDataProperties.swift */; };
+		DFE1361C216F140300FC47B4 /* NewsArticle+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE13616216F140300FC47B4 /* NewsArticle+CoreDataClass.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -125,7 +126,7 @@
 		DF257C032164D1F6002B858E /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = "<group>"; };
 		DF257C0621663679002B858E /* FormValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormValidation.swift; sourceTree = "<group>"; };
 		DF257C0C216643C9002B858E /* KeyBoardHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBoardHandler.swift; sourceTree = "<group>"; };
-		DF3477CC216CA6A000D8E3C7 /* NewsArticle+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "NewsArticle+CoreDataProperties.swift"; path = "/Users/vus/Desktop/Assignment/Health/Health/Core Data Files/NewsArticle+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
+		DF3477D2216DF55500D8E3C7 /* SetGoalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetGoalViewController.swift; sourceTree = "<group>"; };
 		DF386ACB215376E90024814C /* Health.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Health.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF386ACE215376E90024814C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DF386AD3215376E90024814C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -146,7 +147,6 @@
 		DF5613372158DDC4009A48CD /* WalkTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkTask.swift; sourceTree = "<group>"; };
 		DF5613392158F123009A48CD /* TrackWalkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackWalkViewController.swift; sourceTree = "<group>"; };
 		DF751D9D216B2D63001E2D9B /* News+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "News+CoreData.swift"; sourceTree = "<group>"; };
-		DF751DA3216B35F7001E2D9B /* NewsArticle+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NewsArticle+CoreDataClass.swift"; sourceTree = "<group>"; };
 		DF869DBB215A324A006C10E5 /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
 		DF869DBF215A3847006C10E5 /* ActivityListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityListViewController.swift; sourceTree = "<group>"; };
 		DF869DC4215A3AB2006C10E5 /* ActivityTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityTableCell.swift; sourceTree = "<group>"; };
@@ -168,6 +168,8 @@
 		DF88E6292154EA860086AFBE /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		DF88E62B2154F5B50086AFBE /* WeeklyActivitiesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyActivitiesViewController.swift; sourceTree = "<group>"; };
 		DF88E65621551CB50086AFBE /* MyWeekViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyWeekViewController.swift; sourceTree = "<group>"; };
+		DFE13615216F140300FC47B4 /* NewsArticle+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NewsArticle+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		DFE13616216F140300FC47B4 /* NewsArticle+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NewsArticle+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
 		F78ACFE850EBB7E40B3D4CBF /* Pods-Health.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Health.release.xcconfig"; path = "Pods/Target Support Files/Pods-Health/Pods-Health.release.xcconfig"; sourceTree = "<group>"; };
 		FA187B9C098E4097B0D2CCB6 /* Pods-Health.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Health.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Health/Pods-Health.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -236,8 +238,8 @@
 		DF386ACD215376E90024814C /* Health */ = {
 			isa = PBXGroup;
 			children = (
-				DF751D96216B2ADB001E2D9B /* Core Data Files */,
 				DF386AF0215377550024814C /* Health.entitlements */,
+				DF751D96216B2ADB001E2D9B /* Core Data Files */,
 				DF869DCA215A7CBA006C10E5 /* HealthKit */,
 				DF869DC3215A3A30006C10E5 /* View */,
 				DF88E61D2154B2EE0086AFBE /* Model */,
@@ -276,8 +278,8 @@
 		DF751D96216B2ADB001E2D9B /* Core Data Files */ = {
 			isa = PBXGroup;
 			children = (
-				DF3477CC216CA6A000D8E3C7 /* NewsArticle+CoreDataProperties.swift */,
-				DF751DA3216B35F7001E2D9B /* NewsArticle+CoreDataClass.swift */,
+				DFE13616216F140300FC47B4 /* NewsArticle+CoreDataClass.swift */,
+				DFE13615216F140300FC47B4 /* NewsArticle+CoreDataProperties.swift */,
 			);
 			path = "Core Data Files";
 			sourceTree = "<group>";
@@ -326,6 +328,7 @@
 		DF88E6222154B9370086AFBE /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				DF3477D2216DF55500D8E3C7 /* SetGoalViewController.swift */,
 				DF88E6232154B9590086AFBE /* LoginViewController.swift */,
 				DF88E62B2154F5B50086AFBE /* WeeklyActivitiesViewController.swift */,
 				DF88E6252154E3A20086AFBE /* FirstAppScreenViewController.swift */,
@@ -527,6 +530,7 @@
 				DF257C022162685A002B858E /* Constants.swift in Sources */,
 				DF257BFE21623B70002B858E /* ProfileViewCell.swift in Sources */,
 				DF869DCE215A7EBB006C10E5 /* MasterViewController.swift in Sources */,
+				DF3477D3216DF55500D8E3C7 /* SetGoalViewController.swift in Sources */,
 				DF88E6242154B9590086AFBE /* LoginViewController.swift in Sources */,
 				DF386AD7215376E90024814C /* Health.xcdatamodeld in Sources */,
 				DF869DBC215A324A006C10E5 /* Time.swift in Sources */,
@@ -549,12 +553,12 @@
 				DF251986216726C3000E58F7 /* AlertMessages.swift in Sources */,
 				DF869DDF215B6F64006C10E5 /* HKGenderExtension.swift in Sources */,
 				DF869DC5215A3AB2006C10E5 /* ActivityTableCell.swift in Sources */,
-				DF3477CF216CA6A000D8E3C7 /* NewsArticle+CoreDataProperties.swift in Sources */,
 				DF751D9E216B2D63001E2D9B /* News+CoreData.swift in Sources */,
 				DF257C0D216643C9002B858E /* KeyBoardHandler.swift in Sources */,
 				DF386ACF215376E90024814C /* AppDelegate.swift in Sources */,
 				DF869DE9215BD250006C10E5 /* QuestionTask.swift in Sources */,
 				DF257BFA21623057002B858E /* UserProfileDetails + tableView.swift in Sources */,
+				DFE1361B216F140300FC47B4 /* NewsArticle+CoreDataProperties.swift in Sources */,
 				DF25198E216794C7000E58F7 /* TasksIdentifierCell.swift in Sources */,
 				DF869DDD215B6ECE006C10E5 /* HKBloodTypeExtension.swift in Sources */,
 				DF5613382158DDC4009A48CD /* WalkTask.swift in Sources */,
@@ -569,7 +573,7 @@
 				DF869DCC215A7E4A006C10E5 /* HealthKitSetupAssistant.swift in Sources */,
 				DF386B0F215383020024814C /* ConsentTasks.swift in Sources */,
 				DF56133A2158F123009A48CD /* TrackWalkViewController.swift in Sources */,
-				DF751DA5216B35F7001E2D9B /* NewsArticle+CoreDataClass.swift in Sources */,
+				DFE1361C216F140300FC47B4 /* NewsArticle+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

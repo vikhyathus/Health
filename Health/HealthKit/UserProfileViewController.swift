@@ -14,6 +14,8 @@
 //  Copyright © 2018 researchkit.org. All rights reserved.
 //
 
+
+
 import UIKit
 import HealthKit
 import Firebase
@@ -31,7 +33,7 @@ class UserProfileViewController: UIViewController {
     @IBOutlet weak var NameLabel: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    var tableLabels = [ ["Age", "Gender", "Blood Type"], ["Weight", "Height", "BMI"]]
+    var tableLabels = [ ["Age", "Gender", "Blood Type"], ["Weight", "Height", "BMI"], ["Walk Goal", "Sleep Goal"]]
     let userHealthProfile = UserHealthProfile()
     
     private enum ProfileDataError: Error {
@@ -56,6 +58,8 @@ class UserProfileViewController: UIViewController {
         getUserNameEmail()
         tableView.delegate = self
         tableView.dataSource = self
+        emailLabel.textColor = Colors.orange
+        NameLabel.textColor = Colors.orange
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -65,9 +69,14 @@ class UserProfileViewController: UIViewController {
     
     func getUserNameEmail() {
         
-        let userId = Auth.auth().currentUser?.uid
+        let (status, userId) = FireBaseHelper.getUserID()
+        guard status else {
+            print(userId)
+            return
+        }
+        
         let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
-        ref.child(userId!).observeSingleEvent(of: .value) { (snapshot) in
+        ref.child(userId).observeSingleEvent(of: .value) { snapshot in
             
             guard let dataSnap = snapshot.value as? NSDictionary else {
                 print("error fetching")
@@ -174,7 +183,9 @@ class UserProfileViewController: UIViewController {
                         //let bmi = String(format: "%.2f", self.userHealthProfile.bodyMassIndex!)
                         //self.physicalData.append(bmi)
                         self.userDetails.append(self.physicalData)
+                        self.userDetails.append([">", ">"])
                         self.tableView.reloadData()
+                        self.updateDatabase()
                         return
                     }
                 }
@@ -184,7 +195,9 @@ class UserProfileViewController: UIViewController {
                     //let bmi = String(format: "%.2f", self.userHealthProfile.bodyMassIndex!)
                     //self.physicalData.append(bmi)
                     self.userDetails.append(self.physicalData)
+                    self.userDetails.append([">", ">"])
                     self.tableView.reloadData()
+                    self.updateDatabase()
                     return
                 }
                 return
@@ -204,7 +217,9 @@ class UserProfileViewController: UIViewController {
                      self.physicalData.append("Unknown")
                 }
                 self.userDetails.append(self.physicalData)
+                self.userDetails.append([">", ">"])
                 self.tableView.reloadData()
+                self.updateDatabase()
             }
         }
     }
@@ -225,20 +240,21 @@ class UserProfileViewController: UIViewController {
                     self.physicalData.append("Not available")
                     if self.physicalData.count == 2 {
                         self.saveBodyMassIndexToHealthKit()
-                        //let bmi = String(format: "%.2f", self.userHealthProfile.bodyMassIndex!)
-                        //self.physicalData.append(bmi)
+
                         self.userDetails.append(self.physicalData)
+                        self.userDetails.append([">", ">"])
                         self.tableView.reloadData()
+                        self.updateDatabase()
                         return
                     }
                 }
                 self.physicalData.append("Not available")
                 if self.physicalData.count == 2 {
                     self.saveBodyMassIndexToHealthKit()
-                    //let bmi = String(format: "%.2f", self.userHealthProfile.bodyMassIndex!)
-                    //self.physicalData.append(bmi)
                     self.userDetails.append(self.physicalData)
+                    self.userDetails.append([">", ">"])
                     self.tableView.reloadData()
+                    self.updateDatabase()
                     return
                 }
                 return
@@ -256,7 +272,9 @@ class UserProfileViewController: UIViewController {
                     self.physicalData.append("Unknown")
                 }
                 self.userDetails.append(self.physicalData)
+                self.userDetails.append([">", ">"])
                 self.tableView.reloadData()
+                self.updateDatabase()
             }
         }
     }
@@ -286,7 +304,7 @@ class UserProfileViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    @IBAction func logoutTapped(_ sender: Any) {
+    @IBAction private func logoutTapped(_ sender: Any) {
         
             do {
                 UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
@@ -294,7 +312,29 @@ class UserProfileViewController: UIViewController {
                 self.dismiss(animated: true, completion: nil)
             }
     }
+    
+    func updateDatabase() {
+        
+        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com")
+        let (status, message) = FireBaseHelper.getUserID()
+        guard status else {
+            print(message)
+            return
+        }
+        let userReference = ref.child("Users").child(message).child("userdetail")
+        var values = [String: String]()
+        
+        for index in 0..<2 {
+            for rowIndex in 0..<userDetails[index].count {
+                values[tableLabels[index][rowIndex]] = userDetails[index][rowIndex]
+            }
+        }
+        
+        userReference.updateChildValues(values, withCompletionBlock: { error, _ in
+            if error != nil {
+                print(error?.localizedDescription)
+            }
+            print("saved successfully")
+        })
+    }
  }
-    
-    
-

@@ -57,6 +57,7 @@ class TrackWalkViewController: UIViewController {
         percentageLabel.center = view.center
         goalLabel.layer.cornerRadius = 10.0
         goalView.layer.cornerRadius = 10.0
+        goalLabel.textColor = UIColor.orange
         updateUIwithWalkDetails()
     }
     
