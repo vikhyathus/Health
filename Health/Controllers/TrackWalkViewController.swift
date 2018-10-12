@@ -89,6 +89,9 @@ class TrackWalkViewController: UIViewController {
                 return
             }
             self.stepGoal.text = "Goal \(previousWalk) steps"
+            let percent = CGFloat(self.stepCount) / CGFloat(previousWalk)
+            self.percentageLabel.text = "\(Int(percent * 100))%"
+            self.shapeLayer.strokeEnd = percent
             self.goal = previousWalk
         }) { error in
             print("completion block at error")

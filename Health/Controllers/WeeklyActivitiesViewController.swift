@@ -159,6 +159,63 @@ class WeeklyActivitiesViewController: UIViewController {
             print("HealthKit Successfully Authorized.")
         }
     }
+    
+    func retrieveGoal(completion: @escaping (Int, Int) -> ()) {
+        
+        var goalWalk = 200
+        var goalSleep = 4 * 3600
+        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
+        let (status, message) = FireBaseHelper.getUserID()
+        guard status else {
+            print(message)
+            completion(goalWalk, goalSleep)
+            return
+        }
+        
+        ref.child(message).observeSingleEvent(of: .value, with: { data in
+            
+            guard data.hasChild("goal") else {
+                goalWalk = 200
+                goalSleep = 4 * 3600
+                return
+            }
+            let goalValue = data.childSnapshot(forPath: "goal")
+            guard let goalDictionary = goalValue.value as? NSDictionary else {
+                return
+            }
+            guard let previousWalk = goalDictionary["walkgoal"] as? Int else {
+                return
+            }
+            guard let previousSleep = goalDictionary["sleepgoal"] as? Int else {
+                return
+            }
+            goalWalk = previousWalk
+            goalSleep = previousSleep
+            completion(goalWalk, goalSleep)
+        })
+    }
+    
+    func fetchSleepWalkDetails(activity: String, property: String, completion: @escaping (Int) -> ()) {
+        
+        let userID = Auth.auth().currentUser?.uid
+        var previousWalkDetails = 0
+        
+        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
+        ref.child(userID!).child("Activities").child(activity).observeSingleEvent(of: .value) { snapshot in
+            
+            if snapshot.hasChild(Date.getKeyFromDate()) {
+                let snapshotData = snapshot.childSnapshot(forPath: Date.getKeyFromDate())
+                guard let sleepDetails = snapshotData.value as? NSDictionary else { print("error"); return }
+                previousWalkDetails = sleepDetails[property] as? Int ?? 0
+                completion(previousWalkDetails)
+                return
+            } else {
+                completion(previousWalkDetails)
+            }
+        }
+        print("Outside \(previousWalkDetails)")
+        completion(previousWalkDetails)
+    }
 }
 
 extension WeeklyActivitiesViewController: UNUserNotificationCenterDelegate, ORKTaskViewControllerDelegate {
@@ -217,9 +274,26 @@ extension WeeklyActivitiesViewController: UICollectionViewDelegate, UICollection
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeScreenCVCell", for: indexPath) as? HomeScreenCVCell
         
         if indexPath.row == 0 {
-           cell?.setUpCellForSteps()
+            retrieveGoal { (walkGoal, sleepGoal) in
+                self.fetchSleepWalkDetails(activity: "Walk", property: "steps", completion: { (stepCount) in
+                    let percent = CGFloat(stepCount) / CGFloat(walkGoal)
+                    cell?.percentageLabel.text = "\(Int(percent * 100))%"
+                    cell?.sleepWalkCountLabel.text = "\(stepCount) steps"
+                    cell?.shapeLayer.strokeEnd = percent
+                })
+            }
         } else {
-            cell?.setUpCellForSleep()
+            retrieveGoal { (walkGoal, sleepGoal) in
+                self.fetchSleepWalkDetails(activity: "Sleep", property: "duration", completion: { (sleepCount) in
+                    let percent = CGFloat(sleepCount) / CGFloat(sleepGoal * 3600)
+                    cell?.percentageLabel.text = "\(Int(percent * 100))%"
+                    let hrs = sleepCount / 3600
+                    let min = sleepCount / 60
+                    let sec = sleepCount % 60
+                    cell?.sleepWalkCountLabel.text = "\(hrs)hrs:\(min)min:\(sec)"
+                    cell?.shapeLayer.strokeEnd = percent
+                })
+            }
         }
         return cell!
     }

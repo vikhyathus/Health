@@ -91,9 +91,6 @@ class ActivityListViewController: UIViewController {
     
     func populateList(activity: String, property: String) {
         
-        guard  let userID = userID else {
-            return
-        }
         activityList.removeAll()
         let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
         
@@ -104,9 +101,28 @@ class ActivityListViewController: UIViewController {
                 return
             }
         }
+        
         fetch()
-        ref.child(userID).child("Activities").child(activity).observeSingleEvent(of: .value, with: { (snapshot) in
-            
+        let connectedRef = Database.database().reference(withPath: ".info/connected")
+        connectedRef.observe(.value, with: { snapshot in
+            if snapshot.value as? Bool ?? false {
+                self.callAPI(activity: activity, property: property)
+            } else {
+                self.fetch()
+                self.view.isUserInteractionEnabled = true
+            }
+        })
+        self.placeholder.isHidden = !self.activityList.isEmpty
+    }
+    
+    func callAPI(activity: String, property: String) {
+        
+        guard  let userID = userID else {
+            return
+        }
+        
+        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
+            ref.child(userID).child("Activities").child(activity).observeSingleEvent(of: .value, with: { (snapshot) in
             guard let days = snapshot.value as? NSDictionary else { self.tableView.reloadData(); return }
             self.activityList.removeAll()
             self.activityIndicator.startAnimating()
@@ -122,19 +138,10 @@ class ActivityListViewController: UIViewController {
             self.fetch()
             self.view.isUserInteractionEnabled = true
             self.placeholder.isHidden = !self.activityList.isEmpty
-            
             self.tableView.isHidden = self.activityList.isEmpty
             //self.tableView.reloadData()
             self.activityIndicator.stopAnimating()
-            
-            
-        }) { (error) in
-            print("error: ", error.localizedDescription)
-        }
-        //fetch()
-        
-        self.placeholder.isHidden = !self.activityList.isEmpty
-        //tableView.reloadData()
+        })
     }
     
     func sort() {
@@ -150,6 +157,7 @@ class ActivityListViewController: UIViewController {
         }
         fetch()
         iswalk = !iswalk
+        
         view.isUserInteractionEnabled = false
         activityList.removeAll()
         populateList(activity: "Walk", property: "steps")
