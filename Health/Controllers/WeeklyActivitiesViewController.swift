@@ -35,6 +35,7 @@ class WeeklyActivitiesViewController: UIViewController {
         tableView.dataSource = self
         collectionView.backgroundColor = UIColor.clear
         headerView.setGradientBackground(colorOne: Colors.lightorange, colorTwo: Colors.brightOrange)
+        collectionView.reloadData()
     }
 
     

@@ -136,7 +136,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sMG-SS-22l" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-10286" y="-3806"/>
+            <point key="canvasLocation" x="-12118" y="-4073"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="C0n-WM-Vch">
@@ -242,7 +242,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="008-pD-UJl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-10615" y="-2977"/>
+            <point key="canvasLocation" x="-10578" y="-3009"/>
         </scene>
         <!--Sign Up View Controller-->
         <scene sceneID="jUv-ZM-bTF">
@@ -377,7 +377,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="74q-5r-fkm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-9442" y="-4694"/>
+            <point key="canvasLocation" x="-9426" y="-4916"/>
         </scene>
         <!--Activity-->
         <scene sceneID="jyI-96-K3N">
@@ -420,7 +420,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Rr3-4G-16L">
-                                                    <rect key="frame" x="350" y="25" width="54" height="54"/>
+                                                    <rect key="frame" x="311" y="25" width="54" height="54"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <color key="tintColor" red="0.30106731180000001" green="0.84825199559999998" blue="0.97309248100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
@@ -553,7 +553,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="a8Q-tH-3iz"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Activity" image="activity" id="wBE-Sq-3R4"/>
+                    <tabBarItem key="tabBarItem" title="Activity" image="group" selectedImage="group" id="wBE-Sq-3R4"/>
                     <connections>
                         <outlet property="headerView" destination="OO3-J9-p8C" id="How-by-x0b"/>
                         <outlet property="placeHolderText" destination="ld2-KA-aPj" id="WZ0-QB-YEr"/>
@@ -724,9 +724,9 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E3t-Ma-1jn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-6822" y="-2977"/>
+            <point key="canvasLocation" x="-6945" y="-3009"/>
         </scene>
-        <!--To-Do-->
+        <!--Home-->
         <scene sceneID="Hak-R0-ro3">
             <objects>
                 <viewController storyboardIdentifier="WeeklyActivitiesViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="wtt-uK-MOE" customClass="WeeklyActivitiesViewController" customModule="Health" customModuleProvider="target" sceneMemberID="viewController">
@@ -878,7 +878,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Vn9-zI-7qq"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="To-Do" image="To-do" selectedImage="To-do" id="42A-Jo-p9A"/>
+                    <tabBarItem key="tabBarItem" title="Home" image="group6-1" selectedImage="group6-1" id="42A-Jo-p9A"/>
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
@@ -890,7 +890,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UBK-uH-d6l" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-9545" y="-3011"/>
+            <point key="canvasLocation" x="-9751" y="-3009"/>
         </scene>
         <!--Sleep View Controller-->
         <scene sceneID="kUJ-Eg-Opl">
@@ -1016,9 +1016,9 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rc5-VS-wsL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-8810.3999999999996" y="-2977.0614692653676"/>
+            <point key="canvasLocation" x="-8892" y="-3009"/>
         </scene>
-        <!--news-->
+        <!--News-->
         <scene sceneID="FY9-xU-o01">
             <objects>
                 <viewController id="FeK-xm-sOS" customClass="News" customModule="Health" customModuleProvider="target" sceneMemberID="viewController">
@@ -1052,19 +1052,19 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cF3-Fj-xwO">
-                                                    <rect key="frame" x="15" y="11" width="384" height="150"/>
+                                                    <rect key="frame" x="15" y="11" width="345" height="150"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="150" id="Xjv-VY-e3Q"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="justified" lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FJR-rs-mn5">
-                                                    <rect key="frame" x="15" y="205.5" width="384" height="183.5"/>
+                                                    <rect key="frame" x="15" y="205.5" width="345" height="183.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GVP-sx-p4h">
-                                                    <rect key="frame" x="15" y="169" width="384" height="26.5"/>
+                                                    <rect key="frame" x="15" y="169" width="345" height="26.5"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="22"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -1104,14 +1104,14 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="hNC-La-3is"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="news" image="news" id="nF1-pB-spG"/>
+                    <tabBarItem key="tabBarItem" title="News" image="news" id="nF1-pB-spG"/>
                     <connections>
                         <outlet property="tableView" destination="oqv-DZ-cK7" id="sw9-uu-KkU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1KW-tz-4nt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-7796" y="-2977"/>
+            <point key="canvasLocation" x="-7946" y="-3009"/>
         </scene>
         <!--Profile-->
         <scene sceneID="cWP-1i-qwr">
@@ -1143,7 +1143,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3NB-aZ-3OV">
-                                                    <rect key="frame" x="254" y="23" width="150" height="45"/>
+                                                    <rect key="frame" x="215" y="23" width="150" height="45"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="150" id="Wsw-tv-SQm"/>
                                                     </constraints>
@@ -1253,7 +1253,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="ruO-X8-H1F"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Profile" image="Profile" id="cJP-G9-3dc"/>
+                    <tabBarItem key="tabBarItem" title="Profile" image="fill1" id="cJP-G9-3dc"/>
                     <connections>
                         <outlet property="NameLabel" destination="Nqq-pa-bts" id="QPN-hO-uHv"/>
                         <outlet property="activityIndicator" destination="XcJ-Qd-Wvk" id="Fst-tK-2dm"/>
@@ -1427,21 +1427,21 @@
                     <connections>
                         <segue destination="wtt-uK-MOE" kind="relationship" relationship="viewControllers" id="LxJ-V6-Gd9"/>
                         <segue destination="eET-tI-1Wb" kind="relationship" relationship="viewControllers" id="EqE-Kq-qYK"/>
-                        <segue destination="sJI-1f-4fo" kind="relationship" relationship="viewControllers" id="gd1-As-JU6"/>
-                        <segue destination="FeK-xm-sOS" kind="relationship" relationship="viewControllers" id="qUG-By-BOx"/>
+                        <segue destination="FeK-xm-sOS" kind="relationship" relationship="viewControllers" id="GJw-vu-wvO"/>
+                        <segue destination="sJI-1f-4fo" kind="relationship" relationship="viewControllers" id="tzs-vt-Tsh"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dTf-lE-Za5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-9406" y="-3743"/>
+            <point key="canvasLocation" x="-10166" y="-4102"/>
         </scene>
     </scenes>
     <resources>
         <image name="Health" width="600" height="275"/>
-        <image name="Profile" width="48" height="48"/>
-        <image name="To-do" width="48" height="48"/>
-        <image name="activity" width="45" height="45"/>
         <image name="back" width="48" height="48"/>
+        <image name="fill1" width="23" height="23"/>
+        <image name="group" width="24" height="15"/>
+        <image name="group6-1" width="24" height="23"/>
         <image name="icn_left_arrow" width="25" height="25"/>
         <image name="news" width="45" height="45"/>
         <image name="path" width="12" height="21"/>

@@ -347,6 +347,7 @@
 		DF88E6222154B9370086AFBE /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				DF0DB384215DEC7C00201425 /* test.swift */,
 				DF3477D2216DF55500D8E3C7 /* SetGoalViewController.swift */,
 				DF88E6232154B9590086AFBE /* LoginViewController.swift */,
 				DFB41A6A216F5920002CADB4 /* LoginViewController.xib */,
@@ -357,7 +358,6 @@
 				DF5613332158B9EC009A48CD /* WalkViewController.swift */,
 				DF869DBF215A3847006C10E5 /* ActivityListViewController.swift */,
 				DF869DC8215A5660006C10E5 /* ActivityListViewController+TableView.swift */,
-				DF0DB384215DEC7C00201425 /* test.swift */,
 				DF869DE6215BB257006C10E5 /* InitialScreen+Notification.swift */,
 				DF0DB382215D1BF700201425 /* SleepViewController.swift */,
 				DF25198B2167937E000E58F7 /* WeeklyActivities+tableView.swift */,

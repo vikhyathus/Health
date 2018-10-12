@@ -43,6 +43,7 @@ class HomeScreenCVCell: UICollectionViewCell {
             let shared = UserDefaults.standard
             shared.set(goalWalk, forKey: "sleep")
         }
+        
     }
     
     func retrieveGoal() {

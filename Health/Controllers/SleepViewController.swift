@@ -58,6 +58,8 @@ class SleepViewController: UIViewController {
         view.addSubview(percentageLabel)
         percentageLabel.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
         percentageLabel.center = view.center
+        saveButton.isEnabled = false
+        saveButton.alpha = 0.5
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -192,6 +194,8 @@ class SleepViewController: UIViewController {
     
     @IBAction func startTapped(_ sender: Any) {
         
+        saveButton.isEnabled = true
+        saveButton.alpha = 1
         if !isStart {
             startButton.setTitle("Stop", for: .normal)
             startButton.backgroundColor = Colors.orange

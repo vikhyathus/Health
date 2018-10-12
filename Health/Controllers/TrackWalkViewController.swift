@@ -55,6 +55,8 @@ class TrackWalkViewController: UIViewController {
         percentageLabel.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
         percentageLabel.center = view.center
         updateUIwithWalkDetails()
+        doneButton.isEnabled = false
+        doneButton.alpha = 0.5
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -189,6 +191,8 @@ class TrackWalkViewController: UIViewController {
     }
 
     @IBAction private func startButtonTapped(_ sender: Any) {
+        doneButton.isEnabled = true
+        doneButton.alpha = 1
         //startTime = Date()
 //        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(action), userInfo: nil, repeats: false)
         if !isStart {
