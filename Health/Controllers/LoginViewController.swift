@@ -17,6 +17,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+    @IBOutlet weak var ilabel: UILabel!
     @IBOutlet var textFields: [UITextField]!
     
     var isSignUp: Bool = true

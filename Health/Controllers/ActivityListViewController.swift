@@ -17,6 +17,8 @@ class ActivityListViewController: UIViewController {
     let userID = Auth.auth().currentUser?.uid
     var iswalk = true
     var activityIndicator: UIActivityIndicatorView!
+    var walkGoal = 200
+    var sleepGoal = 4 * 3600
     
     @IBOutlet weak var placeHolderText: UILabel!
     @IBOutlet weak var placeholder: UIView!
@@ -29,10 +31,14 @@ class ActivityListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.isHidden = true
+        placeHolderText.isHidden = true
+        placeholder.isHidden = true
+        retrieveGoal()
         setActivityIndicator()
         setUpViews()
         fetch()
-        //populateList(activity: "Walk", property: "steps")
+        populateList(activity: "Walk", property: "steps")
         sort()
         tableView.delegate = self
         tableView.dataSource = self
@@ -73,9 +79,9 @@ class ActivityListViewController: UIViewController {
         return .lightContent
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        retrieveGoal()
         if didLoad {
             if iswalk {
                  populateList(activity: "Walk", property: "steps")
@@ -87,6 +93,37 @@ class ActivityListViewController: UIViewController {
             tableView.reloadData()
         }
         didLoad = true
+    }
+    
+    func retrieveGoal() {
+        
+        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
+        let (status, message) = FireBaseHelper.getUserID()
+        guard status else {
+            print(message)
+            return
+        }
+        
+        ref.child(message).observeSingleEvent(of: .value, with: { data in
+            
+            guard data.hasChild("goal") else {
+                self.walkGoal = 200
+                self.sleepGoal = 4 * 3600
+                return
+            }
+            let goalValue = data.childSnapshot(forPath: "goal")
+            guard let goalDictionary = goalValue.value as? NSDictionary else {
+                return
+            }
+            guard let previousWalk = goalDictionary["walkgoal"] as? Int else {
+                return
+            }
+            guard let previousSleep = goalDictionary["sleepgoal"] as? Int else {
+                return
+            }
+            self.walkGoal = previousWalk
+            self.sleepGoal = previousSleep
+        })
     }
     
     func populateList(activity: String, property: String) {
@@ -101,7 +138,6 @@ class ActivityListViewController: UIViewController {
                 return
             }
         }
-        
         fetch()
         let connectedRef = Database.database().reference(withPath: ".info/connected")
         connectedRef.observe(.value, with: { snapshot in
@@ -112,7 +148,7 @@ class ActivityListViewController: UIViewController {
                 self.view.isUserInteractionEnabled = true
             }
         })
-        self.placeholder.isHidden = !self.activityList.isEmpty
+        //self.placeholder.isHidden = !self.activityList.isEmpty
     }
     
     func callAPI(activity: String, property: String) {
@@ -136,9 +172,9 @@ class ActivityListViewController: UIViewController {
             }
             self.addToCoreData()
             self.fetch()
-            self.view.isUserInteractionEnabled = true
-            self.placeholder.isHidden = !self.activityList.isEmpty
-            self.tableView.isHidden = self.activityList.isEmpty
+//            self.view.isUserInteractionEnabled = true
+//            self.placeholder.isHidden = !self.activityList.isEmpty
+//            self.tableView.isHidden = self.activityList.isEmpty
             //self.tableView.reloadData()
             self.activityIndicator.stopAnimating()
         })
@@ -195,25 +231,29 @@ extension ActivityListViewController: UITableViewDelegate, UITableViewDataSource
         var temp: String = ""
         if iswalk {
             temp = "Steps: \(row.steps)"
-            if row.steps >= 200 {
+            if row.steps >= walkGoal {
                 cell?.statusImage.tintColor = .green
                 cell?.statusImage.image = UIImage(named: "icons8-checkmark-96")
+                cell?.durationLabel.textColor = Colors.green
             } else {
                 cell?.statusImage.tintColor = .red
                 cell?.statusImage.image = UIImage(named: "icons8-delete-96 copy")
+                cell?.durationLabel.textColor = .red
             }
             cell?.durationLabel.text = temp
             
         } else {
-            if row.steps >= 200 {
+            if row.steps >= (sleepGoal * 3600) {
                 cell?.statusImage.tintColor = .green
                 cell?.statusImage.image = UIImage(named: "icons8-checkmark-96")
+                cell?.durationLabel.textColor = Colors.green
             } else {
                 cell?.statusImage.tintColor = .red
                 cell?.statusImage.image = UIImage(named: "icons8-delete-96 copy")
+                cell?.durationLabel.textColor = .red
             }
             let hour = row.steps / 3600
-            let minutes = row.steps / 60
+            let minutes = (row.steps / 60) % 60
             let seconds = row.steps % 60
             temp = "\(hour)h : \(minutes)min : \(seconds)sec"
             cell?.durationLabel.text = temp
@@ -297,7 +337,10 @@ extension ActivityListViewController {
                 print(activityList)
                 self.sort()
                 tableView.reloadData()
-                //view.isUserInteractionEnabled = true
+                placeholder.isHidden = !activityList.isEmpty
+                tableView.isHidden  = activityList.isEmpty
+                placeHolderText.isHidden = !self.activityList.isEmpty
+                    //view.isUserInteractionEnabled = true
             } catch {
                 print("Error fetching data from core data")
             }
@@ -311,6 +354,9 @@ extension ActivityListViewController {
                 }
                 self.sort()
                 tableView.reloadData()
+                placeholder.isHidden = !activityList.isEmpty
+                tableView.isHidden  = activityList.isEmpty
+                placeHolderText.isHidden = !self.activityList.isEmpty
                 //view.isUserInteractionEnabled = true
             } catch {
                 print("Error fetching data from core data")

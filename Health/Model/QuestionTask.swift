@@ -46,7 +46,7 @@ public var QuestionTask: ORKOrderedTask {
     
     
     //Question 3
-    let stressQuestionType = "Do you feel stressed ryt now?"
+    let stressQuestionType = "Do you feel stressed right now?"
     let stressTextChoices = [
         ORKTextChoice(text: "Yes", value: "1" as NSString),
         ORKTextChoice(text: "No", value: "0" as NSString)

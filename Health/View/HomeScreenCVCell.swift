@@ -24,58 +24,7 @@ class HomeScreenCVCell: UICollectionViewCell {
         
         setUpProgressView(containerView: self)
         setUpPercentageLabel()
-        //setUpCellForSteps()
-        //setUpCellForSleep()
-        //getGoals()
     }
-//
-//    func getGoals() {
-//
-//        if let saveddata = UserDefaults.standard.object(forKey: "walk") as? Int {
-//            goalWalk = saveddata
-//        } else {
-//            let shared = UserDefaults.standard
-//            shared.set(goalWalk, forKey: "walk")
-//        }
-//
-//        if let saveddata = UserDefaults.standard.object(forKey: "sleep") as? Int {
-//            goalSleep = saveddata
-//        } else {
-//            let shared = UserDefaults.standard
-//            shared.set(goalWalk, forKey: "sleep")
-//        }
-//    }
-    
-//    func retrieveGoal() {
-//
-//        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
-//        let (status, message) = FireBaseHelper.getUserID()
-//        guard status else {
-//            print(message)
-//            return
-//        }
-//
-//        ref.child(message).observeSingleEvent(of: .value, with: { data in
-//
-//            guard data.hasChild("goal") else {
-//                self.goalWalk = 200
-//                self.goalSleep = 4 * 3600
-//                return
-//            }
-//            let goalValue = data.childSnapshot(forPath: "goal")
-//            guard let goalDictionary = goalValue.value as? NSDictionary else {
-//                return
-//            }
-//            guard let previousWalk = goalDictionary["walkgoal"] as? Int else {
-//                return
-//            }
-//            guard let previousSleep = goalDictionary["sleepgoal"] as? Int else {
-//                return
-//            }
-//            self.goalWalk = previousWalk
-//            self.goalSleep = previousSleep
-//        })
-//    }
     
     func setUpProgressView(containerView: UIView) {
         
@@ -108,55 +57,4 @@ class HomeScreenCVCell: UICollectionViewCell {
         
         self.addSubview(percentageLabel)
     }
-    
-//    func setUpCellForSteps() {
-//
-//        updateUIwithWalkDetails(activity: "Walk", property: "steps") { steps, percent in
-//            self.sleepWalkCountLabel.text = "\(steps) Steps"
-//            self.shapeLayer.strokeEnd = CGFloat(percent)
-//            self.percentageLabel.text = "\(Int(percent * 100))%"
-//        }
-//    }
-    
-//    func setUpCellForSleep() {
-//
-//        updateUIwithWalkDetails(activity: "Sleep", property: "duration") { duration, percent in
-//            let sec = duration % 60
-//            let min = duration / 60
-//            let hour = duration / 3600
-//            self.sleepWalkCountLabel.text = "\(hour)hrs:\(min)min:\(sec)sec"
-//            self.shapeLayer.strokeEnd = CGFloat(percent)
-//            self.percentageLabel.text = "\(Int(percent * 100))%"
-//        }
-//    }
-    
-//    func updateUIwithWalkDetails(activity: String, property: String, completion: @escaping (Int, CGFloat) -> ()) {
-//
-//        let userID = Auth.auth().currentUser?.uid
-//        var previousWalkDetails = 0
-//
-//        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
-//        ref.child(userID!).child("Activities").child(activity).observeSingleEvent(of: .value) { snapshot in
-//
-//            if snapshot.hasChild(Date.getKeyFromDate()) {
-//                let snapshotData = snapshot.childSnapshot(forPath: Date.getKeyFromDate())
-//                guard let sleepDetails = snapshotData.value as? NSDictionary else { print("error"); return }
-//                previousWalkDetails = sleepDetails[property] as? Int ?? 0
-//                var percent: CGFloat = 0
-//                if activity == "Walk" {
-//                    percent = CGFloat(previousWalkDetails) / CGFloat(self.goalWalk)
-//                } else {
-//                    percent = CGFloat(previousWalkDetails) / CGFloat(self.goalSleep * 3600)
-//                }
-//                //self.shapeLayer.strokeEnd = CGFloat(percent)
-//                //self.percentageLabel.text = "\(Int(percent * 100))%"
-//                completion(previousWalkDetails, CGFloat(percent))
-//                return
-//            } else {
-//                completion(previousWalkDetails, 0)
-//            }
-//        }
-//        print("Outside \(previousWalkDetails)")
-//        completion(previousWalkDetails, 0)
-//    }
 }

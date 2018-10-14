@@ -31,7 +31,7 @@ class SleepViewController: UIViewController {
     var minStr: String!
     var secStr: String!
     var isStart = false
-    var goal = 200
+    var goal = 4 * 3600
     let shapeLayer = CAShapeLayer()
     let trackLayer = CAShapeLayer()
     
@@ -122,7 +122,7 @@ class SleepViewController: UIViewController {
                 self.sleepCount = previousSleepDetail
                 self.time = previousSleepDetail
                 self.sec = (Int(self.time) % 60)
-                self.min = (Int(self.time) / 60)
+                self.min = (Int(self.time) / 60) % 60
                 self.hour = (Int(self.time) / 3600)
                 let percent = CGFloat(self.sleepCount)/CGFloat(self.goal)
                 self.shapeLayer.strokeEnd = percent

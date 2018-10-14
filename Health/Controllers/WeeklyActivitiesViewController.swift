@@ -18,6 +18,9 @@ class WeeklyActivitiesViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var headerView: UIView!
+    @IBOutlet weak var flabel: UILabel!
+    @IBOutlet weak var ilabel: UILabel!
+    @IBOutlet weak var tlabel: UILabel!
     
     let shapeLayer = CAShapeLayer()
     let trackLayer = CAShapeLayer()
@@ -36,6 +39,9 @@ class WeeklyActivitiesViewController: UIViewController {
         collectionView.backgroundColor = UIColor.clear
         headerView.setGradientBackground(colorOne: Colors.lightorange, colorTwo: Colors.brightOrange)
         collectionView.reloadData()
+        flabel.textColor = Colors.lightBlue
+        tlabel.textColor = Colors.lightBlue
+        ilabel.textColor = Colors.lightBlue
     }
 
     
@@ -48,6 +54,7 @@ class WeeklyActivitiesViewController: UIViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
+    
     func accessHealthKit() {
         
         guard   let dateOfBirth = HKObjectType.characteristicType(forIdentifier: .dateOfBirth),
@@ -94,10 +101,6 @@ class WeeklyActivitiesViewController: UIViewController {
             }
         }
     }
-    
-//    override var preferredStatusBarStyle: UIStatusBarStyle {
-//        return .lightContent
-//    }
 
     func setUpNotification() {
         
@@ -160,7 +163,7 @@ class WeeklyActivitiesViewController: UIViewController {
         }
     }
     
-    func retrieveGoal(completion: @escaping (Int, Int) -> ()) {
+    func retrieveGoal(completion: @escaping (Int, Int) -> Void) {
         
         var goalWalk = 200
         var goalSleep = 4 * 3600
@@ -177,6 +180,7 @@ class WeeklyActivitiesViewController: UIViewController {
             guard data.hasChild("goal") else {
                 goalWalk = 200
                 goalSleep = 4 * 3600
+                completion(goalWalk, goalSleep)
                 return
             }
             let goalValue = data.childSnapshot(forPath: "goal")
@@ -288,9 +292,9 @@ extension WeeklyActivitiesViewController: UICollectionViewDelegate, UICollection
                     let percent = CGFloat(sleepCount) / CGFloat(sleepGoal * 3600)
                     cell?.percentageLabel.text = "\(Int(percent * 100))%"
                     let hrs = sleepCount / 3600
-                    let min = sleepCount / 60
+                    let min = (sleepCount / 60) % 60
                     let sec = sleepCount % 60
-                    cell?.sleepWalkCountLabel.text = "\(hrs)hrs:\(min)min:\(sec)"
+                    cell?.sleepWalkCountLabel.text = "\(hrs)hrs:\(min)min:\(sec)sec"
                     cell?.shapeLayer.strokeEnd = percent
                 })
             }
