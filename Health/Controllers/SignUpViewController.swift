@@ -57,7 +57,7 @@ class SignUpViewController: UIViewController {
     func alertCreator(title: String, message: String) -> UIAlertController {
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let action1 = UIAlertAction(title: "OK", style: .cancel) { (action: UIAlertAction) in
+        let action1 = UIAlertAction(title: "OK", style: .cancel) { (_: UIAlertAction) in
             self.clearTextFields()
         }
         alertController.addAction(action1)
@@ -66,6 +66,7 @@ class SignUpViewController: UIViewController {
     }
     
     @IBAction private func signUpButtonTapped(_ sender: Any) {
+
         startSignUpProcess()
     }
     
@@ -76,8 +77,7 @@ class SignUpViewController: UIViewController {
         guard let emailString = emailField.text else {
             return
         }
-        Auth.auth().fetchProviders(forEmail: emailString, completion: {
-            (providers, error) in
+        Auth.auth().fetchProviders(forEmail: emailString, completion: { providers, error in
             
             if let error = error {
                 print(error.localizedDescription)
@@ -124,10 +124,10 @@ extension SignUpViewController: ORKTaskViewControllerDelegate {
                 signUpTheUser(taskViewController: taskViewController) {
                     let userID = Auth.auth().currentUser?.uid
                     signatureResult?.first?.apply(to: ConsentDocument)
-                    ConsentDocument.makePDF { data, error in
+                    ConsentDocument.makePDF { data, _ in
                         let storageRef = Storage.storage().reference()
                         let consentDocRef = storageRef.child("consentDocs")
-                        let userDoc = consentDocRef.child("\(String(describing: userID)).pdf").putData(data!, metadata: nil, completion: { metadata, error in
+                        _ = consentDocRef.child("\(String(describing: userID)).pdf").putData(data!, metadata: nil, completion: { metadata, _ in
                                 guard metadata != nil else {
                                 return
                             }
@@ -153,7 +153,7 @@ extension SignUpViewController: ORKTaskViewControllerDelegate {
                 
                 let alert = self.alertCreator(title: "Sign Up Error", message: (error?.localizedDescription as? String)!)
                 self.present(alert, animated: true, completion: nil)
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
                 taskViewController.dismiss(animated: true, completion: nil)
                 return
             }
@@ -178,5 +178,3 @@ extension SignUpViewController: ORKTaskViewControllerDelegate {
         }
     }
 }
-
-

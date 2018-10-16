@@ -46,7 +46,7 @@ class LoginViewController: UIViewController {
             activityIndicator.isHidden = true
             return
         }
-        Auth.auth().signIn(withEmail: user, password: password) { user, error in
+        Auth.auth().signIn(withEmail: user, password: password) { _, error in
             
             if error != nil {
                 let alert = self.alertCreator(title: "Authentication Error", message: (error?.localizedDescription)!)
@@ -54,22 +54,23 @@ class LoginViewController: UIViewController {
             } else {
                 print("User logged in successfuly!")
                 let homeScreen = self.storyboard?.instantiateViewController(withIdentifier: "TabViewController") as? HomeTabController
-                self.present(homeScreen!, animated: true, completion: nil)
-                //self.dismiss(animated: true, completion: nil)
+                guard let unwrappedhomeScreen = homeScreen else {
+                    return
+                }
+                self.navigationController?.pushViewController(unwrappedhomeScreen, animated: true)
             }
         }
     }
     
     @IBAction private func cancelTapped(_ sender: Any) {
         navigationController?.popViewController(animated: true)
-        //dismiss(animated: true, completion: nil)
     }
     
     func alertCreator(title: String, message: String) -> UIAlertController {
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
-        let action1 = UIAlertAction(title: "OK", style: .cancel) { (action: UIAlertAction) in
+        let action1 = UIAlertAction(title: "OK", style: .cancel) { (_: UIAlertAction) in
             self.clearForm()
         }
         alertController.addAction(action1)

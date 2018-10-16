@@ -83,7 +83,7 @@ class WeeklyActivitiesViewController: UIViewController {
                                                        HKObjectType.workoutType()]
         
         if #available(iOS 12.0, *) {
-            HKHealthStore().getRequestStatusForAuthorization(toShare: healthKitTypesToWrite, read: healthKitTypesToRead) { requestStatus, error in
+            HKHealthStore().getRequestStatusForAuthorization(toShare: healthKitTypesToWrite, read: healthKitTypesToRead) { requestStatus, _ in
                 print(requestStatus)
                 if requestStatus == .shouldRequest {
                     let alert = UIAlertController(title: "Permission", message: "We need to accesss you health repo", preferredStyle: UIAlertController.Style.alert)
@@ -97,7 +97,7 @@ class WeeklyActivitiesViewController: UIViewController {
             }
         } else {
             HKHealthStore().requestAuthorization(toShare: healthKitTypesToWrite, read: healthKitTypesToRead) { _, error in
-                print(error)
+                print(error as Any)
             }
         }
     }
@@ -231,7 +231,7 @@ extension WeeklyActivitiesViewController: UNUserNotificationCenterDelegate, ORKT
     
     func taskViewController(_ taskViewController: ORKTaskViewController, didFinishWith reason: ORKTaskViewControllerFinishReason, error: Error?) {
         guard let results = taskViewController.result.results as? [ORKStepResult] else { return }
-        let userID = Auth.auth().currentUser?.uid
+        //let userID = Auth.auth().currentUser?.uid
         var values = [String: String]()
         let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
         for stepResult: ORKStepResult in results {
@@ -248,13 +248,17 @@ extension WeeklyActivitiesViewController: UNUserNotificationCenterDelegate, ORKT
                     } else {
                         values[questionResult.identifier] = questionResult.answer as? String
                     }
-                    
                 }
             }
             
         }
         print(values)
-        ref.child(userID!).child("survey").child(Date.getKeyFromDate()).updateChildValues(values) { error, ref in
+        let (status, message) = FireBaseHelper.getUserID()
+        guard status else {
+            print(message)
+            return
+        }
+        ref.child(message).child("survey").child(Date.getKeyFromDate()).updateChildValues(values) { error, _ in
             if error != nil {
                 print("error saing user data!")
                 taskViewController.dismiss(animated: true, completion: nil)
@@ -309,7 +313,10 @@ extension WeeklyActivitiesViewController: UICollectionViewDelegate, UICollection
                 })
             }
         }
-        return cell!
+        guard let unwrappedCell = cell else {
+            return UICollectionViewCell()
+        }
+        return unwrappedCell
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -321,5 +328,4 @@ extension WeeklyActivitiesViewController: UICollectionViewDelegate, UICollection
         }
         print(contentOffset)
     }
-    
 }
