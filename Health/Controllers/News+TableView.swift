@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-extension News: UITableViewDelegate, UITableViewDataSource {
+extension NewsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return newsArticles.count
@@ -23,22 +23,31 @@ extension News: UITableViewDelegate, UITableViewDataSource {
         
         let row = newsArticles[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCell") as? NewsCell
-        if isError {
-            cell?.imageView?.image = UIImage(data: imageData[indexPath.row] as Data)
-        }
-        cell?.setUpCell(row: row)
         cell?.setNeedsUpdateConstraints()
         cell?.updateConstraints()
-        //cell?.selectionStyle = .gray
-        //cell?.focusStyle = .custom
+        cell?.selectionStyle = .none
+        cell?.newsImage.image = UIImage(named: "imagePlaceHolder")
+        cell?.titleLabel.text = row.title
+        cell?.descriptionLabel.text = row.description
+        ImageDownloader.downloadImage(urlString: row.urlToImage) { image, _ in
+            DispatchQueue.main.async {
+                cell?.newsImage?.image = image
+            }
+        }
         cell?.separatorInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-        return cell!
+        guard let unwrappedCell = cell else {
+            return UITableViewCell()
+        }
+        return unwrappedCell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let webvc = storyboard?.instantiateViewController(withIdentifier: "web") as? WebViewController
         webvc?.urlString = newsArticles[indexPath.row].url
-        present(webvc!, animated: true, completion: nil)
+        guard let unwrappedwebvc = webvc else {
+            return
+        }
+        present(unwrappedwebvc, animated: true, completion: nil)
     }
 }

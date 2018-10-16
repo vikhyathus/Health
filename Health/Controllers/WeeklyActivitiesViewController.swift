@@ -39,12 +39,12 @@ class WeeklyActivitiesViewController: UIViewController {
         collectionView.backgroundColor = UIColor.clear
         headerView.setGradientBackground(colorOne: Colors.lightorange, colorTwo: Colors.brightOrange)
         collectionView.reloadData()
-        flabel.textColor = Colors.lightBlue
-        tlabel.textColor = Colors.lightBlue
-        ilabel.textColor = Colors.lightBlue
+        flabel.textColor = Colors.progressBlue
+        tlabel.textColor = Colors.progressBlue
+        ilabel.textColor = Colors.progressBlue
+        
     }
 
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         collectionView.reloadData()
@@ -199,13 +199,18 @@ class WeeklyActivitiesViewController: UIViewController {
         })
     }
     
-    func fetchSleepWalkDetails(activity: String, property: String, completion: @escaping (Int) -> ()) {
+    func fetchSleepWalkDetails(activity: String, property: String, completion: @escaping (Int) -> Void) {
         
-        let userID = Auth.auth().currentUser?.uid
         var previousWalkDetails = 0
         
+        let (status, message) = FireBaseHelper.getUserID()
+        guard status else {
+            print(message)
+            return
+        }
+        
         let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
-        ref.child(userID!).child("Activities").child(activity).observeSingleEvent(of: .value) { snapshot in
+        ref.child(message).child("Activities").child(activity).observeSingleEvent(of: .value) { snapshot in
             
             if snapshot.hasChild(Date.getKeyFromDate()) {
                 let snapshotData = snapshot.childSnapshot(forPath: Date.getKeyFromDate())
@@ -230,18 +235,23 @@ extension WeeklyActivitiesViewController: UNUserNotificationCenterDelegate, ORKT
         var values = [String: String]()
         let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
         for stepResult: ORKStepResult in results {
-            let stepResultCast = stepResult.results
-            for result in stepResultCast! {
+            guard let stepResultCast = stepResult.results else {
+                return
+            }
+            for result in stepResultCast {
                 if let questionResult = result as? ORKQuestionResult {
                     if questionResult.isMember(of: ORKChoiceQuestionResult.self) {
                         if let choiceAnswers = questionResult.answer as? NSArray {
                             let choiceIs = choiceAnswers.firstObject as? String
                             values[questionResult.identifier] = choiceIs
-                            print(choiceIs)
                         }
+                    } else {
+                        values[questionResult.identifier] = questionResult.answer as? String
                     }
+                    
                 }
             }
+            
         }
         print(values)
         ref.child(userID!).child("survey").child(Date.getKeyFromDate()).updateChildValues(values) { error, ref in
@@ -278,8 +288,8 @@ extension WeeklyActivitiesViewController: UICollectionViewDelegate, UICollection
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeScreenCVCell", for: indexPath) as? HomeScreenCVCell
         
         if indexPath.row == 0 {
-            retrieveGoal { (walkGoal, sleepGoal) in
-                self.fetchSleepWalkDetails(activity: "Walk", property: "steps", completion: { (stepCount) in
+            retrieveGoal { walkGoal, _ in
+                self.fetchSleepWalkDetails(activity: "Walk", property: "steps", completion: { stepCount in
                     let percent = CGFloat(stepCount) / CGFloat(walkGoal)
                     cell?.percentageLabel.text = "\(Int(percent * 100))%"
                     cell?.sleepWalkCountLabel.text = "\(stepCount) steps"
@@ -287,8 +297,8 @@ extension WeeklyActivitiesViewController: UICollectionViewDelegate, UICollection
                 })
             }
         } else {
-            retrieveGoal { (walkGoal, sleepGoal) in
-                self.fetchSleepWalkDetails(activity: "Sleep", property: "duration", completion: { (sleepCount) in
+            retrieveGoal { _, sleepGoal in
+                self.fetchSleepWalkDetails(activity: "Sleep", property: "duration", completion: { sleepCount in
                     let percent = CGFloat(sleepCount) / CGFloat(sleepGoal * 3600)
                     cell?.percentageLabel.text = "\(Int(percent * 100))%"
                     let hrs = sleepCount / 3600

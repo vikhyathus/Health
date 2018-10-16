@@ -35,7 +35,7 @@ class UserProfileViewController: UIViewController {
     @IBOutlet weak var navBar: UINavigationItem!
     @IBOutlet weak var navigationBar: UINavigationBar!
     
-    var tableLabels = [ ["Age", "Gender", "Blood Type"], ["Weight", "Height", "BMI"], ["Walk Goal", "Sleep Goal"]]
+    var tableLabels = [ ["Age", "Gender", "Blood Type"], ["Weight", "Height", "BMI"], ["Goal"]]
     let userHealthProfile = UserHealthProfile()
     
     private enum ProfileDataError: Error {
@@ -63,7 +63,6 @@ class UserProfileViewController: UIViewController {
         emailLabel.textColor = Colors.white
         NameLabel.textColor = Colors.white
         headerView.setGradientBackground(colorOne: Colors.orange, colorTwo: Colors.brightOrange)
-        //navigationBar.setGradientBackground(colorOne: Colors.brightOrange, colorTwo: Colors.orange)
         navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationBar.shadowImage = UIImage()
         navigationBar.isTranslucent = true
@@ -192,7 +191,7 @@ class UserProfileViewController: UIViewController {
                         //let bmi = String(format: "%.2f", self.userHealthProfile.bodyMassIndex!)
                         //self.physicalData.append(bmi)
                         self.userDetails.append(self.physicalData)
-                        self.userDetails.append([">", ">"])
+                        self.userDetails.append([">"])
                         self.tableView.reloadData()
                         self.updateDatabase()
                         return
@@ -201,10 +200,8 @@ class UserProfileViewController: UIViewController {
                 self.physicalData.append("Not available")
                 if self.physicalData.count == 2 {
                     self.saveBodyMassIndexToHealthKit()
-                    //let bmi = String(format: "%.2f", self.userHealthProfile.bodyMassIndex!)
-                    //self.physicalData.append(bmi)
                     self.userDetails.append(self.physicalData)
-                    self.userDetails.append([">", ">"])
+                    self.userDetails.append([">"])
                     self.tableView.reloadData()
                     self.updateDatabase()
                     return
@@ -228,7 +225,7 @@ class UserProfileViewController: UIViewController {
                      self.physicalData.append("Unknown")
                 }
                 self.userDetails.append(self.physicalData)
-                self.userDetails.append([">", ">"])
+                self.userDetails.append([">"])
                 self.tableView.reloadData()
                 self.updateDatabase()
             }
@@ -253,7 +250,7 @@ class UserProfileViewController: UIViewController {
                         self.saveBodyMassIndexToHealthKit()
 
                         self.userDetails.append(self.physicalData)
-                        self.userDetails.append([">", ">"])
+                        self.userDetails.append([">"])
                         self.tableView.reloadData()
                         self.updateDatabase()
                         return
@@ -263,7 +260,7 @@ class UserProfileViewController: UIViewController {
                 if self.physicalData.count == 2 {
                     self.saveBodyMassIndexToHealthKit()
                     self.userDetails.append(self.physicalData)
-                    self.userDetails.append([">", ">"])
+                    self.userDetails.append([">"])
                     self.tableView.reloadData()
                     self.updateDatabase()
                     return
@@ -285,7 +282,7 @@ class UserProfileViewController: UIViewController {
                     self.physicalData.append("Unknown")
                 }
                 self.userDetails.append(self.physicalData)
-                self.userDetails.append([">", ">"])
+                self.userDetails.append([">"])
                 self.tableView.reloadData()
                 self.updateDatabase()
             }

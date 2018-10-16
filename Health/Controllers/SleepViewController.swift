@@ -48,7 +48,6 @@ class SleepViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         NotificationCenter.default.addObserver(self, selector: #selector(pauseWhenBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeGround), name: UIApplication.willEnterForegroundNotification, object: nil)
         startButton.layer.borderColor = Colors.orange.cgColor
@@ -62,18 +61,23 @@ class SleepViewController: UIViewController {
         saveButton.alpha = 0.5
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        updateUIwithPreviousData()
-    }
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//        updateUIwithPreviousData()
+//    }
     
 //    override func viewWillAppear(_ animated: Bool) {
 //        super.viewWillAppear(animated)
 //        updateUIwithPreviousData()
 //    }
     
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        if timer.isValid {
+            sleepCount = time
+            updateDatabase(sleepCount: sleepCount)
+        }
         updateGoalLabel()
     }
     
@@ -86,7 +90,7 @@ class SleepViewController: UIViewController {
             return
         }
         
-        ref.child(message).observeSingleEvent(of: .value, with: { (data) in
+        ref.child(message).observeSingleEvent(of: .value, with: { data in
             
             guard data.hasChild("goal") else {
                 self.goalLabel.text = "4 hrs"
@@ -101,9 +105,8 @@ class SleepViewController: UIViewController {
             }
             self.goal = previousSleep * 3600
             self.goalLabel.text = "Goal \(previousSleep) hrs"
-        }) { error in
-            print(error.localizedDescription)
-        }
+            self.updateUIwithPreviousData()
+        })
     }
     
     func updateUIwithPreviousData() {
@@ -126,7 +129,7 @@ class SleepViewController: UIViewController {
                 self.hour = (Int(self.time) / 3600)
                 let percent = CGFloat(self.sleepCount)/CGFloat(self.goal)
                 self.shapeLayer.strokeEnd = percent
-                self.percentageLabel.text = "\(Int(percent*100))%"
+                self.percentageLabel.text = "\(Int(percent * 100))%"
                 self.updateUI()
                 return
             } else {
@@ -215,14 +218,17 @@ class SleepViewController: UIViewController {
     
     @IBAction func cancelTapped(_ sender: Any) {
         removeSavedData()
-        dismiss(animated: true, completion: nil)
+        timer.invalidate()
+        navigationController?.popViewController(animated: true)
+        //dismiss(animated: true, completion: nil)
     }
     
     @IBAction private func saveTapped(_ sender: Any) {
     
         sleepCount = time
         updateDatabase(sleepCount: sleepCount)
-        dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
+        //dismiss(animated: true, completion: nil)
     }
     
     @objc func action() {

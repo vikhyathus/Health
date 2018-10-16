@@ -37,7 +37,7 @@ class HomeScreenCVCell: UICollectionViewCell {
         trackLayer.fillColor = UIColor.clear.cgColor
         
         shapeLayer.path = circularPath.cgPath
-        shapeLayer.strokeColor = Colors.lightBlue.cgColor
+        shapeLayer.strokeColor = Colors.progressBlue.cgColor
         shapeLayer.lineWidth = 5
         shapeLayer.fillColor = UIColor.clear.cgColor
         shapeLayer.strokeEnd = 0

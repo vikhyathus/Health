@@ -26,9 +26,12 @@ extension UserProfileViewController: UITableViewDelegate, UITableViewDataSource 
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileViewCell") as? ProfileViewCell
         cell?.titleLabel.text = tableLabels[indexPath.section][indexPath.row]
         cell?.valueLabel.text = userDetails[indexPath.section][indexPath.row]
-        
         cell?.selectionStyle = .none
-        return cell!
+        
+        guard let unwrappedCell = cell else {
+            return UITableViewCell()
+        }
+        return unwrappedCell
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -37,9 +40,9 @@ extension UserProfileViewController: UITableViewDelegate, UITableViewDataSource 
         if section == 0 {
             label.text = "USER DETAILS"
         } else if section == 1 {
-            label.text = "PHYSICAL DETAIL"
+            label.text = "PHYSICAL DETAILS"
         } else {
-            label.text = "GOALS"
+            label.text = "SET GOALS"
         }
 
         label.backgroundColor = Colors.orange
@@ -58,9 +61,10 @@ extension UserProfileViewController: UITableViewDelegate, UITableViewDataSource 
         if indexPath.section == 2 {
             print(indexPath.section)
             let controller = storyboard?.instantiateViewController(withIdentifier: "SetGoalViewController") as? SetGoalViewController
-            if controller != nil {
-                self.present(controller!, animated: true, completion: nil)
+            guard let unwrappedController = controller else {
+                return
             }
+            self.present(unwrappedController, animated: true, completion: nil)
         }
     }
 }

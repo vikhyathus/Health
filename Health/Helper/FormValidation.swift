@@ -22,6 +22,9 @@ extension SignUpViewController: UITextFieldDelegate {
             confirmPasswordField.becomeFirstResponder()
         default:
             confirmPasswordField.resignFirstResponder()
+            if formIsValid {
+                startSignUpProcess()
+            }
         }
         return true
     }
@@ -48,7 +51,7 @@ extension SignUpViewController: UITextFieldDelegate {
     }
     
     @objc func textDidChange(_ notification: Notification) {
-        var formIsValid = true
+        formIsValid = true
         
         for textField in textFields {
             let (valid, _) = validate(textField)
@@ -69,7 +72,7 @@ extension SignUpViewController: UITextFieldDelegate {
     func isValidEmail(testStr:String) -> Bool {
         
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
         return emailTest.evaluate(with: testStr)
     }
 }
@@ -82,6 +85,9 @@ extension LoginViewController: UITextFieldDelegate {
             passwordField.becomeFirstResponder()
         default:
             passwordField.resignFirstResponder()
+            if formIsValid {
+                startLoginProcess()
+            }
         }
         return true
     }
@@ -96,7 +102,7 @@ extension LoginViewController: UITextFieldDelegate {
     }
     
     @objc func textDidChange(_ notification: Notification) {
-        var formIsValid = true
+        formIsValid = true
         
         for textField in textFields {
             let (valid, _) = validate(textField)

@@ -10,8 +10,7 @@ import Foundation
 import CoreData
 import UIKit
 
-extension News {
-    
+extension NewsViewController {
     
     func addToCoreData() {
         
@@ -33,11 +32,9 @@ extension News {
                 context.delete(item)
             }
             try context.save()
-        }
-        catch {
+        } catch {
             
         }
-        
     }
     
     func populateFromCoreData() {
@@ -55,28 +52,10 @@ extension News {
             let articles = try context.fetch(request)
             for article in articles {
                 newsArticles.append(Article(title: article.title!, description: article.detailednews!, urlToImage: "none", url: "none"))
-                imageData.append(article.image!)
             }
         } catch {
             
         }
-    }
-    
-    func downloadImage(from url: String, completion: @escaping (Data) -> Void) {
-        
-        guard let imageUrl = URL(string: url) else { return }
-        let urlRequest = URLRequest(url: imageUrl)
-        
-        let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
-            
-            if error != nil {
-                print(error)
-                return
-            }
-            completion(data!)
-        }
-        task.resume()
-        
     }
     
     func addObject(object: Article) {
@@ -87,10 +66,6 @@ extension News {
        //entity information goes here
         entity?.title = object.title
         entity?.detailednews = object.description
-        downloadImage(from: object.urlToImage) { data in
-            entity?.image = data as? NSData
-        }
-        
         do {
             try context.save()
         } catch {

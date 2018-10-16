@@ -20,8 +20,9 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var confirmPasswordField: UITextField!
     @IBOutlet weak var signUpButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    
     @IBOutlet var textFields: [UITextField]!
+    
+    var formIsValid = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,44 +66,69 @@ class SignUpViewController: UIViewController {
     }
     
     @IBAction private func signUpButtonTapped(_ sender: Any) {
+        startSignUpProcess()
+    }
+    
+    func startSignUpProcess() {
         
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
-        let taskViewController = ORKTaskViewController(task: ConsentTask, taskRun: nil)
-        taskViewController.delegate = self
-        self.present(taskViewController, animated: true, completion: nil)
+        guard let emailString = emailField.text else {
+            return
+        }
+        Auth.auth().fetchProviders(forEmail: emailString, completion: {
+            (providers, error) in
+            
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            } else if providers == nil {
+                let taskViewController = ORKTaskViewController(task: ConsentTask, taskRun: nil)
+                taskViewController.delegate = self
+                self.present(taskViewController, animated: true, completion: nil)
+            } else {
+                let alert = self.alertCreator(title: "Sign Up Error", message: "EmailID already exists!")
+                self.present(alert, animated: true, completion: nil)
+                return
+            }
+        })
     }
     
     @IBAction private func cancelTapped(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
+        //dismiss(animated: true, completion: nil)
     }
-    
 }
 
 extension SignUpViewController: ORKTaskViewControllerDelegate {
     
     func taskViewController(_ taskViewController: ORKTaskViewController, didFinishWith reason: ORKTaskViewControllerFinishReason, error: Error?) {
+        if error != nil || reason != .completed {
+            taskViewController.dismiss(animated: true, completion: nil)
+            return
+        }
         
         // handling results here
         guard let consentResult = taskViewController.result.results as? [ORKStepResult] else { taskViewController.dismiss(animated: true, completion: nil); return }
         
+        //if consentResult.is
         print(consentResult)
         for stepResult in consentResult {
             if stepResult.identifier == "ConsentReviewStep" {
                 let signatureResult = stepResult.results as? [ORKConsentSignatureResult]
+                
                 guard signatureResult?.first?.consented == true else {
                     taskViewController.dismiss(animated: true, completion: nil)
                     return
                 }
-                signUpTheUser {
+                signUpTheUser(taskViewController: taskViewController) {
                     let userID = Auth.auth().currentUser?.uid
                     signatureResult?.first?.apply(to: ConsentDocument)
                     ConsentDocument.makePDF { data, error in
                         let storageRef = Storage.storage().reference()
                         let consentDocRef = storageRef.child("consentDocs")
-                        let userDoc = consentDocRef.child("\(String(describing: userID)).pdf").putData(data!, metadata: nil, completion: { (metadata, error) in
+                        let userDoc = consentDocRef.child("\(String(describing: userID)).pdf").putData(data!, metadata: nil, completion: { metadata, error in
                                 guard metadata != nil else {
-                                print(error)
                                 return
                             }
                             print("Saved")
@@ -111,10 +137,10 @@ extension SignUpViewController: ORKTaskViewControllerDelegate {
                 }
             }
         }
-        taskViewController.dismiss(animated: true, completion: nil)
+        //taskViewController.dismiss(animated: true, completion: nil)
     }
     
-    func signUpTheUser(completion: @escaping () -> ()) {
+    func signUpTheUser(taskViewController: ORKTaskViewController, completion: @escaping () -> Void) {
         
         guard let email = emailField.text, let pass = passwordField.text, let name = nameField.text else {
             print("Not all the fields are filled!")
@@ -128,23 +154,21 @@ extension SignUpViewController: ORKTaskViewControllerDelegate {
                 let alert = self.alertCreator(title: "Sign Up Error", message: (error?.localizedDescription as? String)!)
                 self.present(alert, animated: true, completion: nil)
                 print(error?.localizedDescription)
+                taskViewController.dismiss(animated: true, completion: nil)
                 return
             }
             guard let uid = user?.user.uid else {
                 return
             }
-            //self.dismiss(animated: true, completion: nil)
-            let homeScreen = self.storyboard?.instantiateViewController(withIdentifier: "TabViewController") as? HomeTabController
-            self.present(homeScreen!, animated: true, completion: nil)
-            //self.dismiss(animated: true, completion: nil)
-            //if user authenticated sucessfully
+            guard let homeScreen = self.storyboard?.instantiateViewController(withIdentifier: "TabViewController") as? HomeTabController else { return }
+            self.navigationController?.pushViewController(homeScreen, animated: true)
+            taskViewController.dismiss(animated: true, completion: nil)
             let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com")
             let userReference = ref.child("Users").child(uid)
             let values = ["name": name, "email": email]
             userReference.updateChildValues(values, withCompletionBlock: { updatingUserError, _ in
                 
                 if updatingUserError != nil {
-                    print(updatingUserError?.localizedDescription)
                     return
                 }
                 print("saved user sucessfully")

@@ -237,7 +237,7 @@ extension ActivityListViewController: UITableViewDelegate, UITableViewDataSource
                 cell?.durationLabel.textColor = Colors.green
             } else {
                 cell?.statusImage.tintColor = .red
-                cell?.statusImage.image = UIImage(named: "icons8-delete-96 copy")
+                cell?.statusImage.image = UIImage(named: "icons8-high-priority-48")
                 cell?.durationLabel.textColor = .red
             }
             cell?.durationLabel.text = temp
@@ -249,7 +249,7 @@ extension ActivityListViewController: UITableViewDelegate, UITableViewDataSource
                 cell?.durationLabel.textColor = Colors.green
             } else {
                 cell?.statusImage.tintColor = .red
-                cell?.statusImage.image = UIImage(named: "icons8-delete-96 copy")
+                cell?.statusImage.image = UIImage(named: "icons8-high-priority-48")
                 cell?.durationLabel.textColor = .red
             }
             let hour = row.steps / 3600

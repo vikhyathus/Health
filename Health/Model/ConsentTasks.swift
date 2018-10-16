@@ -26,4 +26,3 @@ public var ConsentTask: ORKOrderedTask {
 
     return ORKOrderedTask(identifier: "ConsentTask", steps: steps)
 }
-

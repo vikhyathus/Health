@@ -15,7 +15,6 @@ class WalkSleep {
     var steps: Int
     var date: Date
     
-    
     init(duration: Double, steps: Int, date: Date) {
         self.duration = duration
         self.steps = steps

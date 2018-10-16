@@ -2,25 +2,22 @@
   "images" : [
     {
       "idiom" : "iphone",
-      "filename" : "icn_left_arrow@3x-1.png",
+      "filename" : "imagePlaceHolder.png",
       "scale" : "1x"
     },
     {
       "idiom" : "iphone",
-      "filename" : "icn_left_arrow@3x.png",
+      "filename" : "imagePlaceHolder-2.png",
       "scale" : "2x"
     },
     {
       "idiom" : "iphone",
-      "filename" : "icn_left_arrow@3x-2.png",
+      "filename" : "imagePlaceHolder-1.png",
       "scale" : "3x"
     }
   ],
   "info" : {
     "version" : 1,
     "author" : "xcode"
-  },
-  "properties" : {
-    "template-rendering-intent" : "template"
   }
 }

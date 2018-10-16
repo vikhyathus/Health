@@ -27,7 +27,6 @@ class HealthKitSetupAssistant {
       return
     }
     
-   
      let healthKitTypesToWrite: Set<HKSampleType> = [bodyMassIndex,
                                                     activeEnergy,
                                                     stepCount,
@@ -43,7 +42,7 @@ class HealthKitSetupAssistant {
                                                    HKObjectType.workoutType()]
     
     HKHealthStore().requestAuthorization(toShare: healthKitTypesToWrite,
-                                         read: healthKitTypesToRead) { (success, error) in
+                                         read: healthKitTypesToRead) { success, error in
       completion(success, error)
     }
   }

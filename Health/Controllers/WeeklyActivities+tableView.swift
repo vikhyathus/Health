@@ -32,10 +32,14 @@ extension WeeklyActivitiesViewController: UITableViewDelegate, UITableViewDataSo
         
         if indexPath.row == 0 {
             let walk = storyboard?.instantiateViewController(withIdentifier: "TrackWalkViewController") as? TrackWalkViewController
-            present(walk!, animated: true, completion: nil)
+            walk?.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(walk!, animated: true)
+            //present(walk!, animated: true, completion: nil)
         } else {
             let sleep = storyboard?.instantiateViewController(withIdentifier: "SleepViewController") as? SleepViewController
-            present(sleep!, animated: true, completion: nil)
+            sleep?.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(sleep!, animated: true)
+            //present(sleep!, animated: true, completion: nil)
         }
     }
     

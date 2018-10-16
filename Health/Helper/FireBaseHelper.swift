@@ -32,4 +32,9 @@ class FireBaseHelper {
             }
         })
     }
+    
+    // writing to firebase
+    
+    
+    //fetching from firebase
 }

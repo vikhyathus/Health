@@ -14,11 +14,4 @@ class NewsCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     
-    
-    func setUpCell(row: Article) {
-        
-        self.newsImage.downloadImage(from: row.urlToImage)
-        self.titleLabel.text = row.title
-        self.descriptionLabel.text = row.description
-    }
 }

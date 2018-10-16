@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func openHomeScreen() {
-        let homeScreen = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FirstAppScreenViewController") as? FirstAppScreenViewController
+        let homeScreen = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "HomeScreenNavigationViewController") as? HomeScreenNavigationViewController
         window?.rootViewController = homeScreen
     }
     

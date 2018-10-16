@@ -25,7 +25,6 @@ public var ConsentDocument: ORKConsentDocument {
     consentSection.content = "This app gathers the basic health data from you such as age height weight medical conditions"
     consentSections.append(consentSection)
     
-    
     consentSection = ORKConsentSection(type: .privacy)
     consentSection.summary = "Your privacy"
     consentSection.content = "We take your privacy very seriously.We use advanced technologies to protect your data"
@@ -44,7 +43,5 @@ public var ConsentDocument: ORKConsentDocument {
     consentDocument.sections = consentSections
     consentDocument.addSignature(ORKConsentSignature(forPersonWithTitle: "userID", dateFormatString: nil, identifier: "ConsentDocumentParticipantSignature"))
     
-    
     return consentDocument
 }
-

@@ -35,7 +35,6 @@ public var SurveyTask: ORKOrderedTask {
     let ageQuestionStep = ORKQuestionStep(identifier: "AgeQuestionStep", title: ageQuestionStepTitle, answer: ageAnswerFormat)
     steps += [ageQuestionStep]
     
-    //TODO: add 'what is your quest' question
     let questQuestionStepTitle = "What is your quest?"
     let textChoices = [
         ORKTextChoice(text: "Create a ResearchKit App", value: 0 as NSNumber),
@@ -46,11 +45,6 @@ public var SurveyTask: ORKOrderedTask {
     let questQuestionStep = ORKQuestionStep(identifier: "TextChoiceQuestionStep", title: questQuestionStepTitle, answer: questAnswerFormat)
     steps += [questQuestionStep]
 
-    
-    //TODO: add color question step
-
-    
-    //TODO: add summary step
     let summaryStep = ORKCompletionStep(identifier: "SummaryStep")
     summaryStep.title = "There you go..!"
     summaryStep.text = "That was easy!"
@@ -58,4 +52,3 @@ public var SurveyTask: ORKOrderedTask {
 
     return ORKOrderedTask(identifier: "SurveyTask", steps: steps)
 }
-

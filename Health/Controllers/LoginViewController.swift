@@ -21,6 +21,7 @@ class LoginViewController: UIViewController {
     @IBOutlet var textFields: [UITextField]!
     
     var isSignUp: Bool = true
+    var formIsValid = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +34,11 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction private func signInButtonTapped(_ sender: Any) {
+        startLoginProcess()
+    }
+    
+    func startLoginProcess() {
+        
         activityIndicator.startAnimating()
         activityIndicator.isHidden = false
         guard let user = userName.text, let password = passwordField.text else {
@@ -40,7 +46,7 @@ class LoginViewController: UIViewController {
             activityIndicator.isHidden = true
             return
         }
-        Auth.auth().signIn(withEmail: user, password: password) { (user, error) in
+        Auth.auth().signIn(withEmail: user, password: password) { user, error in
             
             if error != nil {
                 let alert = self.alertCreator(title: "Authentication Error", message: (error?.localizedDescription)!)
@@ -55,7 +61,8 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction private func cancelTapped(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
+        //dismiss(animated: true, completion: nil)
     }
     
     func alertCreator(title: String, message: String) -> UIAlertController {

@@ -57,6 +57,7 @@ class TrackWalkViewController: UIViewController {
         updateUIwithWalkDetails()
         doneButton.isEnabled = false
         doneButton.alpha = 0.5
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -93,9 +94,7 @@ class TrackWalkViewController: UIViewController {
             self.percentageLabel.text = "\(Int(percent * 100))%"
             self.shapeLayer.strokeEnd = percent
             self.goal = previousWalk
-        }) { error in
-            print("completion block at error")
-        }
+        })
     }
     
     func updateUIwithWalkDetails() {
@@ -194,10 +193,10 @@ class TrackWalkViewController: UIViewController {
     }
 
     @IBAction private func startButtonTapped(_ sender: Any) {
+        
         doneButton.isEnabled = true
         doneButton.alpha = 1
-        //startTime = Date()
-//        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(action), userInfo: nil, repeats: false)
+        
         if !isStart {
             startButton.backgroundColor = Colors.orange
             startButton.setTitle("Stop", for: .normal)
@@ -211,17 +210,18 @@ class TrackWalkViewController: UIViewController {
             startButton.setTitle("Start", for: .normal)
             stepCount = Int(timeLabel.text!)!
             isStart = !isStart
+            pedometer.stopUpdates()
         }
     }
     
-    @IBAction private func resetButtonTapped(_ sender: Any) {
-        timer.invalidate()
-        time = 0
-        timeLabel.text = "0"
-        stepCount = 0
-        startButton.isEnabled = true
-        startButton.alpha = 1
-    }
+//    @IBAction private func resetButtonTapped(_ sender: Any) {
+//        timer.invalidate()
+//        time = 0
+//        timeLabel.text = "0"
+//        stepCount = 0
+//        startButton.isEnabled = true
+//        startButton.alpha = 1
+//    }
     
     @objc func action() {
         time += 1
@@ -229,7 +229,9 @@ class TrackWalkViewController: UIViewController {
     }
     
     @IBAction private func cancelButtonTapped(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
+        pedometer.stopUpdates()
+        navigationController?.popViewController(animated: true)
+        //dismiss(animated: true, completion: nil)
     }
     
     @IBAction private func doneButtonTapped(_ sender: Any) {
@@ -239,7 +241,9 @@ class TrackWalkViewController: UIViewController {
         updateDatabase(stepCount: stepCount)
         ProfileDataStore.saveStepCountSample(steps: thisInterval, date: Date())
         //getPreviousWalkCount()
-        dismiss(animated: true, completion: nil)
+        pedometer.stopUpdates()
+        navigationController?.popViewController(animated: true)
+        //dismiss(animated: true, completion: nil)
     }
     
     func getPreviousWalkCount() {
