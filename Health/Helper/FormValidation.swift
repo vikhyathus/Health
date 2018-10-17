@@ -44,7 +44,8 @@ extension SignUpViewController: UITextFieldDelegate {
         }
         
         if textField == emailField {
-            return(isValidEmail(testStr: textField.text!), "This is not a valid emailID")
+            guard let email = textField.text else { return (false, "Field empty") }
+            return(isValidEmail(testStr: email), "This is not a valid emailID")
         }
         
         return (!text.isEmpty, "This field cannot be empty.")
@@ -69,7 +70,7 @@ extension SignUpViewController: UITextFieldDelegate {
         }
     }
     
-    func isValidEmail(testStr:String) -> Bool {
+    func isValidEmail(testStr: String) -> Bool {
         
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)

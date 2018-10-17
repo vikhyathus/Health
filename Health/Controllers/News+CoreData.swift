@@ -51,7 +51,10 @@ extension NewsViewController {
         do {
             let articles = try context.fetch(request)
             for article in articles {
-                newsArticles.append(Article(title: article.title!, description: article.detailednews!, urlToImage: "none", url: "none"))
+                guard let articletitle = article.title, let articledescription = article.detailednews else {
+                    return
+                }
+                newsArticles.append(Article(title: articletitle, description: articledescription, urlToImage: "none", url: "none"))
             }
         } catch {
             
@@ -63,7 +66,6 @@ extension NewsViewController {
         let context = managedObjectContext()
         let entity = NSEntityDescription.insertNewObject(forEntityName: "NewsArticle", into: context) as? NewsArticle
         
-       //entity information goes here
         entity?.title = object.title
         entity?.detailednews = object.description
         do {

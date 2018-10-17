@@ -29,7 +29,7 @@ class HomeScreenCVCell: UICollectionViewCell {
     func setUpProgressView(containerView: UIView) {
         
         let center = containerView.center
-        let circularPath = UIBezierPath(arcCenter: center, radius: 50, startAngle: -CGFloat.pi/2, endAngle: 3*CGFloat.pi/2, clockwise: true)
+        let circularPath = UIBezierPath(arcCenter: center, radius: 50, startAngle: -CGFloat.pi / 2, endAngle: 3 * CGFloat.pi / 2, clockwise: true)
         
         trackLayer.path = circularPath.cgPath
         trackLayer.strokeColor = Colors.white.cgColor

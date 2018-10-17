@@ -13,7 +13,7 @@ public var ConsentTask: ORKOrderedTask {
     var steps = [ORKStep]()
     
     //Add VisualConsentStep
-    let consentDocument = ConsentDocument
+//    let consentDocument = consentDocument
     let visualConsentStep = ORKVisualConsentStep(identifier: "VisualConsentStep", document: consentDocument)
     steps += [visualConsentStep]
 

@@ -53,7 +53,6 @@ class ActivityListViewController: UIViewController {
             activity.style = UIActivityIndicatorView.Style.gray
             activity.center = view.center
             activity.hidesWhenStopped = true
-            //activity.isHidden = true
             return activity
         }()
         tableView.addSubview(activityIndicator)
@@ -65,9 +64,6 @@ class ActivityListViewController: UIViewController {
         sleepButton.backgroundColor = Colors.orange
         sleepButtonView.backgroundColor = Colors.orange
         headerView.backgroundColor = Colors.orange
-        //headerView.setGradientBackground(colorOne: Colors.orange, colorTwo: Colors.brightOrange)
-        //walkButton.setGradientBackground(colorOne: Colors.brightOrange, colorTwo: Colors.orange)
-        //sleepButton.setGradientBackground(colorOne: Colors.orange, colorTwo: Colors.brightOrange)
         walkButtonView.backgroundColor = .white
         walkButton.layer.borderWidth = 0
         sleepButton.layer.borderWidth = 0
@@ -148,7 +144,6 @@ class ActivityListViewController: UIViewController {
                 self.view.isUserInteractionEnabled = true
             }
         })
-        //self.placeholder.isHidden = !self.activityList.isEmpty
     }
     
     func callAPI(activity: String, property: String) {
@@ -158,7 +153,7 @@ class ActivityListViewController: UIViewController {
         }
         
         let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
-            ref.child(userID).child("Activities").child(activity).observeSingleEvent(of: .value, with: { (snapshot) in
+            ref.child(userID).child("Activities").child(activity).observeSingleEvent(of: .value, with: { snapshot in
             guard let days = snapshot.value as? NSDictionary else { self.tableView.reloadData(); return }
             self.activityList.removeAll()
             self.activityIndicator.startAnimating()
@@ -172,10 +167,6 @@ class ActivityListViewController: UIViewController {
             }
             self.addToCoreData()
             self.fetch()
-//            self.view.isUserInteractionEnabled = true
-//            self.placeholder.isHidden = !self.activityList.isEmpty
-//            self.tableView.isHidden = self.activityList.isEmpty
-            //self.tableView.reloadData()
             self.activityIndicator.stopAnimating()
         })
     }
@@ -260,7 +251,10 @@ extension ActivityListViewController: UITableViewDelegate, UITableViewDataSource
         }
         cell?.selectionStyle = .none
         cell?.backgroundColor = UIColor.clear
-        return cell!
+        guard let unwrappedCell = cell else {
+            return UITableViewCell()
+        }
+        return unwrappedCell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -289,7 +283,6 @@ extension ActivityListViewController {
         for activity in activityList {
             addObject(object: activity)
         }
-        //fetch()
     }
     
     func deleteObject() {
@@ -332,15 +325,17 @@ extension ActivityListViewController {
             do {
                 let walkHistory = try context.fetch(request)
                 for walk in walkHistory {
-                    activityList.append(WalkSleep(duration: 0, steps: Int(walk.steps), date: (walk.date as Date?)!))
+                    guard let date = walk.date as Date? else {
+                        return
+                    }
+                    activityList.append(WalkSleep(duration: 0, steps: Int(walk.steps), date: date))
                 }
                 print(activityList)
                 self.sort()
                 tableView.reloadData()
                 placeholder.isHidden = !activityList.isEmpty
-                tableView.isHidden  = activityList.isEmpty
+                tableView.isHidden = activityList.isEmpty
                 placeHolderText.isHidden = !self.activityList.isEmpty
-                    //view.isUserInteractionEnabled = true
             } catch {
                 print("Error fetching data from core data")
             }
@@ -350,12 +345,15 @@ extension ActivityListViewController {
             do {
                 let sleepHistory = try context.fetch(request)
                 for sleep in sleepHistory {
-                    activityList.append(WalkSleep(duration: 0, steps: Int(sleep.duration), date: (sleep.date as Date?)!))
+                    guard let date = sleep.date as Date? else {
+                        return
+                    }
+                    activityList.append(WalkSleep(duration: 0, steps: Int(sleep.duration), date: date))
                 }
                 self.sort()
                 tableView.reloadData()
                 placeholder.isHidden = !activityList.isEmpty
-                tableView.isHidden  = activityList.isEmpty
+                tableView.isHidden = activityList.isEmpty
                 placeHolderText.isHidden = !self.activityList.isEmpty
                 //view.isUserInteractionEnabled = true
             } catch {
@@ -370,7 +368,7 @@ extension ActivityListViewController {
         
         if iswalk {
             let entity = NSEntityDescription.insertNewObject(forEntityName: "WalkDetail", into: context) as? WalkDetail
-            entity?.date = object.date as? NSDate
+            entity?.date = object.date as NSDate?
             entity?.steps = Int32(object.steps)
             do {
                 try context.save()
@@ -379,7 +377,7 @@ extension ActivityListViewController {
             }
         } else {
             let entity = NSEntityDescription.insertNewObject(forEntityName: "SleepDetail", into: context) as? SleepDetail
-            entity?.date = object.date as? NSDate
+            entity?.date = object.date as NSDate?
             entity?.duration = Int32(object.steps)
             do {
                 try context.save()
@@ -387,8 +385,6 @@ extension ActivityListViewController {
                 print("error")
             }
         }
-        
-
     }
     
     func managedObjectContext() -> NSManagedObjectContext {
@@ -397,6 +393,5 @@ extension ActivityListViewController {
         let context = appdelegate?.persistentContainer.viewContext
         
         return context!
-        
     }
 }

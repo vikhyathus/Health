@@ -17,9 +17,10 @@ extension Date {
     static func stringToDate(str: String) -> Date {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yyyy"
-        let date = dateFormatter.date(from: str)
-        
-        return date!
+        if let date = dateFormatter.date(from: str) {
+            return date
+        }
+        return Date()
     }
     
     static func dateToString(date: Date) -> String {

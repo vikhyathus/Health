@@ -54,18 +54,16 @@ class NewsViewController: UIViewController {
     func fetchArticles() {
         
         let session = URLSession(configuration: .default)
-        let newsUrl = URL(string: "https://newsapi.org/v2/top-headlines?country=gb&category=health&apiKey=cd3ec0f787d44f0394e68b8fa111b4f7")!
+        guard let newsUrl = URL(string: Urls.newUrl) else { return }
         
         let task = session.dataTask(with: newsUrl) { data, _, error in
             
             if error != nil {
-                //self.isError = true
                 self.populateFromCoreData()
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                     self.activityIndicator.stopAnimating()
                 }
-                //self.isError = false
                 return
             }
             guard let dataUnwrapped = data else {
@@ -107,7 +105,7 @@ class ImageDownloader {
         if let cachedImage = imageCache.object(forKey: url.absoluteString as NSString) {
             completion(cachedImage, nil)
         } else {
-            guard let imageUrl = url as? URL else { return }
+            guard let imageUrl = url as URL? else { return }
             let urlRequest = URLRequest(url: imageUrl)
             
             let task = URLSession.shared.dataTask(with: urlRequest) { data, _, error in

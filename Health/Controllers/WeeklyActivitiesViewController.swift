@@ -230,8 +230,10 @@ class WeeklyActivitiesViewController: UIViewController {
 extension WeeklyActivitiesViewController: UNUserNotificationCenterDelegate, ORKTaskViewControllerDelegate {
     
     func taskViewController(_ taskViewController: ORKTaskViewController, didFinishWith reason: ORKTaskViewControllerFinishReason, error: Error?) {
+        if reason == .completed {
+            addRewardPoints(points: 20)
+        }
         guard let results = taskViewController.result.results as? [ORKStepResult] else { return }
-        //let userID = Auth.auth().currentUser?.uid
         var values = [String: String]()
         let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
         for stepResult: ORKStepResult in results {
@@ -250,7 +252,6 @@ extension WeeklyActivitiesViewController: UNUserNotificationCenterDelegate, ORKT
                     }
                 }
             }
-            
         }
         print(values)
         let (status, message) = FireBaseHelper.getUserID()
@@ -267,6 +268,51 @@ extension WeeklyActivitiesViewController: UNUserNotificationCenterDelegate, ORKT
             print("Successfull saved survey details")
         }
         taskViewController.dismiss(animated: true, completion: nil)
+    }
+    
+    func addRewardPoints(points: Int) {
+        
+        let (status, userID) = FireBaseHelper.getUserID()
+        guard status else {
+            print(userID)
+            return
+        }
+        
+        retrivePreviousReward { previousCount in
+            
+            let ref = Database.database().reference(fromURL: Urls.userurl).child(userID)
+            let tot = points + previousCount
+            var value = [String: Int]()
+            value["rewardpoints"] = tot
+            ref.updateChildValues(value, withCompletionBlock: { error, _ in
+                
+                if error != nil {
+                    print("error saving rewards")
+                    return
+                }
+                print("reward saved successfully")
+            })
+        }
+    }
+    
+    func retrivePreviousReward(completion: @escaping (Int) -> Void) {
+        
+        let (status, userID) = FireBaseHelper.getUserID()
+        guard status else {
+            print(userID)
+            return
+        }
+        let ref = Database.database().reference(fromURL: Urls.userurl).child(userID)
+        ref.observeSingleEvent(of: .value) { datasnapshot in
+            
+            if datasnapshot.hasChild("rewardpoints") {
+                guard let reward = datasnapshot.childSnapshot(forPath: "rewardpoints").value as? Int else { return }
+                completion(reward)
+            } else {
+                completion(0)
+                return
+            }
+        }
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {

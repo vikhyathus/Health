@@ -8,7 +8,7 @@
 
 import ResearchKit
 
-public var ConsentDocument: ORKConsentDocument {
+var consentDocument: ORKConsentDocument = {
     
     let consentDocument = ORKConsentDocument()
     consentDocument.title = "CONSENT FORM"
@@ -41,7 +41,7 @@ public var ConsentDocument: ORKConsentDocument {
     consentSections.append(consentSection)
     
     consentDocument.sections = consentSections
-    consentDocument.addSignature(ORKConsentSignature(forPersonWithTitle: "userID", dateFormatString: nil, identifier: "ConsentDocumentParticipantSignature"))
+    consentDocument.addSignature(ORKConsentSignature(forPersonWithTitle: "Participant", dateFormatString: nil, identifier: "ConsentDocumentParticipantSignature"))
     
     return consentDocument
-}
+}()

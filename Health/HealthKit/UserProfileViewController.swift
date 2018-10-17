@@ -345,7 +345,7 @@ class UserProfileViewController: UIViewController {
         
         userReference.updateChildValues(values, withCompletionBlock: { error, _ in
             if error != nil {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
             print("saved successfully")
         })

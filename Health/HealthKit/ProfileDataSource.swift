@@ -24,7 +24,6 @@ class ProfileDataStore {
                 let todayDateComponents = calendar.dateComponents([.year], from: today)
                 let thisYear = todayDateComponents.year!
                 let age = thisYear - birthdayComponents.year!
-                
                 let unwrappedBiologicalSex = biologicalSex.biologicalSex
                 let unwrappedBloodType = bloodType.bloodType
                 

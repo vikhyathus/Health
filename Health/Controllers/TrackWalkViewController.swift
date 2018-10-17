@@ -99,10 +99,14 @@ class TrackWalkViewController: UIViewController {
     
     func updateUIwithWalkDetails() {
         
-        let userID = Auth.auth().currentUser?.uid
+        let (status, message) = FireBaseHelper.getUserID()
+        guard status else {
+            print(message)
+            return
+        }
         var previousWalkDetails = 0
         let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
-        ref.child(userID!).child("Activities").child("Walk").observeSingleEvent(of: .value) { (snapshot) in
+        ref.child(message).child("Activities").child("Walk").observeSingleEvent(of: .value) { snapshot in
             
             if snapshot.hasChild(Date.getKeyFromDate()) {
                 let snapshotData = snapshot.childSnapshot(forPath: Date.getKeyFromDate())
@@ -127,7 +131,7 @@ class TrackWalkViewController: UIViewController {
     func setUpProgressView() {
         
         let center = view.center
-        let circularPath = UIBezierPath(arcCenter: center, radius: 100, startAngle: -CGFloat.pi/2, endAngle: 3*CGFloat.pi/2, clockwise: true)
+        let circularPath = UIBezierPath(arcCenter: center, radius: 100, startAngle: -CGFloat.pi / 2, endAngle: 3 * CGFloat.pi / 2, clockwise: true)
         
         trackLayer.path = circularPath.cgPath
         trackLayer.strokeColor = Colors.lightorange.cgColor
@@ -144,23 +148,22 @@ class TrackWalkViewController: UIViewController {
         view.layer.addSublayer(shapeLayer)
     }
     
-    private func startTrackingActivityType() {
-        
-        activity.startActivityUpdates(to: OperationQueue.main) {
-            [weak self] (activity: CMMotionActivity?) in
-            
-            guard let activity = activity else { return }
-                if activity.walking {
-                    print("your are walking")
-                } else if activity.stationary {
-                   print("you are stationary")
-                } else if activity.running {
-                    print("you are running")
-                } else if activity.automotive {
-                    print("you are automotive")
-                }
-        }
-    }
+//    private func startTrackingActivityType() {
+//
+//        activity.startActivityUpdates(to: OperationQueue.main) { [weak self] (activity: CMMotionActivity?) in
+//
+//            guard let activity = activity else { return }
+//                if activity.walking {
+//                    print("your are walking")
+//                } else if activity.stationary {
+//                   print("you are stationary")
+//                } else if activity.running {
+//                    print("you are running")
+//                } else if activity.automotive {
+//                    print("you are automotive")
+//                }
+//        }
+//    }
     
     private func startCountingSteps() {
         pedometer.startUpdates(from: Date()) { [weak self] pedometerData, error in
@@ -184,7 +187,7 @@ class TrackWalkViewController: UIViewController {
     private func startUpdating() {
         
         if CMMotionActivityManager.isActivityAvailable() {
-            startTrackingActivityType()
+            //startTrackingActivityType()
         }
         
         if CMPedometer.isStepCountingAvailable() {
@@ -208,7 +211,10 @@ class TrackWalkViewController: UIViewController {
             activity.stopActivityUpdates()
             startButton.setTitleColor(Colors.orange, for: .normal)
             startButton.setTitle("Start", for: .normal)
-            stepCount = Int(timeLabel.text!)!
+            guard let unwrappedtimeLabel = timeLabel.text else {
+                return
+            }
+            stepCount = Int(unwrappedtimeLabel)!
             isStart = !isStart
             pedometer.stopUpdates()
         }
@@ -236,22 +242,27 @@ class TrackWalkViewController: UIViewController {
     
     @IBAction private func doneButtonTapped(_ sender: Any) {
         
-        stepCount = Int(timeLabel.text!)!
+        guard let unwrappedTimeLabel = timeLabel.text else {
+            return
+        }
+        stepCount = Int(unwrappedTimeLabel)!
         timer.invalidate()
         updateDatabase(stepCount: stepCount)
         ProfileDataStore.saveStepCountSample(steps: thisInterval, date: Date())
-        //getPreviousWalkCount()
         pedometer.stopUpdates()
         navigationController?.popViewController(animated: true)
-        //dismiss(animated: true, completion: nil)
     }
     
     func getPreviousWalkCount() {
         
-        let userID = Auth.auth().currentUser?.uid
+        let (status, message) = FireBaseHelper.getUserID()
+        guard status else {
+            print(message)
+            return
+        }
         var previousWalkDetails = 0
         let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
-        ref.child(userID!).child("Activities").child("Walk").observeSingleEvent(of: .value) { snapshot in
+        ref.child(message).child("Activities").child("Walk").observeSingleEvent(of: .value) { snapshot in
             
             if snapshot.hasChild(Date.getKeyFromDate()) {
                 let snapshotData = snapshot.childSnapshot(forPath: Date.getKeyFromDate())
@@ -272,15 +283,18 @@ class TrackWalkViewController: UIViewController {
     func updateDatabase(stepCount: Int) {
         
         ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com")
-        let uid = Auth.auth().currentUser?.uid
         let key = Date.getKeyFromDate()
-        
-        let userReference = ref?.child("Users").child(uid!).child("Activities").child("Walk").child(key)
+        let (status, message) = FireBaseHelper.getUserID()
+        guard status else {
+            print(message)
+            return
+        }
+        let userReference = ref?.child("Users").child(message).child("Activities").child("Walk").child(key)
         let values = ["duration": 0, "date": Date.dateToString(date: Date()), "steps": stepCount] as [String: Any]
         
         userReference?.updateChildValues(values, withCompletionBlock: { error, _ in
             if error != nil {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
             print("saved successfully")
             self.dismiss(animated: true, completion: nil)

@@ -14,7 +14,7 @@ class AlertMessages {
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
-        let action1 = UIAlertAction(title: "Default", style: .default) { (action: UIAlertAction) in
+        let action1 = UIAlertAction(title: "Default", style: .default) { (_: UIAlertAction) in
             print("You've pressed default")
         }
         alertController.addAction(action1)

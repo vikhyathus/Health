@@ -19,7 +19,7 @@ class FireBaseHelper {
         return (true, userID)
     }
     
-    static func isConnectedToFireBase(completion: @escaping (Bool) -> ()) {
+    static func isConnectedToFireBase(completion: @escaping (Bool) -> Void) {
         
         let connectedRef = Database.database().reference(withPath: ".info/connected")
         connectedRef.observe(.value, with: { snapshot in
@@ -32,9 +32,4 @@ class FireBaseHelper {
             }
         })
     }
-    
-    // writing to firebase
-    
-    
-    //fetching from firebase
 }

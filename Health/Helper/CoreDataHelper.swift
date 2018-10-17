@@ -26,7 +26,6 @@ class CoreDataHelper {
         } catch let error {
             print(error)
         }
-            
     }
     
     static func managedObjectContext() -> NSManagedObjectContext {

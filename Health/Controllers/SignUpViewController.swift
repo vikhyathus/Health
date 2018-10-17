@@ -123,11 +123,14 @@ extension SignUpViewController: ORKTaskViewControllerDelegate {
                 }
                 signUpTheUser(taskViewController: taskViewController) {
                     let userID = Auth.auth().currentUser?.uid
-                    signatureResult?.first?.apply(to: ConsentDocument)
-                    ConsentDocument.makePDF { data, _ in
+                    signatureResult?.first?.apply(to: consentDocument)
+                    consentDocument.makePDF { data, _ in
+                        guard let unwrappedData = data else {
+                            return
+                        }
                         let storageRef = Storage.storage().reference()
                         let consentDocRef = storageRef.child("consentDocs")
-                        _ = consentDocRef.child("\(String(describing: userID)).pdf").putData(data!, metadata: nil, completion: { metadata, _ in
+                        _ = consentDocRef.child("\(String(describing: userID)).pdf").putData(unwrappedData, metadata: nil, completion: { metadata, _ in
                                 guard metadata != nil else {
                                 return
                             }
@@ -151,7 +154,7 @@ extension SignUpViewController: ORKTaskViewControllerDelegate {
             
             if error != nil {
                 
-                let alert = self.alertCreator(title: "Sign Up Error", message: (error?.localizedDescription as? String)!)
+                let alert = self.alertCreator(title: "Sign Up Error", message: (error?.localizedDescription)!)
                 self.present(alert, animated: true, completion: nil)
                 print(error?.localizedDescription as Any)
                 taskViewController.dismiss(animated: true, completion: nil)

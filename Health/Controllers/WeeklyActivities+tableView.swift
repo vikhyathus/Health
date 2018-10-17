@@ -25,21 +25,22 @@ extension WeeklyActivitiesViewController: UITableViewDelegate, UITableViewDataSo
             cell?.imageView?.image = UIImage(named: "group11")
         }
         cell?.selectionStyle = .none
-        return cell!
+        guard let unwrappedCell = cell else {
+            return UITableViewCell()
+        }
+        return unwrappedCell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.row == 0 {
-            let walk = storyboard?.instantiateViewController(withIdentifier: "TrackWalkViewController") as? TrackWalkViewController
-            walk?.hidesBottomBarWhenPushed = true
-            navigationController?.pushViewController(walk!, animated: true)
-            //present(walk!, animated: true, completion: nil)
+            guard let walk = storyboard?.instantiateViewController(withIdentifier: "TrackWalkViewController") as? TrackWalkViewController else { return }
+            walk.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(walk, animated: true)
         } else {
-            let sleep = storyboard?.instantiateViewController(withIdentifier: "SleepViewController") as? SleepViewController
-            sleep?.hidesBottomBarWhenPushed = true
-            navigationController?.pushViewController(sleep!, animated: true)
-            //present(sleep!, animated: true, completion: nil)
+            guard let sleep = storyboard?.instantiateViewController(withIdentifier: "SleepViewController") as? SleepViewController else { return }
+            sleep.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(sleep, animated: true)
         }
     }
     
@@ -51,5 +52,4 @@ extension WeeklyActivitiesViewController: UITableViewDelegate, UITableViewDataSo
         
         return 100.0
     }
-    
 }

@@ -61,17 +61,6 @@ class SleepViewController: UIViewController {
         saveButton.alpha = 0.5
     }
     
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//        updateUIwithPreviousData()
-//    }
-    
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        updateUIwithPreviousData()
-//    }
-    
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if timer.isValid {
@@ -111,15 +100,18 @@ class SleepViewController: UIViewController {
     
     func updateUIwithPreviousData() {
         
-        let userID = Auth.auth().currentUser?.uid
         var previousSleepDetail = 0
         let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com")
-        
-        ref.child("Users").child(userID!).child("Activities").child("Sleep").observeSingleEvent(of: .value) { snapshot in
+        let (status, message) = FireBaseHelper.getUserID()
+        guard status else {
+            print(message)
+            return
+        }
+        ref.child("Users").child(message).child("Activities").child("Sleep").observeSingleEvent(of: .value) { snapshot in
             if snapshot.hasChild(Date.getKeyFromDate()) {
                 let snapshotData = snapshot.childSnapshot(forPath: Date.getKeyFromDate())
                 guard let sleepDetails = snapshotData.value as? NSDictionary else { print("error"); return }
-                print(sleepDetails["duration"])
+                print(sleepDetails["duration"] as Any)
                 previousSleepDetail = sleepDetails["duration"] as? Int ?? 0
                 print("Inside \(previousSleepDetail)")
                 self.sleepCount = previousSleepDetail
@@ -127,7 +119,7 @@ class SleepViewController: UIViewController {
                 self.sec = (Int(self.time) % 60)
                 self.min = (Int(self.time) / 60) % 60
                 self.hour = (Int(self.time) / 3600)
-                let percent = CGFloat(self.sleepCount)/CGFloat(self.goal)
+                let percent = CGFloat(self.sleepCount) / CGFloat(self.goal)
                 self.shapeLayer.strokeEnd = percent
                 self.percentageLabel.text = "\(Int(percent * 100))%"
                 self.updateUI()
@@ -144,8 +136,7 @@ class SleepViewController: UIViewController {
     func setUpProgressView() {
         
         let center = view.center
-        let circularPath = UIBezierPath(arcCenter: center, radius: 100, startAngle: -CGFloat.pi/2, endAngle: 3*CGFloat.pi/2, clockwise: true)
-        
+        let circularPath = UIBezierPath(arcCenter: center, radius: 100, startAngle: -CGFloat.pi / 2, endAngle: 3 * CGFloat.pi / 2, clockwise: true)
         
         trackLayer.path = circularPath.cgPath
         trackLayer.strokeColor = Colors.lightorange.cgColor
@@ -195,7 +186,7 @@ class SleepViewController: UIViewController {
         return diff
     }
     
-    @IBAction func startTapped(_ sender: Any) {
+    @IBAction private func startTapped(_ sender: Any) {
         
         saveButton.isEnabled = true
         saveButton.alpha = 1
@@ -211,16 +202,15 @@ class SleepViewController: UIViewController {
             startButton.backgroundColor = .white
             startButton.setTitleColor(Colors.orange, for: .normal)
             timer.invalidate()
-            sleepCount  = time
+            sleepCount = time
             isStart = !isStart
         }
     }
     
-    @IBAction func cancelTapped(_ sender: Any) {
+    @IBAction private func cancelTapped(_ sender: Any) {
         removeSavedData()
         timer.invalidate()
         navigationController?.popViewController(animated: true)
-        //dismiss(animated: true, completion: nil)
     }
     
     @IBAction private func saveTapped(_ sender: Any) {
@@ -228,16 +218,15 @@ class SleepViewController: UIViewController {
         sleepCount = time
         updateDatabase(sleepCount: sleepCount)
         navigationController?.popViewController(animated: true)
-        //dismiss(animated: true, completion: nil)
     }
     
     @objc func action() {
         
         var percent = 0.0
         time += 1
-        percent = Double(time)/Double(goal)
+        percent = Double(time) / Double(goal)
         self.shapeLayer.strokeEnd = CGFloat(percent)
-        self.percentageLabel.text = "\(Int(percent*100))%"
+        self.percentageLabel.text = "\(Int(percent * 100))%"
         updateUI()
     }
     
@@ -268,21 +257,27 @@ class SleepViewController: UIViewController {
         } else {
             minStr = "\(min)"
         }
-        timeLabelString = "\(hourStr!):\(minStr!):\(secStr!)"
+        guard let h = hourStr, let m = minStr, let s = secStr else {
+            return
+        }
+        timeLabelString = "\(h):\(m):\(s)"
         timeLabel.text = timeLabelString
     }
     
     func getPreviousSleepCount() {
         
-        let userID = Auth.auth().currentUser?.uid
         var previousSleepDetail = 0
         let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com")
-        
-        ref.child("Users").child(userID!).child("Activities").child("Sleep").observeSingleEvent(of: .value) { snapshot in
+        let (status, message) = FireBaseHelper.getUserID()
+        guard status else {
+            print(message)
+            return
+        }
+        ref.child("Users").child(message).child("Activities").child("Sleep").observeSingleEvent(of: .value) { snapshot in
             if snapshot.hasChild(Date.getKeyFromDate()) {
                 let snapshotData = snapshot.childSnapshot(forPath: Date.getKeyFromDate())
                 guard let sleepDetails = snapshotData.value as? NSDictionary else { print("error"); return }
-                print(sleepDetails["duration"])
+                print(sleepDetails["duration"] as Any)
                 previousSleepDetail = sleepDetails["duration"] as? Int ?? 0
                 print("Inside \(previousSleepDetail)")
                 self.sleepCount += previousSleepDetail
@@ -294,7 +289,6 @@ class SleepViewController: UIViewController {
             }
         }
         return
-        print("Outside \(previousSleepDetail)")
     }
     
     func removeSavedData() {
@@ -307,15 +301,19 @@ class SleepViewController: UIViewController {
         
         var ref: DatabaseReference?
         ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com")
-        let uid = Auth.auth().currentUser?.uid
+        let (status, message) = FireBaseHelper.getUserID()
+        guard status else {
+            print(message)
+            return
+        }
         let key = Date.getKeyFromDate()
         
-        let userReference = ref?.child("Users").child(uid!).child("Activities").child("Sleep").child(key)
+        let userReference = ref?.child("Users").child(message).child("Activities").child("Sleep").child(key)
         let values = ["duration": sleepCount, "date": Date.dateToString(date: Date()), "steps": 0] as [String: Any]
         
         userReference?.updateChildValues(values, withCompletionBlock: { error, _ in
             if error != nil {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
             print("saved successfully")
         })
