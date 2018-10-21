@@ -220,10 +220,58 @@ class SleepViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
+    func addRewardPoints(points: Int) {
+        
+        let (status, userID) = FireBaseHelper.getUserID()
+        guard status else {
+            print(userID)
+            return
+        }
+        
+        retrivePreviousReward { previousCount in
+            
+            let ref = Database.database().reference(fromURL: Urls.userurl).child(userID)
+            let tot = points + previousCount
+            var value = [String: Int]()
+            value["rewardpoints"] = tot
+            ref.updateChildValues(value, withCompletionBlock: { error, _ in
+                
+                if error != nil {
+                    print("error saving rewards")
+                    return
+                }
+                print("reward saved successfully")
+            })
+        }
+    }
+    
+    func retrivePreviousReward(completion: @escaping (Int) -> Void) {
+        
+        let (status, userID) = FireBaseHelper.getUserID()
+        guard status else {
+            print(userID)
+            return
+        }
+        let ref = Database.database().reference(fromURL: Urls.userurl).child(userID)
+        ref.observeSingleEvent(of: .value) { datasnapshot in
+            
+            if datasnapshot.hasChild("rewardpoints") {
+                guard let reward = datasnapshot.childSnapshot(forPath: "rewardpoints").value as? Int else { return }
+                completion(reward)
+            } else {
+                completion(0)
+                return
+            }
+        }
+    }
+    
     @objc func action() {
         
         var percent = 0.0
         time += 1
+        if time == goal {
+            addRewardPoints(points: 20)
+        }
         percent = Double(time) / Double(goal)
         self.shapeLayer.strokeEnd = CGFloat(percent)
         self.percentageLabel.text = "\(Int(percent * 100))%"
@@ -231,6 +279,7 @@ class SleepViewController: UIViewController {
     }
     
     func updateUI() {
+        
         sec += 1
         if sec >= 60 {
             if sec == 60 {

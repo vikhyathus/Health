@@ -171,8 +171,8 @@ class TrackWalkViewController: UIViewController {
                 print("error updating step count")
                 return
             }
+            let str = pedometerData.numberOfSteps.stringValue
             DispatchQueue.main.async {
-                let str = pedometerData.numberOfSteps.stringValue
                 if let steps = Int(str) {
                     self!.thisInterval += steps
                     self?.timeLabel.text = "\(steps + self!.stepCount)"
@@ -180,6 +180,56 @@ class TrackWalkViewController: UIViewController {
                     self?.shapeLayer.strokeEnd = CGFloat(percent)
                     self?.percentageLabel.text = "\(Int(percent * 100))%"
                 }
+            }
+            if let steps = Int(str) {
+                if steps == self!.goal {
+                    self!.addRewardPoints(points: 20)
+                }
+            }
+        }
+    }
+    
+    func addRewardPoints(points: Int) {
+        
+        let (status, userID) = FireBaseHelper.getUserID()
+        guard status else {
+            print(userID)
+            return
+        }
+        
+        retrivePreviousReward { previousCount in
+            
+            let ref = Database.database().reference(fromURL: Urls.userurl).child(userID)
+            let tot = points + previousCount
+            var value = [String: Int]()
+            value["rewardpoints"] = tot
+            ref.updateChildValues(value, withCompletionBlock: { error, _ in
+                
+                if error != nil {
+                    print("error saving rewards")
+                    return
+                }
+                print("reward saved successfully")
+            })
+        }
+    }
+    
+    func retrivePreviousReward(completion: @escaping (Int) -> Void) {
+        
+        let (status, userID) = FireBaseHelper.getUserID()
+        guard status else {
+            print(userID)
+            return
+        }
+        let ref = Database.database().reference(fromURL: Urls.userurl).child(userID)
+        ref.observeSingleEvent(of: .value) { datasnapshot in
+            
+            if datasnapshot.hasChild("rewardpoints") {
+                guard let reward = datasnapshot.childSnapshot(forPath: "rewardpoints").value as? Int else { return }
+                completion(reward)
+            } else {
+                completion(0)
+                return
             }
         }
     }
@@ -237,7 +287,6 @@ class TrackWalkViewController: UIViewController {
     @IBAction private func cancelButtonTapped(_ sender: Any) {
         pedometer.stopUpdates()
         navigationController?.popViewController(animated: true)
-        //dismiss(animated: true, completion: nil)
     }
     
     @IBAction private func doneButtonTapped(_ sender: Any) {
@@ -248,6 +297,9 @@ class TrackWalkViewController: UIViewController {
         stepCount = Int(unwrappedTimeLabel)!
         timer.invalidate()
         updateDatabase(stepCount: stepCount)
+        if stepCount >= goal {
+            
+        }
         ProfileDataStore.saveStepCountSample(steps: thisInterval, date: Date())
         pedometer.stopUpdates()
         navigationController?.popViewController(animated: true)

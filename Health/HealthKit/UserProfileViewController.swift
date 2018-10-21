@@ -26,6 +26,7 @@ class UserProfileViewController: UIViewController {
     var userDetails: [[String]] = []
     var physicalData: [String] = []
     var sampleTypes: [String] = []
+    var isHealthKit: Bool = false
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var emailLabel: UILabel!
@@ -34,8 +35,10 @@ class UserProfileViewController: UIViewController {
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var navBar: UINavigationItem!
     @IBOutlet weak var navigationBar: UINavigationBar!
+    @IBOutlet weak var rewardLabel: UILabel!
+    @IBOutlet weak var imageView: UIImageView!
     
-    var tableLabels = [ ["Age", "Gender", "Blood Type"], ["Weight", "Height", "BMI"], ["Goal"]]
+    var tableLabels = [["Age", "Gender", "Blood Type"], ["Weight", "Height", "BMI"], ["Goal"]]
     let userHealthProfile = UserHealthProfile()
     
     private enum ProfileDataError: Error {
@@ -53,7 +56,6 @@ class UserProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.separatorStyle = .none
-        updateHealthInfo()
         activityIndicator.startAnimating()
         print(userDetails)
         activityIndicator.hidesWhenStopped = true
@@ -67,12 +69,36 @@ class UserProfileViewController: UIViewController {
         navigationBar.shadowImage = UIImage()
         navigationBar.isTranslucent = true
         navigationBar.backgroundColor = .clear
-        
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        //updateHealthInfo()
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchUserDetailsFromFirebase()
+        retrivePreviousReward()
+    }
+    
+    func retrivePreviousReward() {
+        
+        let (status, userID) = FireBaseHelper.getUserID()
+        guard status else {
+            print(userID)
+            return
+        }
+        let ref = Database.database().reference(fromURL: Urls.userurl).child(userID)
+        ref.observeSingleEvent(of: .value) { datasnapshot in
+            
+            if datasnapshot.hasChild("rewardpoints") {
+                guard let reward = datasnapshot.childSnapshot(forPath: "rewardpoints").value as? Int else { return }
+                self.rewardLabel.text = "Reward points \(reward)"
+            } else {
+                self.rewardLabel.text = "0"
+                return
+            }
+        }
     }
     
     func getUserNameEmail() {
@@ -103,12 +129,11 @@ class UserProfileViewController: UIViewController {
         }
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-    
     func updateHealthInfo() {
         
+        userDetails.removeAll()
+        physicalData.removeAll()
+        sampleTypes.removeAll()
         loadAndDisplayAgeSexAndBloodType()
         userDetails.append(sampleTypes)
         loadAndDisplayMostRecentWeight()
@@ -151,25 +176,6 @@ class UserProfileViewController: UIViewController {
         }
     }
     
-    private func updateSamples() {
-        
-        if let weight = userHealthProfile.weightInKilograms {
-            let weightFormatter = MassFormatter()
-            weightFormatter.isForPersonMassUse = true
-            physicalData.append(weightFormatter.string(fromKilograms: weight))
-        }
-        
-        if let height = userHealthProfile.heightInMeters {
-            let heightFormatter = LengthFormatter()
-            heightFormatter.isForPersonHeightUse = true
-            physicalData.append(heightFormatter.string(fromMeters: height))
-        }
-        
-        if let bodyMassIndex = userHealthProfile.bodyMassIndex {
-            physicalData.append(String(format: "%.02f", bodyMassIndex))
-        }
-    }
-    
     private func loadAndDisplayMostRecentHeight() {
         
         //1. Use HealthKit to create the Height Sample Type
@@ -188,8 +194,6 @@ class UserProfileViewController: UIViewController {
                     print("From height")
                     if self.physicalData.count == 2 {
                         self.saveBodyMassIndexToHealthKit()
-                        //let bmi = String(format: "%.2f", self.userHealthProfile.bodyMassIndex!)
-                        //self.physicalData.append(bmi)
                         self.userDetails.append(self.physicalData)
                         self.userDetails.append([">"])
                         self.tableView.reloadData()
@@ -385,6 +389,72 @@ class UserProfileViewController: UIViewController {
         
         return context!
         
+    }
+    
+    func fetchUserDetailsFromFirebase() {
+        
+        userDetails.removeAll()
+        sampleTypes.removeAll()
+        physicalData.removeAll()
+        let (status, userID) = FireBaseHelper.getUserID()
+        guard status else {
+            print(userID)
+            return
+        }
+        let ref = Database.database().reference(fromURL: Urls.userurl).child(userID).child("userdetail")
+        ref.observeSingleEvent(of: .value, with: { data in
+
+            guard let userDetails = data.value as? NSDictionary else {
+                return
+            }
+            if let age = userDetails["age"] as? String {
+                self.sampleTypes.append(age)
+            }
+            if let gender = userDetails["gender"] as? String {
+                self.sampleTypes.append(gender)
+            }
+            if let bloodtype = userDetails["bloodtype"] as? String {
+                self.sampleTypes.append(bloodtype)
+            }
+            if let weight = userDetails["weight"] as? String {
+                self.physicalData.append("\(weight) kg")
+            }
+            if let height = userDetails["height"] as? String {
+                self.physicalData.append("\(height) m")
+            }
+            if let bmi = userDetails["bmi"] as? String {
+                self.physicalData.append(bmi)
+            }
+
+            self.userDetails.append(self.sampleTypes)
+            self.userDetails.append(self.physicalData)
+            self.userDetails.append([">"])
+            self.tableView.reloadData()
+        })
+    }
+    
+    @IBAction private func syncButtonTapped(_ sender: Any) {
+        
+        if isHealthKit {
+            fetchUserDetailsFromFirebase()
+        } else {
+             let alert = UIAlertController(title: "Sync", message: "Do you want to sync your profile with Health Kit", preferredStyle: .alert)
+            let yesAction = UIAlertAction(title: "Yes", style: .default) { _ in
+                self.updateHealthInfo()
+            }
+            let cancelAction = UIAlertAction(title: "No", style: .cancel, handler: nil)
+            alert.addAction(yesAction)
+            alert.addAction(cancelAction)
+            self.present(alert, animated: true)
+        }
+        isHealthKit = !isHealthKit
+    }
+    @IBAction private func editButtonTapped(_ sender: Any) {
+        guard let editScreen = storyboard?.instantiateViewController(withIdentifier: "EditProfileViewController") as? EditProfileViewController else {
+            return
+        }
+        editScreen.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(editScreen, animated: true)
     }
     
  }

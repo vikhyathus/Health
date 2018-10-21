@@ -24,10 +24,11 @@ class WeeklyActivitiesViewController: UIViewController {
     
     let shapeLayer = CAShapeLayer()
     let trackLayer = CAShapeLayer()
+    let userHealthProfile = UserHealthProfile()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        accessHealthKit()
         UNUserNotificationCenter.current().delegate = self
         setUpNotification()
         createNotification()
@@ -42,13 +43,13 @@ class WeeklyActivitiesViewController: UIViewController {
         flabel.textColor = Colors.progressBlue
         tlabel.textColor = Colors.progressBlue
         ilabel.textColor = Colors.progressBlue
-        
+        saveUserDetail()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         collectionView.reloadData()
-        accessHealthKit()
+        
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -373,5 +374,154 @@ extension WeeklyActivitiesViewController: UICollectionViewDelegate, UICollection
             pageControl.currentPage = 1
         }
         print(contentOffset)
+    }
+}
+
+extension WeeklyActivitiesViewController {
+    
+    func saveUserDetail() {
+        
+        let (status, userID) = FireBaseHelper.getUserID()
+        guard status else {
+            print(userID)
+            return
+        }
+        
+        let ref = Database.database().reference(fromURL: Urls.userurl).child(userID)
+        ref.observeSingleEvent(of: .value) { data in
+            if data.hasChild("userdetail") {
+                return
+            } else {
+                self.populateWithHealthKit()
+            }
+        }
+    }
+    
+    func populateWithHealthKit() {
+        
+        loadAndDisplayAgeSexAndBloodType()
+        loadAndDisplayMostRecentWeight()
+        loadAndDisplayMostRecentHeight()
+    }
+    
+    private func loadAndDisplayAgeSexAndBloodType() {
+        
+        do {
+            let userAgeSexAndBloodType = try ProfileDataStore.getAgeSexAndBloodType()
+            userHealthProfile.age = userAgeSexAndBloodType.age
+            userHealthProfile.biologicalSex = userAgeSexAndBloodType.biologicalSex
+            userHealthProfile.bloodType = userAgeSexAndBloodType.bloodType
+        } catch let error {
+            print("error fetching age sex and blood: \(error)")
+        }
+    }
+    
+    private func loadAndDisplayMostRecentWeight() {
+        
+        guard let weightSampleType = HKSampleType.quantityType(forIdentifier: .bodyMass) else {
+            print("Body Mass Sample Type is no longer available in HealthKit")
+            return
+        }
+        
+        ProfileDataStore.getMostRecentSample(for: weightSampleType) { sample, error in
+            
+            guard let sample = sample else {
+                
+                if let error = error {
+                    print("weight sample not available: \(error)")
+                }
+                self.userHealthProfile.weightInKilograms = nil
+                self.updateDatabase()
+                return
+            }
+            
+            let weightInKilograms = sample.quantity.doubleValue(for: HKUnit.gramUnit(with: .kilo))
+            self.userHealthProfile.weightInKilograms = weightInKilograms
+            guard let bmi = self.userHealthProfile.bodyMassIndex else {
+                return
+            }
+            ProfileDataStore.saveBodyMassIndexSample(bodyMassIndex: bmi, date: Date())
+        }
+    }
+    
+    private func loadAndDisplayMostRecentHeight() {
+        
+        guard let heightSampleType = HKSampleType.quantityType(forIdentifier: .height) else {
+            print("Height Sample Type is no longer available in HealthKit")
+            return
+        }
+        
+        ProfileDataStore.getMostRecentSample(for: heightSampleType) { sample, error in
+            
+            guard let sample = sample else {
+                
+                if let error = error {
+                    print("error fetching height details: \(error)")
+                }
+                self.userHealthProfile.heightInMeters = nil
+                self.updateDatabase()
+                return
+            }
+            let heightInMeters = sample.quantity.doubleValue(for: HKUnit.meter())
+            self.userHealthProfile.heightInMeters = heightInMeters
+            guard let bmi = self.userHealthProfile.bodyMassIndex else {
+                return
+            }
+            ProfileDataStore.saveBodyMassIndexSample(bodyMassIndex: bmi, date: Date())
+            self.updateDatabase()
+        }
+    }
+    
+    func updateDatabase() {
+        
+        let (status, userID) = FireBaseHelper.getUserID()
+        guard status else {
+            print(userID)
+            return
+        }
+        //print(userHealthProfile)
+        var values = [String: String]()
+        let ref = Database.database().reference(fromURL: Urls.userurl).child(userID)
+        
+        if userHealthProfile.age == nil {
+            values["age"] = "unknown"
+        } else {
+            values["age"] = "\(userHealthProfile.age!)"
+        }
+        if userHealthProfile.bloodType == nil {
+            values["bloodtype"] = "unknown"
+        } else {
+            values["bloodtype"] = userHealthProfile.bloodType?.stringRepresentation
+        }
+        if userHealthProfile.biologicalSex == nil {
+            values["gender"] = "unknown"
+        } else {
+            values["gender"] = userHealthProfile.biologicalSex?.stringRepresentation
+        }
+        if userHealthProfile.heightInMeters == nil {
+            values["height"] = "unknown"
+        } else {
+            values["height"] = "\(userHealthProfile.heightInMeters!)"
+        }
+        if userHealthProfile.bloodType == nil {
+            values["weight"] = "unknown"
+        } else {
+            values["weight"] = "\(userHealthProfile.weightInKilograms!)"
+        }
+        if userHealthProfile.bloodType == nil {
+            values["bmi"] = "unknown"
+        } else {
+            guard let bmi = userHealthProfile.bodyMassIndex else {
+                return
+            }
+            values["bmi"] = String(format: "%.2f", bmi)
+        }
+        
+        ref.child("userdetail").updateChildValues(values) { error, reference in
+            
+            if error != nil {
+                print(error?.localizedDescription as Any)
+            }
+        }
     }
 }

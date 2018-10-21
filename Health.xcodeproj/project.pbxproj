@@ -39,6 +39,8 @@
 		DF386B0421537C930024814C /* ResearchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF386B0121537C720024814C /* ResearchKit.framework */; };
 		DF386B0521537C930024814C /* ResearchKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DF386B0121537C720024814C /* ResearchKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DF386B0F215383020024814C /* ConsentTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF386B0E215383020024814C /* ConsentTasks.swift */; };
+		DF52C40821788B0E00978B07 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF52C40721788B0E00978B07 /* EditProfileViewController.swift */; };
+		DF52C40A21788D8B00978B07 /* EditProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF52C40921788D8B00978B07 /* EditProfileCell.swift */; };
 		DF5613382158DDC4009A48CD /* WalkTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF5613372158DDC4009A48CD /* WalkTask.swift */; };
 		DF56133A2158F123009A48CD /* TrackWalkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF5613392158F123009A48CD /* TrackWalkViewController.swift */; };
 		DF751D9E216B2D63001E2D9B /* News+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF751D9D216B2D63001E2D9B /* News+CoreData.swift */; };
@@ -145,6 +147,8 @@
 		DF386AFA21537C710024814C /* ResearchKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ResearchKit.xcodeproj; path = "../../ResearchKit-master/ResearchKit.xcodeproj"; sourceTree = "<group>"; };
 		DF386B0B21537D280024814C /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = DEVELOPER_DIR; };
 		DF386B0E215383020024814C /* ConsentTasks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentTasks.swift; sourceTree = "<group>"; };
+		DF52C40721788B0E00978B07 /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		DF52C40921788D8B00978B07 /* EditProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileCell.swift; sourceTree = "<group>"; };
 		DF5613372158DDC4009A48CD /* WalkTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkTask.swift; sourceTree = "<group>"; };
 		DF5613392158F123009A48CD /* TrackWalkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackWalkViewController.swift; sourceTree = "<group>"; };
 		DF751D9D216B2D63001E2D9B /* News+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "News+CoreData.swift"; sourceTree = "<group>"; };
@@ -299,6 +303,7 @@
 				DF869DC4215A3AB2006C10E5 /* ActivityTableCell.swift */,
 				DF257BFD21623B70002B858E /* ProfileViewCell.swift */,
 				DF8717A7216C75270067E959 /* HomeScreenCVCell.swift */,
+				DF52C40921788D8B00978B07 /* EditProfileCell.swift */,
 				DF0DB3A8215E0C3700201425 /* NewsCell.swift */,
 				DF25198D216794C7000E58F7 /* TasksIdentifierCell.swift */,
 			);
@@ -351,6 +356,7 @@
 				DF1F25172174D2F700004573 /* HomeScreenNavigationViewController.swift */,
 				DF751D9D216B2D63001E2D9B /* News+CoreData.swift */,
 				DFB41A68216F5616002CADB4 /* HomeTabController.swift */,
+				DF52C40721788B0E00978B07 /* EditProfileViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -557,6 +563,7 @@
 				DFE13630216F191A00FC47B4 /* CoreDataHelper.swift in Sources */,
 				DF1F25182174D2F700004573 /* HomeScreenNavigationViewController.swift in Sources */,
 				DF251986216726C3000E58F7 /* AlertMessages.swift in Sources */,
+				DF52C40A21788D8B00978B07 /* EditProfileCell.swift in Sources */,
 				DF869DDF215B6F64006C10E5 /* HKGenderExtension.swift in Sources */,
 				DFB41A69216F5616002CADB4 /* HomeTabController.swift in Sources */,
 				DF869DC5215A3AB2006C10E5 /* ActivityTableCell.swift in Sources */,
@@ -581,6 +588,7 @@
 				DF869DCC215A7E4A006C10E5 /* HealthKitSetupAssistant.swift in Sources */,
 				DF386B0F215383020024814C /* ConsentTasks.swift in Sources */,
 				DF56133A2158F123009A48CD /* TrackWalkViewController.swift in Sources */,
+				DF52C40821788B0E00978B07 /* EditProfileViewController.swift in Sources */,
 				DFE13629216F174000FC47B4 /* WalkDetail+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
