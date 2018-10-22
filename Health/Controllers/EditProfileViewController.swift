@@ -20,7 +20,7 @@ class EditProfileViewController: UIViewController {
     var height: String = ""
     var inputTextField: UITextField!
     var pickerViewDataSource: [String] = []
-    var bloodType: [String] = ["A+", "B", "O"]
+    var bloodType: [String] = ["A+", "B+", "O+", "A-", "B-", "O-", "AB+", "AB-"]
     var gender: [String] = ["Male", "Female", "Other"]
     var index: Int = 0
     
@@ -30,7 +30,7 @@ class EditProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchUserDetailsFromFirebase()
+        //fetchUserDetailsFromFirebase()
         tableView.dataSource = self
         tableView.delegate = self
         pickerView.isHidden = true
@@ -43,12 +43,17 @@ class EditProfileViewController: UIViewController {
         headerView.setGradientBackground(colorOne: Colors.orange, colorTwo: Colors.brightOrange)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchUserDetailsFromFirebase()
+    }
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
     
     func fetchUserDetailsFromFirebase() {
-        
+        userDetail.removeAll()
         let (status, userID) = FireBaseHelper.getUserID()
         guard status else {
             print(userID)
@@ -60,23 +65,23 @@ class EditProfileViewController: UIViewController {
             guard let userDetails = data.value as? NSDictionary else {
                 return
             }
-            if let age = userDetails["age"] as? String {
+            if let age = userDetails["Age"] as? String {
                 self.userDetail.append(age)
                 self.labels.append("Age")
             }
-            if let gender = userDetails["gender"] as? String {
+            if let gender = userDetails["Gender"] as? String {
                 self.userDetail.append(gender)
                 self.labels.append("Gender")
             }
-            if let bloodtype = userDetails["bloodtype"] as? String {
+            if let bloodtype = userDetails["Blood Type"] as? String {
                 self.userDetail.append(bloodtype)
                 self.labels.append("Blood Type")
             }
-            if let weight = userDetails["weight"] as? String {
+            if let weight = userDetails["Weight"] as? String {
                 self.userDetail.append("\(weight)")
                 self.labels.append("Weight")
             }
-            if let height = userDetails["height"] as? String {
+            if let height = userDetails["Height"] as? String {
                 self.userDetail.append("\(height)")
                 self.labels.append("Height")
             }
@@ -93,18 +98,18 @@ class EditProfileViewController: UIViewController {
         }
         let ref = Database.database().reference(fromURL: Urls.userurl).child(userID).child("userdetail")
         var values = [String: String]()
-        let valuelabels = ["age", "gender", "bloodtype", "weight", "height"]
+        let valuelabels = ["Age", "Gender", "Blood Type", "Weight", "Height"]
         for index in 0...userDetail.count - 1 {
             values[valuelabels[index]] = userDetail[index]
         }
-        guard let height = (values["height"] as NSString?)?.doubleValue else {
+        guard let height = (values["Height"] as NSString?)?.doubleValue else {
             return
         }
-        guard let weight = (values["weight"] as NSString?)?.doubleValue else {
+        guard let weight = (values["Weight"] as NSString?)?.doubleValue else {
             return
         }
         let bmi = weight / (height * height)
-        values["bmi"] = String(format: "%.2f", bmi)
+        values["Bmi"] = String(format: "%.2f", bmi)
         ref.updateChildValues(values) { error, _ in
             if error != nil {
                 print("Error saving user details!")

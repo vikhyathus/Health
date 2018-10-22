@@ -270,15 +270,6 @@ class TrackWalkViewController: UIViewController {
         }
     }
     
-//    @IBAction private func resetButtonTapped(_ sender: Any) {
-//        timer.invalidate()
-//        time = 0
-//        timeLabel.text = "0"
-//        stepCount = 0
-//        startButton.isEnabled = true
-//        startButton.alpha = 1
-//    }
-    
     @objc func action() {
         time += 1
         timeLabel.text = String(time)

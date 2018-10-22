@@ -33,7 +33,8 @@ class WebViewController: UIViewController {
     }
     
     @IBAction private func backButton(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
+        //dismiss(animated: true, completion: nil)
     }
     
 }

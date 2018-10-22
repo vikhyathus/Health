@@ -48,6 +48,7 @@ extension NewsViewController: UITableViewDelegate, UITableViewDataSource {
         guard let unwrappedwebvc = webvc else {
             return
         }
-        present(unwrappedwebvc, animated: true, completion: nil)
+        navigationController?.pushViewController(unwrappedwebvc, animated: true)
+        //present(unwrappedwebvc, animated: true, completion: nil)
     }
 }

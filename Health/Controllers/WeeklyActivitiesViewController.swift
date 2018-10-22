@@ -11,6 +11,7 @@ import Firebase
 import HealthKit
 import UserNotifications
 import ResearchKit
+import CoreData
 
 class WeeklyActivitiesViewController: UIViewController {
     
@@ -28,6 +29,7 @@ class WeeklyActivitiesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        saveUserDetail()
         accessHealthKit()
         UNUserNotificationCenter.current().delegate = self
         setUpNotification()
@@ -43,13 +45,11 @@ class WeeklyActivitiesViewController: UIViewController {
         flabel.textColor = Colors.progressBlue
         tlabel.textColor = Colors.progressBlue
         ilabel.textColor = Colors.progressBlue
-        saveUserDetail()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         collectionView.reloadData()
-        
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -337,7 +337,6 @@ extension WeeklyActivitiesViewController: UICollectionViewDelegate, UICollection
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeScreenCVCell", for: indexPath) as? HomeScreenCVCell
-        
         if indexPath.row == 0 {
             retrieveGoal { walkGoal, _ in
                 self.fetchSleepWalkDetails(activity: "Walk", property: "steps", completion: { stepCount in
@@ -375,6 +374,7 @@ extension WeeklyActivitiesViewController: UICollectionViewDelegate, UICollection
         }
         print(contentOffset)
     }
+    
 }
 
 extension WeeklyActivitiesViewController {
@@ -441,6 +441,7 @@ extension WeeklyActivitiesViewController {
                 return
             }
             ProfileDataStore.saveBodyMassIndexSample(bodyMassIndex: bmi, date: Date())
+            self.updateDatabase()
         }
     }
     
@@ -484,37 +485,37 @@ extension WeeklyActivitiesViewController {
         let ref = Database.database().reference(fromURL: Urls.userurl).child(userID)
         
         if userHealthProfile.age == nil {
-            values["age"] = "unknown"
+            values["Age"] = "unknown"
         } else {
-            values["age"] = "\(userHealthProfile.age!)"
+            values["Age"] = "\(userHealthProfile.age!)"
         }
         if userHealthProfile.bloodType == nil {
-            values["bloodtype"] = "unknown"
+            values["Blood Type"] = "unknown"
         } else {
-            values["bloodtype"] = userHealthProfile.bloodType?.stringRepresentation
+            values["Blood Type"] = userHealthProfile.bloodType?.stringRepresentation
         }
         if userHealthProfile.biologicalSex == nil {
-            values["gender"] = "unknown"
+            values["Gender"] = "unknown"
         } else {
-            values["gender"] = userHealthProfile.biologicalSex?.stringRepresentation
+            values["Gender"] = userHealthProfile.biologicalSex?.stringRepresentation
         }
         if userHealthProfile.heightInMeters == nil {
-            values["height"] = "unknown"
+            values["Height"] = "unknown"
         } else {
-            values["height"] = "\(userHealthProfile.heightInMeters!)"
+            values["Height"] = "\(userHealthProfile.heightInMeters!)"
         }
         if userHealthProfile.bloodType == nil {
-            values["weight"] = "unknown"
+            values["Weight"] = "unknown"
         } else {
-            values["weight"] = "\(userHealthProfile.weightInKilograms!)"
+            values["Weight"] = "\(userHealthProfile.weightInKilograms!)"
         }
         if userHealthProfile.bloodType == nil {
-            values["bmi"] = "unknown"
+            values["Bmi"] = "unknown"
         } else {
             guard let bmi = userHealthProfile.bodyMassIndex else {
                 return
             }
-            values["bmi"] = String(format: "%.2f", bmi)
+            values["Bmi"] = String(format: "%.2f", bmi)
         }
         
         ref.child("userdetail").updateChildValues(values) { error, reference in

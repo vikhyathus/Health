@@ -53,6 +53,7 @@ class NewsViewController: UIViewController {
     
     func fetchArticles() {
         
+        //self.populateFromCoreData()
         let session = URLSession(configuration: .default)
         guard let newsUrl = URL(string: Urls.newUrl) else { return }
         
@@ -83,10 +84,10 @@ class NewsViewController: UIViewController {
                         }
                     }
                 }
-                //self.addToCoreData()
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                     self.activityIndicator.stopAnimating()
+                    self.addToCoreData()
                 }
             } catch let error {
                 print(error)

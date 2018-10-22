@@ -69,6 +69,7 @@ class UserProfileViewController: UIViewController {
         navigationBar.shadowImage = UIImage()
         navigationBar.isTranslucent = true
         navigationBar.backgroundColor = .clear
+        imageView.layer.cornerRadius = imageView.frame.width / 2
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -197,7 +198,7 @@ class UserProfileViewController: UIViewController {
                         self.userDetails.append(self.physicalData)
                         self.userDetails.append([">"])
                         self.tableView.reloadData()
-                        self.updateDatabase()
+                        //self.updateDatabase()
                         return
                     }
                 }
@@ -207,7 +208,7 @@ class UserProfileViewController: UIViewController {
                     self.userDetails.append(self.physicalData)
                     self.userDetails.append([">"])
                     self.tableView.reloadData()
-                    self.updateDatabase()
+                    //self.updateDatabase()
                     return
                 }
                 return
@@ -231,7 +232,7 @@ class UserProfileViewController: UIViewController {
                 self.userDetails.append(self.physicalData)
                 self.userDetails.append([">"])
                 self.tableView.reloadData()
-                self.updateDatabase()
+                //self.updateDatabase()
             }
         }
     }
@@ -256,7 +257,7 @@ class UserProfileViewController: UIViewController {
                         self.userDetails.append(self.physicalData)
                         self.userDetails.append([">"])
                         self.tableView.reloadData()
-                        self.updateDatabase()
+                        //self.updateDatabase()
                         return
                     }
                 }
@@ -266,7 +267,7 @@ class UserProfileViewController: UIViewController {
                     self.userDetails.append(self.physicalData)
                     self.userDetails.append([">"])
                     self.tableView.reloadData()
-                    self.updateDatabase()
+                    //self.updateDatabase()
                     return
                 }
                 return
@@ -288,7 +289,7 @@ class UserProfileViewController: UIViewController {
                 self.userDetails.append(self.physicalData)
                 self.userDetails.append([">"])
                 self.tableView.reloadData()
-                self.updateDatabase()
+                //self.updateDatabase()
             }
         }
     }
@@ -330,30 +331,30 @@ class UserProfileViewController: UIViewController {
             }
     }
     
-    func updateDatabase() {
-        
-        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com")
-        let (status, message) = FireBaseHelper.getUserID()
-        guard status else {
-            print(message)
-            return
-        }
-        let userReference = ref.child("Users").child(message).child("userdetail")
-        var values = [String: String]()
-        
-        for index in 0..<2 {
-            for rowIndex in 0..<userDetails[index].count {
-                values[tableLabels[index][rowIndex]] = userDetails[index][rowIndex]
-            }
-        }
-        
-        userReference.updateChildValues(values, withCompletionBlock: { error, _ in
-            if error != nil {
-                print(error?.localizedDescription as Any)
-            }
-            print("saved successfully")
-        })
-    }
+//    func updateDatabase() {
+//
+//        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com")
+//        let (status, message) = FireBaseHelper.getUserID()
+//        guard status else {
+//            print(message)
+//            return
+//        }
+//        let userReference = ref.child("Users").child(message).child("userdetail")
+//        var values = [String: String]()
+//
+//        for index in 0..<2 {
+//            for rowIndex in 0..<userDetails[index].count {
+//                values[tableLabels[index][rowIndex]] = userDetails[index][rowIndex]
+//            }
+//        }
+//
+//        userReference.updateChildValues(values, withCompletionBlock: { error, _ in
+//            if error != nil {
+//                print(error?.localizedDescription as Any)
+//            }
+//            print("saved successfully")
+//        })
+//    }
     
     func deleteObject() {
         
@@ -407,22 +408,24 @@ class UserProfileViewController: UIViewController {
             guard let userDetails = data.value as? NSDictionary else {
                 return
             }
-            if let age = userDetails["age"] as? String {
+            if let age = userDetails["Age"] as? String {
                 self.sampleTypes.append(age)
             }
-            if let gender = userDetails["gender"] as? String {
+            if let gender = userDetails["Gender"] as? String {
                 self.sampleTypes.append(gender)
             }
-            if let bloodtype = userDetails["bloodtype"] as? String {
+            if let bloodtype = userDetails["Blood Type"] as? String {
                 self.sampleTypes.append(bloodtype)
             }
-            if let weight = userDetails["weight"] as? String {
+            if let weight = userDetails["Weight"] as? String {
+                self.tableLabels[1][0] = "Weight"
                 self.physicalData.append("\(weight) kg")
             }
-            if let height = userDetails["height"] as? String {
+            if let height = userDetails["Height"] as? String {
+                self.tableLabels[1][1] = "Height"
                 self.physicalData.append("\(height) m")
             }
-            if let bmi = userDetails["bmi"] as? String {
+            if let bmi = userDetails["Bmi"] as? String {
                 self.physicalData.append(bmi)
             }
 
