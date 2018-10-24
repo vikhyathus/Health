@@ -31,15 +31,13 @@ class ProfileDataStore {
             }
     }
     
-    class func getMostRecentSample(for sampleType: HKSampleType,
-                                   completion: @escaping (HKQuantitySample?, Error?) -> Swift.Void) {
+    class func getMostRecentSample(for sampleType: HKSampleType, completion: @escaping (HKQuantitySample?, Error?) -> Swift.Void) {
         
         let mostRecentPredicate = HKQuery.predicateForSamples(withStart: Date.distantPast,
                                                               end: Date(),
                                                               options: .strictEndDate)
         
-        let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate,
-                                              ascending: false)
+        let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)
         
         let limit = 1
         
@@ -56,11 +54,9 @@ class ProfileDataStore {
                                                         completion(nil, error)
                                                         return
                                                 }
-                                                
                                                 completion(mostRecentSample, nil)
                                             }
         }
-        
         HKHealthStore().execute(sampleQuery)
     }
     

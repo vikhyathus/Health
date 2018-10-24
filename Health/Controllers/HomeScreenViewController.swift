@@ -504,12 +504,12 @@ extension WeeklyActivitiesViewController {
         } else {
             values["Height"] = "\(userHealthProfile.heightInMeters!)"
         }
-        if userHealthProfile.bloodType == nil {
+        if userHealthProfile.weightInKilograms == nil {
             values["Weight"] = "unknown"
         } else {
             values["Weight"] = "\(userHealthProfile.weightInKilograms!)"
         }
-        if userHealthProfile.bloodType == nil {
+        if userHealthProfile.bodyMassIndex == nil {
             values["Bmi"] = "unknown"
         } else {
             guard let bmi = userHealthProfile.bodyMassIndex else {

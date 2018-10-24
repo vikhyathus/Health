@@ -452,6 +452,7 @@ class UserProfileViewController: UIViewController {
         }
         isHealthKit = !isHealthKit
     }
+    
     @IBAction private func editButtonTapped(_ sender: Any) {
         guard let editScreen = storyboard?.instantiateViewController(withIdentifier: "EditProfileViewController") as? EditProfileViewController else {
             return
