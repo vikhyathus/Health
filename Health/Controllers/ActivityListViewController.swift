@@ -16,7 +16,7 @@ class ActivityListViewController: UIViewController {
     var didLoad: Bool = false
     let userID = Auth.auth().currentUser?.uid
     var iswalk = true
-    var activityIndicator: UIActivityIndicatorView!
+    var activityIndicator: UIActivityIndicatorView?
     var walkGoal = 200
     var sleepGoal = 4 * 3600
     
@@ -55,7 +55,10 @@ class ActivityListViewController: UIViewController {
             activity.hidesWhenStopped = true
             return activity
         }()
-        tableView.addSubview(activityIndicator)
+        guard let unwrappedActivityIndicator = activityIndicator else {
+            return
+        }
+        tableView.addSubview(unwrappedActivityIndicator)
     }
     
     func setUpViews() {
@@ -93,7 +96,7 @@ class ActivityListViewController: UIViewController {
     
     func retrieveGoal() {
         
-        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
+        let ref = Database.database().reference(fromURL: Urls.userurl)
         let (status, message) = FireBaseHelper.getUserID()
         guard status else {
             print(message)
@@ -125,7 +128,7 @@ class ActivityListViewController: UIViewController {
     func populateList(activity: String, property: String) {
         
         activityList.removeAll()
-        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
+        let ref = Database.database().reference(fromURL: Urls.userurl)
         
         ref.observeSingleEvent(of: .value) { snapshot in
             if !snapshot.hasChild("Activity") {
@@ -135,15 +138,14 @@ class ActivityListViewController: UIViewController {
             }
         }
         fetch()
-        let connectedRef = Database.database().reference(withPath: ".info/connected")
-        connectedRef.observe(.value, with: { snapshot in
-            if snapshot.value as? Bool ?? false {
+        FireBaseHelper.isConnectedToFireBase { isConnected in
+            if isConnected {
                 self.callAPI(activity: activity, property: property)
             } else {
                 self.fetch()
                 self.view.isUserInteractionEnabled = true
             }
-        })
+        }
     }
     
     func callAPI(activity: String, property: String) {
@@ -152,11 +154,11 @@ class ActivityListViewController: UIViewController {
             return
         }
         
-        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
+        let ref = Database.database().reference(fromURL: Urls.userurl)
             ref.child(userID).child("Activities").child(activity).observeSingleEvent(of: .value, with: { snapshot in
             guard let days = snapshot.value as? NSDictionary else { self.tableView.reloadData(); return }
             self.activityList.removeAll()
-            self.activityIndicator.startAnimating()
+            self.activityIndicator?.startAnimating()
             for ( _, value) in days {
                 
                 guard let walkDetails = value as? NSDictionary,
@@ -167,11 +169,11 @@ class ActivityListViewController: UIViewController {
             }
             self.addToCoreData()
             self.fetch()
-            self.activityIndicator.stopAnimating()
+            self.activityIndicator?.stopAnimating()
         })
     }
     
-    func sort() {
+    private func sort() {
         activityList = activityList.sorted(by: {
             $0.date.compare($1.date) == .orderedDescending
         })
@@ -184,7 +186,6 @@ class ActivityListViewController: UIViewController {
         }
         fetch()
         iswalk = !iswalk
-        
         view.isUserInteractionEnabled = false
         activityList.removeAll()
         populateList(activity: "Walk", property: "steps")
@@ -279,119 +280,36 @@ extension ActivityListViewController: UITableViewDelegate, UITableViewDataSource
 extension ActivityListViewController {
     
     func addToCoreData() {
-        deleteObject()
-        for activity in activityList {
-            addObject(object: activity)
+        if iswalk {
+            WalkDetail.deleteObject()
+            for activity in activityList {
+                WalkDetail.insertObjects(walkObject: activity)
+            }
+        } else {
+            SleepDetail.deleteObject()
+            for activity in activityList {
+                SleepDetail.insertObjects(sleepObject: activity)
+            }
         }
     }
     
-    func deleteObject() {
-        
-        if iswalk {
-            let request = NSFetchRequest<WalkDetail>(entityName: "WalkDetail")
-            let context = managedObjectContext()
-            do {
-                let obj = try context.fetch(request)
-                for item in obj {
-                    context.delete(item)
-                }
-                try context.save()
-            } catch {
-                print("error fetching walk")
-            }
-        } else {
-            let request = NSFetchRequest<SleepDetail>(entityName: "SleepDetail")
-            let context = managedObjectContext()
-            do {
-                let obj = try context.fetch(request)
-                for item in obj {
-                    context.delete(item)
-                }
-                try context.save()
-            } catch {
-                print("error fetching sleep")
-            }
-        }
-    }
-
     func fetch() {
         
-        let context = managedObjectContext()
         activityList.removeAll()
-        
         if iswalk {
-            let request = NSFetchRequest<WalkDetail>(entityName: "WalkDetail")
-            request.returnsObjectsAsFaults = false
-            do {
-                let walkHistory = try context.fetch(request)
-                for walk in walkHistory {
-                    guard let date = walk.date as Date? else {
-                        return
-                    }
-                    activityList.append(WalkSleep(duration: 0, steps: Int(walk.steps), date: date))
-                }
-                print(activityList)
-                self.sort()
-                tableView.reloadData()
-                placeholder.isHidden = !activityList.isEmpty
-                tableView.isHidden = activityList.isEmpty
-                placeHolderText.isHidden = !self.activityList.isEmpty
-            } catch {
-                print("Error fetching data from core data")
-            }
+            activityList = WalkDetail.fetchWalkDetail()
+            self.sort()
+            tableView.reloadData()
+            placeholder.isHidden = !activityList.isEmpty
+            tableView.isHidden = activityList.isEmpty
+            placeHolderText.isHidden = !self.activityList.isEmpty
         } else {
-            let request = NSFetchRequest<SleepDetail>(entityName: "SleepDetail")
-            request.returnsObjectsAsFaults = false
-            do {
-                let sleepHistory = try context.fetch(request)
-                for sleep in sleepHistory {
-                    guard let date = sleep.date as Date? else {
-                        return
-                    }
-                    activityList.append(WalkSleep(duration: 0, steps: Int(sleep.duration), date: date))
-                }
-                self.sort()
-                tableView.reloadData()
-                placeholder.isHidden = !activityList.isEmpty
-                tableView.isHidden = activityList.isEmpty
-                placeHolderText.isHidden = !self.activityList.isEmpty
-                //view.isUserInteractionEnabled = true
-            } catch {
-                print("Error fetching data from core data")
-            }
+            activityList = SleepDetail.fetchSleepDetail()
+            self.sort()
+            tableView.reloadData()
+            placeholder.isHidden = !activityList.isEmpty
+            tableView.isHidden = activityList.isEmpty
+            placeHolderText.isHidden = !self.activityList.isEmpty
         }
-    }
-    
-    func addObject(object: WalkSleep) {
-        
-        let context = managedObjectContext()
-        
-        if iswalk {
-            let entity = NSEntityDescription.insertNewObject(forEntityName: "WalkDetail", into: context) as? WalkDetail
-            entity?.date = object.date as NSDate?
-            entity?.steps = Int32(object.steps)
-            do {
-                try context.save()
-            } catch {
-                print("error")
-            }
-        } else {
-            let entity = NSEntityDescription.insertNewObject(forEntityName: "SleepDetail", into: context) as? SleepDetail
-            entity?.date = object.date as NSDate?
-            entity?.duration = Int32(object.steps)
-            do {
-                try context.save()
-            } catch {
-                print("error")
-            }
-        }
-    }
-    
-    func managedObjectContext() -> NSManagedObjectContext {
-        
-        let appdelegate = UIApplication.shared.delegate as? AppDelegate
-        let context = appdelegate?.persistentContainer.viewContext
-        
-        return context!
     }
 }

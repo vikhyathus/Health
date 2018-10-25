@@ -18,7 +18,7 @@ class EditProfileViewController: UIViewController {
     var age: String = ""
     var weight: String = ""
     var height: String = ""
-    var inputTextField: UITextField!
+    var inputTextField: UITextField?
     var pickerViewDataSource: [String] = []
     var bloodType: [String] = ["A+", "B+", "O+", "A-", "B-", "O-", "AB+", "AB-"]
     var gender: [String] = ["Male", "Female", "Other"]
@@ -30,7 +30,6 @@ class EditProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //fetchUserDetailsFromFirebase()
         tableView.dataSource = self
         tableView.delegate = self
         pickerView.isHidden = true
@@ -52,7 +51,7 @@ class EditProfileViewController: UIViewController {
         return .lightContent
     }
     
-    func fetchUserDetailsFromFirebase() {
+    private func fetchUserDetailsFromFirebase() {
         userDetail.removeAll()
         let (status, userID) = FireBaseHelper.getUserID()
         guard status else {
@@ -89,7 +88,7 @@ class EditProfileViewController: UIViewController {
         })
     }
     
-    func saveChangedUserDetails() {
+    private func saveChangedUserDetails() {
         
         let (status, userID) = FireBaseHelper.getUserID()
         guard status else {
@@ -129,6 +128,7 @@ class EditProfileViewController: UIViewController {
     
 }
 
+// MARK: - UITableViewDelegate,UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, UIPickerViewDelegate, UIPickerViewDataSource
 extension EditProfileViewController: UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -164,7 +164,7 @@ extension EditProfileViewController: UITableViewDelegate, UITableViewDataSource,
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if indexPath.row == 0 || indexPath.row ==  3 || indexPath.row ==  4 {
+        if indexPath.row == 0 || indexPath.row == 3 || indexPath.row == 4 {
             index = indexPath.row
             pickerView.isHidden = true
             let alert = UIAlertController(title: "Edit \(labels[indexPath.row])", message: "Current value \(userDetail[indexPath.row])", preferredStyle: .alert)
@@ -180,6 +180,7 @@ extension EditProfileViewController: UITableViewDelegate, UITableViewDataSource,
         } else {
             pickerView.isHidden = false
             index = indexPath.row
+            pickerView.selectRow(getIndex(row: indexPath.row), inComponent: 0, animated: true)
             if indexPath.row == 1 {
                 pickerViewDataSource = gender
                 pickerView.reloadAllComponents()
@@ -189,6 +190,21 @@ extension EditProfileViewController: UITableViewDelegate, UITableViewDataSource,
             }
         }
 
+    }
+    
+    func getIndex(row: Int) -> Int {
+        
+        if row == 1 {
+            guard let pickerIndex = gender.firstIndex(of: userDetail[row]) else {
+                return 0
+            }
+            return pickerIndex
+        } else {
+            guard let pickerIndex = bloodType.firstIndex(of: userDetail[row]) else {
+                return 0
+            }
+            return pickerIndex
+        }
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -210,12 +226,12 @@ extension EditProfileViewController: UITableViewDelegate, UITableViewDataSource,
     
     func numberField(textField: UITextField) {
         inputTextField = textField
-        inputTextField.keyboardType = .decimalPad
+        inputTextField?.keyboardType = .decimalPad
     }
     
     func okhandler() {
         
-        guard let text = inputTextField.text else {
+        guard let text = inputTextField?.text else {
             print("No input")
             return
         }

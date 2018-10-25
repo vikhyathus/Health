@@ -19,17 +19,17 @@ class SleepViewController: UIViewController {
     @IBOutlet weak var goalLabel: UILabel!
     
     var timer = Timer()
-    var startTime: Date!
-    var endTime: Date!
+    var startTime: Date?
+    var endTime: Date?
     var time = 0
     var sec: Int = 0
     var min: Int = 0
     var hour: Int = 0
     var sleepCount: Int = 0
-    var timeLabelString: String!
-    var hourStr: String!
-    var minStr: String!
-    var secStr: String!
+    var timeLabelString: String?
+    var hourStr: String?
+    var minStr: String?
+    var secStr: String?
     var isStart = false
     var goal = 4 * 3600
     let shapeLayer = CAShapeLayer()
@@ -82,7 +82,7 @@ class SleepViewController: UIViewController {
         ref.child(message).observeSingleEvent(of: .value, with: { data in
             
             guard data.hasChild("goal") else {
-                self.goalLabel.text = "4 hrs"
+                self.goalLabel.text = "Goal 4 hrs"
                 return
             }
             let goalValue = data.childSnapshot(forPath: "goal")

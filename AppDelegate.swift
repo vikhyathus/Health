@@ -109,7 +109,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-
 }
 
 extension AppDelegate: CXCallObserverDelegate {
@@ -117,6 +116,9 @@ extension AppDelegate: CXCallObserverDelegate {
     func callObserver(_ callObserver: CXCallObserver, callChanged call: CXCall) {
         
         if call.hasConnected == true {
+            
+        }
+        if call.hasEnded == true {
             
         }
     }

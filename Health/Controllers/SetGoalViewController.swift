@@ -24,13 +24,11 @@ class SetGoalViewController: UIViewController {
     }
 
     @IBAction private func walkSliderAction(_ sender: UISlider) {
-        print("Walk")
         walkGoal = Int(sender.value)
         walkLabel.text = "\(walkGoal) steps"
     }
     
     @IBAction private func sleepSliderAction(_ sender: UISlider) {
-        print("Sleep")
         sleepGoal = Int(sender.value)
         sleepLabel.text = "\(Int(sender.value)) hrs"
     }
@@ -82,7 +80,7 @@ class SetGoalViewController: UIViewController {
     
     func updateDatabase() {
         
-        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com")
+        let ref = Database.database().reference(fromURL: Urls.firebaseUrl)
         let (status, message) = FireBaseHelper.getUserID()
         guard status else {
             print(message)
@@ -96,7 +94,7 @@ class SetGoalViewController: UIViewController {
                 print(error?.localizedDescription as Any)
             }
             print("saved successfully")
-            self.dismiss(animated: true, completion: nil)
+            self.navigationController?.popViewController(animated: true)
         })
     }
 }

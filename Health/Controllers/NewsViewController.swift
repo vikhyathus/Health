@@ -15,15 +15,20 @@ class NewsViewController: UIViewController {
     var imageData: [NSData] = []
     var isError: Bool = false
     @IBOutlet weak var tableView: UITableView!
-    var activityIndicator: UIActivityIndicatorView!
+    var activityIndicator: UIActivityIndicatorView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setActivityIndicator()
-        activityIndicator.startAnimating()
-        activityIndicator.backgroundColor = .white
-        activityIndicator.isHidden = false
+        setUpView()
         fetchArticles()
+    }
+    
+    fileprivate func setUpView() {
+        setActivityIndicator()
+        setUpTableView()
+    }
+    
+    fileprivate func setUpTableView() {
         tableView.separatorStyle = .singleLine
         tableView.separatorColor = Colors.lightBlue
         tableView.estimatedRowHeight = 400
@@ -35,16 +40,20 @@ class NewsViewController: UIViewController {
     func setActivityIndicator() {
         
         activityIndicator = {
-            
             let activity = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
             activity.center = view.center
             activity.style = UIActivityIndicatorView.Style.gray
             activity.center = view.center
             activity.hidesWhenStopped = true
-            //activity.isHidden = true
             return activity
         }()
-        tableView.addSubview(activityIndicator)
+        activityIndicator?.startAnimating()
+        activityIndicator?.backgroundColor = .white
+        activityIndicator?.isHidden = false
+        guard let unwrappedActivityIndicator = activityIndicator else {
+            return
+        }
+        tableView.addSubview(unwrappedActivityIndicator)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -53,7 +62,6 @@ class NewsViewController: UIViewController {
     
     func fetchArticles() {
         
-        //self.populateFromCoreData()
         let session = URLSession(configuration: .default)
         guard let newsUrl = URL(string: Urls.newUrl) else { return }
         
@@ -63,7 +71,7 @@ class NewsViewController: UIViewController {
                 self.populateFromCoreData()
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
-                    self.activityIndicator.stopAnimating()
+                    self.activityIndicator?.stopAnimating()
                 }
                 return
             }
@@ -86,7 +94,7 @@ class NewsViewController: UIViewController {
                 }
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
-                    self.activityIndicator.stopAnimating()
+                    self.activityIndicator?.stopAnimating()
                     self.addToCoreData()
                 }
             } catch let error {
@@ -95,37 +103,61 @@ class NewsViewController: UIViewController {
         }
         task.resume()
     }
+    
+    private func addToCoreData() {
+        
+        NewsArticle.deleteObject()
+        for article in newsArticles {
+            NewsArticle.insertArticle(object: article)
+        }
+    }
+    
+    private func populateFromCoreData() {
+        newsArticles = NewsArticle.fetchNewsDetails()
+    }
 }
 
-class ImageDownloader {
+// MARK: - UITableViewDelegate, UITableViewDataSource
+extension NewsViewController: UITableViewDelegate, UITableViewDataSource {
     
-    static let imageCache = NSCache<NSString, UIImage>()
-
-    static func downloadImage(urlString: String, completion: @escaping (_ image: UIImage?, _ error: Error? ) -> Void) {
-        guard let url = URL(string: urlString) else { return }
-        if let cachedImage = imageCache.object(forKey: url.absoluteString as NSString) {
-            completion(cachedImage, nil)
-        } else {
-            guard let imageUrl = url as URL? else { return }
-            let urlRequest = URLRequest(url: imageUrl)
-            
-            let task = URLSession.shared.dataTask(with: urlRequest) { data, _, error in
-                
-                if error != nil {
-                    return
-                }
-                
-                if let error = error {
-                    completion(nil, error)
-                    
-                } else if let data = data, let image = UIImage(data: data) {
-                    self.imageCache.setObject(image, forKey: url.absoluteString as NSString)
-                    completion(image, nil)
-                } else {
-                    completion(nil, error)
-                }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return newsArticles.count
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 5
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let row = newsArticles[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCell") as? NewsCell
+        cell?.setNeedsUpdateConstraints()
+        cell?.updateConstraints()
+        cell?.selectionStyle = .none
+        cell?.newsImage.image = UIImage(named: "imagePlaceHolder")
+        cell?.titleLabel.text = row.title
+        cell?.descriptionLabel.text = row.description
+        ImageDownloader.downloadImage(urlString: row.urlToImage) { image, _ in
+            DispatchQueue.main.async {
+                cell?.newsImage?.image = image
             }
-            task.resume()
         }
+        cell?.separatorInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        guard let unwrappedCell = cell else {
+            return UITableViewCell()
+        }
+        return unwrappedCell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let webvc = storyboard?.instantiateViewController(withIdentifier: "web") as? WebViewController
+        webvc?.urlString = newsArticles[indexPath.row].url
+        guard let unwrappedwebvc = webvc else {
+            return
+        }
+        unwrappedwebvc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(unwrappedwebvc, animated: true)
     }
 }

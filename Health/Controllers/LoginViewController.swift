@@ -16,7 +16,6 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var userName: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    
     @IBOutlet weak var ilabel: UILabel!
     @IBOutlet var textFields: [UITextField]!
     
@@ -31,6 +30,7 @@ class LoginViewController: UIViewController {
         signInButton.isEnabled = false
         self.hideKeyboardWhenTappedAround()
         NotificationCenter.default.addObserver(self, selector: #selector(textDidChange(_:)), name: UITextField.textDidChangeNotification, object: nil)
+        activityIndicator.center = signInButton.center
     }
     
     @IBAction private func signInButtonTapped(_ sender: Any) {
@@ -48,8 +48,8 @@ class LoginViewController: UIViewController {
         }
         Auth.auth().signIn(withEmail: user, password: password) { _, error in
             
-            if error != nil {
-                let alert = self.alertCreator(title: "Authentication Error", message: (error?.localizedDescription)!)
+            if let error = error {
+                let alert = self.alertCreator(title: "Authentication Error", message: error.localizedDescription)
                 self.present(alert, animated: true, completion: nil)
             } else {
                 print("User logged in successfuly!")
@@ -88,4 +88,78 @@ class LoginViewController: UIViewController {
         signInButton.isEnabled = false
     }
     
+    @IBAction private func forgotPasswordTapped(_ sender: UIButton) {
+        
+        let forgotPasswordAlert = UIAlertController(title: "Forgot password?", message: "Enter email address", preferredStyle: .alert)
+        forgotPasswordAlert.addTextField { textField in
+            textField.placeholder = "Enter email address"
+        }
+        forgotPasswordAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        forgotPasswordAlert.addAction(UIAlertAction(title: "Reset Password", style: .default, handler: { _ in
+            guard let resetEmail = forgotPasswordAlert.textFields?.first?.text else {
+                return
+            }
+            Auth.auth().sendPasswordReset(withEmail: resetEmail, completion: { error in
+               
+                DispatchQueue.main.async {
+                    
+                    if let error = error {
+                        let resetFailedAlert = UIAlertController(title: "Reset Failed", message: error.localizedDescription, preferredStyle: .alert)
+                        resetFailedAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                        self.present(resetFailedAlert, animated: true, completion: nil)
+                    } else {
+                        let resetEmailSentAlert = UIAlertController(title: "Reset email sent successfully", message: "Check your email", preferredStyle: .alert)
+                        resetEmailSentAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                        self.present(resetEmailSentAlert, animated: true, completion: nil)
+                    }
+                }
+            })
+        }))
+        self.present(forgotPasswordAlert, animated: true, completion: nil)
+    }
+}
+
+// MARK: - UITextFieldDelegate
+extension LoginViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        switch textField {
+        case userName:
+            passwordField.becomeFirstResponder()
+        default:
+            passwordField.resignFirstResponder()
+            if formIsValid {
+                startLoginProcess()
+            }
+        }
+        return true
+    }
+    
+    func validate(_ textField: UITextField) -> (Bool, String?) {
+        
+        guard let text = textField.text else {
+            return (false, nil)
+        }
+        
+        return (!text.isEmpty, "This field cannot be empty.")
+    }
+    
+    @objc func textDidChange(_ notification: Notification) {
+        formIsValid = true
+        
+        for textField in textFields {
+            let (valid, _) = validate(textField)
+            
+            guard valid else {
+                formIsValid = false
+                signInButton.alpha = 0.3
+                break
+            }
+        }
+        
+        signInButton.isEnabled = formIsValid
+        if formIsValid {
+            signInButton.alpha = 1.0
+        }
+    }
 }

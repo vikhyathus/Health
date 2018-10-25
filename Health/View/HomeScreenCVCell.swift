@@ -21,7 +21,7 @@ class HomeScreenCVCell: UICollectionViewCell {
     var goalSleep = 4 * 3600
     
     override func awakeFromNib() {
-        
+        super.awakeFromNib()
         setUpProgressView(containerView: self)
         setUpPercentageLabel()
     }

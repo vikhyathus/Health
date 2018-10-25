@@ -1,5 +1,5 @@
 //
-//  WeeklyActivitiesViewController.swift
+//  HomeScreenViewController.swift
 //  Health
 //
 //  Created by Vikhyath on 21/09/18.
@@ -13,7 +13,7 @@ import UserNotifications
 import ResearchKit
 import CoreData
 
-class WeeklyActivitiesViewController: UIViewController {
+class HomeScreenViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -136,15 +136,6 @@ class WeeklyActivitiesViewController: UIViewController {
         }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        //authorizeHealthKit()
-    }
-
-    @IBAction private func handleWalk(_ sender: UIButton) {
-        //var walkingScreen: UIViewController = WalkViewController()
-    }
-    
     private func authorizeHealthKit() {
         
         HealthKitSetupAssistant.authorizeHealthKit { authorized, error in
@@ -228,7 +219,7 @@ class WeeklyActivitiesViewController: UIViewController {
     }
 }
 
-extension WeeklyActivitiesViewController: UNUserNotificationCenterDelegate, ORKTaskViewControllerDelegate {
+extension HomeScreenViewController: UNUserNotificationCenterDelegate, ORKTaskViewControllerDelegate {
     
     func taskViewController(_ taskViewController: ORKTaskViewController, didFinishWith reason: ORKTaskViewControllerFinishReason, error: Error?) {
         if reason == .completed {
@@ -329,7 +320,7 @@ extension WeeklyActivitiesViewController: UNUserNotificationCenterDelegate, ORKT
 }
 
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource
-extension WeeklyActivitiesViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension HomeScreenViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 2
@@ -377,7 +368,7 @@ extension WeeklyActivitiesViewController: UICollectionViewDelegate, UICollection
     
 }
 
-extension WeeklyActivitiesViewController {
+extension HomeScreenViewController {
     
     func saveUserDetail() {
         
@@ -484,45 +475,88 @@ extension WeeklyActivitiesViewController {
         var values = [String: String]()
         let ref = Database.database().reference(fromURL: Urls.userurl).child(userID)
         
-        if userHealthProfile.age == nil {
+        if let age = userHealthProfile.age {
+            values["Age"] = "\(age)"
+        } else {
             values["Age"] = "unknown"
-        } else {
-            values["Age"] = "\(userHealthProfile.age!)"
         }
-        if userHealthProfile.bloodType == nil {
+        if let blood = userHealthProfile.bloodType {
+            values["Blood Type"] = blood.stringRepresentation
+        } else {
             values["Blood Type"] = "unknown"
-        } else {
-            values["Blood Type"] = userHealthProfile.bloodType?.stringRepresentation
         }
-        if userHealthProfile.biologicalSex == nil {
-            values["Gender"] = "unknown"
+        if let biologicalSex = userHealthProfile.biologicalSex {
+            values["Gender"] = biologicalSex.stringRepresentation
         } else {
-            values["Gender"] = userHealthProfile.biologicalSex?.stringRepresentation
+             values["Gender"] = "unknown"
         }
-        if userHealthProfile.heightInMeters == nil {
+        if let height = userHealthProfile.heightInMeters {
+            values["Height"] = "\(height)"
+        } else {
             values["Height"] = "unknown"
-        } else {
-            values["Height"] = "\(userHealthProfile.heightInMeters!)"
         }
-        if userHealthProfile.weightInKilograms == nil {
+        if let weight = userHealthProfile.weightInKilograms {
+            values["Weight"] = "\(weight)"
+        } else {
             values["Weight"] = "unknown"
-        } else {
-            values["Weight"] = "\(userHealthProfile.weightInKilograms!)"
         }
-        if userHealthProfile.bodyMassIndex == nil {
-            values["Bmi"] = "unknown"
-        } else {
-            guard let bmi = userHealthProfile.bodyMassIndex else {
-                return
-            }
+        if let bmi = userHealthProfile.bodyMassIndex {
             values["Bmi"] = String(format: "%.2f", bmi)
+        } else {
+            values["Bmi"] = "unknown"
         }
         
-        ref.child("userdetail").updateChildValues(values) { error, reference in
+        ref.child("userdetail").updateChildValues(values) { error, _ in
             
-            if error != nil {
-                print(error?.localizedDescription as Any)
+            if let error = error {
+                print(error.localizedDescription as Any)
             }
         }
+    }
+}
+
+// MARK: - UITableViewDelegate, UITableViewDataSource
+extension HomeScreenViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TasksIdentifierCell") as? TasksIdentifierCell
+        if indexPath.row == 0 {
+            cell?.taskLabel.text = "Walk Tracker"
+            cell?.imageView?.image = UIImage(named: "group6")
+        } else {
+            cell?.taskLabel.text = "Sleep Tracker"
+            cell?.imageView?.image = UIImage(named: "group11")
+        }
+        cell?.selectionStyle = .none
+        guard let unwrappedCell = cell else {
+            return UITableViewCell()
+        }
+        return unwrappedCell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if indexPath.row == 0 {
+            guard let walk = storyboard?.instantiateViewController(withIdentifier: "TrackWalkViewController") as? TrackWalkViewController else { return }
+            walk.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(walk, animated: true)
+        } else {
+            guard let sleep = storyboard?.instantiateViewController(withIdentifier: "SleepViewController") as? SleepViewController else { return }
+            sleep.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(sleep, animated: true)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView()
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        return 100.0
     }
 }

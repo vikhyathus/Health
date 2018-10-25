@@ -25,9 +25,9 @@ class TrackWalkViewController: UIViewController {
     
     var time = 0
     var timer = Timer()
-    var startTime: Date!
-    var endTime: Date!
-    var presentDistance: String!
+    var startTime: Date?
+    var endTime: Date?
+    var presentDistance: String?
     var stepCount: Int = 0
     var isStart: Bool = false
     let shapeLayer = CAShapeLayer()
@@ -78,7 +78,7 @@ class TrackWalkViewController: UIViewController {
         ref.child(message).observeSingleEvent(of: .value, with: { data in
             
             guard data.hasChild("goal") else {
-                self.stepGoal.text = "200 steps"
+                self.stepGoal.text = "Goal 200 steps"
                 self.goal = 200
                 return
             }
@@ -105,7 +105,7 @@ class TrackWalkViewController: UIViewController {
             return
         }
         var previousWalkDetails = 0
-        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
+        let ref = Database.database().reference(fromURL: Urls.userurl)
         ref.child(message).child("Activities").child("Walk").observeSingleEvent(of: .value) { snapshot in
             
             if snapshot.hasChild(Date.getKeyFromDate()) {
@@ -125,7 +125,6 @@ class TrackWalkViewController: UIViewController {
             }
         }
         print("Outside \(previousWalkDetails)")
-        
     }
     
     func setUpProgressView() {
@@ -147,23 +146,6 @@ class TrackWalkViewController: UIViewController {
         view.layer.addSublayer(trackLayer)
         view.layer.addSublayer(shapeLayer)
     }
-    
-//    private func startTrackingActivityType() {
-//
-//        activity.startActivityUpdates(to: OperationQueue.main) { [weak self] (activity: CMMotionActivity?) in
-//
-//            guard let activity = activity else { return }
-//                if activity.walking {
-//                    print("your are walking")
-//                } else if activity.stationary {
-//                   print("you are stationary")
-//                } else if activity.running {
-//                    print("you are running")
-//                } else if activity.automotive {
-//                    print("you are automotive")
-//                }
-//        }
-//    }
     
     private func startCountingSteps() {
         pedometer.startUpdates(from: Date()) { [weak self] pedometerData, error in
@@ -236,10 +218,6 @@ class TrackWalkViewController: UIViewController {
     
     private func startUpdating() {
         
-        if CMMotionActivityManager.isActivityAvailable() {
-            //startTrackingActivityType()
-        }
-        
         if CMPedometer.isStepCountingAvailable() {
             startCountingSteps()
         }
@@ -264,7 +242,9 @@ class TrackWalkViewController: UIViewController {
             guard let unwrappedtimeLabel = timeLabel.text else {
                 return
             }
-            stepCount = Int(unwrappedtimeLabel)!
+            if let integerValue = Int(unwrappedtimeLabel) {
+                stepCount = integerValue
+            }
             isStart = !isStart
             pedometer.stopUpdates()
         }
@@ -285,7 +265,9 @@ class TrackWalkViewController: UIViewController {
         guard let unwrappedTimeLabel = timeLabel.text else {
             return
         }
-        stepCount = Int(unwrappedTimeLabel)!
+        if let integerValue = Int(unwrappedTimeLabel) {
+            stepCount = integerValue
+        }
         timer.invalidate()
         updateDatabase(stepCount: stepCount)
         if stepCount >= goal {

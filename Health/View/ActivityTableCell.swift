@@ -13,5 +13,4 @@ class ActivityTableCell: UITableViewCell {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var durationLabel: UILabel!
     @IBOutlet weak var statusImage: UIImageView!
-    
 }

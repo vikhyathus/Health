@@ -110,7 +110,7 @@ class UserProfileViewController: UIViewController {
             return
         }
         
-        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
+        let ref = Database.database().reference(fromURL: Urls.userurl)
         ref.child(userId).observeSingleEvent(of: .value) { snapshot in
             
             guard let dataSnap = snapshot.value as? NSDictionary else {
@@ -297,8 +297,6 @@ class UserProfileViewController: UIViewController {
     private func saveBodyMassIndexToHealthKit() {
         
         guard let bodyMassIndex = userHealthProfile.bodyMassIndex else {
-            //self.physicalData.append("Not available")
-            //displayAlert(for: ProfileDataError.missingBodyMassIndex)
             return
         }
         ProfileDataStore.saveBodyMassIndexSample(bodyMassIndex: bodyMassIndex,
@@ -323,7 +321,8 @@ class UserProfileViewController: UIViewController {
         
             do {
                 UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-                deleteObject()
+                WalkDetail.deleteObject()
+                SleepDetail.deleteObject()
                 try? Auth.auth().signOut()
                 let appDelegate = UIApplication.shared.delegate as? AppDelegate
                 appDelegate?.openHomeScreen()
@@ -356,41 +355,6 @@ class UserProfileViewController: UIViewController {
 //        })
 //    }
     
-    func deleteObject() {
-        
-            let request1 = NSFetchRequest<WalkDetail>(entityName: "WalkDetail")
-            let context1 = managedObjectContext()
-            do {
-                let obj = try context1.fetch(request1)
-                for item in obj {
-                    context1.delete(item)
-                }
-                try context1.save()
-            } catch {
-                print("error fetching walk")
-            }
-     
-            let request2 = NSFetchRequest<SleepDetail>(entityName: "SleepDetail")
-            let context2 = managedObjectContext()
-            do {
-                let obj = try context2.fetch(request2)
-                for item in obj {
-                    context2.delete(item)
-                }
-                try context2.save()
-            } catch {
-                print("error fetching sleep")
-            }
-    }
-    
-    func managedObjectContext() -> NSManagedObjectContext {
-        
-        let appdelegate = UIApplication.shared.delegate as? AppDelegate
-        let context = appdelegate?.persistentContainer.viewContext
-        
-        return context!
-        
-    }
     
     func fetchUserDetailsFromFirebase() {
         
@@ -404,7 +368,7 @@ class UserProfileViewController: UIViewController {
         }
         let ref = Database.database().reference(fromURL: Urls.userurl).child(userID).child("userdetail")
         ref.observeSingleEvent(of: .value, with: { data in
-
+            self.tableView.isUserInteractionEnabled = false
             guard let userDetails = data.value as? NSDictionary else {
                 return
             }
@@ -433,6 +397,7 @@ class UserProfileViewController: UIViewController {
             self.userDetails.append(self.physicalData)
             self.userDetails.append([">"])
             self.tableView.reloadData()
+            self.tableView.isUserInteractionEnabled = true
         })
     }
     
@@ -460,5 +425,69 @@ class UserProfileViewController: UIViewController {
         editScreen.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(editScreen, animated: true)
     }
+}
+
+// MARK: - UITableViewDelegate, UITableViewDataSource
+extension UserProfileViewController: UITableViewDelegate, UITableViewDataSource {
     
- }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return userDetails[section].count
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        print(userDetails.count)
+        return userDetails.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileViewCell") as? ProfileViewCell
+        if userDetails.isEmpty {
+            return UITableViewCell()
+        }
+        cell?.titleLabel.text = tableLabels[indexPath.section][indexPath.row]
+        cell?.valueLabel.text = userDetails[indexPath.section][indexPath.row]
+        cell?.selectionStyle = .none
+        
+        guard let unwrappedCell = cell else {
+            return UITableViewCell()
+        }
+        return unwrappedCell
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        let label = UILabel()
+        if section == 0 {
+            label.text = "USER DETAILS"
+        } else if section == 1 {
+            label.text = "PHYSICAL DETAILS"
+        } else {
+            label.text = "SET GOAL"
+        }
+        
+        label.backgroundColor = Colors.orange
+        label.textAlignment = .center
+        label.textColor = .white
+        
+        return label
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 50.0
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if indexPath.section == 2 {
+            print(indexPath.section)
+            let controller = storyboard?.instantiateViewController(withIdentifier: "SetGoalViewController") as? SetGoalViewController
+            guard let unwrappedController = controller else {
+                return
+            }
+            unwrappedController.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(unwrappedController, animated: true)
+        }
+    }
+}
