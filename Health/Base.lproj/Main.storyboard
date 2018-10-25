@@ -1570,7 +1570,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Edit" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ora-uA-G5x">
-                                                    <rect key="frame" x="356.66666666666669" y="41.333333333333336" width="27.333333333333314" height="17"/>
+                                                    <rect key="frame" x="322" y="41.333333333333336" width="62" height="17"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                                     <color key="textColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -1600,7 +1600,7 @@
                                                 <constraint firstItem="bSn-Wf-5f0" firstAttribute="centerY" secondItem="uak-Wn-nlg" secondAttribute="centerY" id="E2l-z4-2ol"/>
                                                 <constraint firstItem="Ora-uA-G5x" firstAttribute="centerY" secondItem="uak-Wn-nlg" secondAttribute="centerY" id="F5o-Oi-iPc"/>
                                                 <constraint firstItem="bSn-Wf-5f0" firstAttribute="leading" secondItem="uak-Wn-nlg" secondAttribute="leadingMargin" constant="20" id="lLr-f5-65k"/>
-                                                <constraint firstItem="Ora-uA-G5x" firstAttribute="leading" secondItem="IMb-Ob-1gs" secondAttribute="trailing" constant="44.670000000000002" id="rCQ-DR-JQV"/>
+                                                <constraint firstItem="Ora-uA-G5x" firstAttribute="leading" secondItem="IMb-Ob-1gs" secondAttribute="trailing" constant="10" id="rCQ-DR-JQV"/>
                                                 <constraint firstItem="IMb-Ob-1gs" firstAttribute="leading" secondItem="bSn-Wf-5f0" secondAttribute="trailing" constant="50" id="sYC-Vj-vo9"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -1646,7 +1646,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="feF-aa-B5v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5881.1594202898559" y="-3399.4565217391305"/>
+            <point key="canvasLocation" x="-6072" y="-3421"/>
         </scene>
         <!--Track Walk View Controller-->
         <scene sceneID="DuX-lp-bpw">
