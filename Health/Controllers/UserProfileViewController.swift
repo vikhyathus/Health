@@ -38,7 +38,7 @@ class UserProfileViewController: UIViewController {
     @IBOutlet weak var rewardLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
     
-    var tableLabels = [["Age", "Gender", "Blood Type"], ["Weight", "Height", "BMI"], ["Goal"]]
+    var tableLabels = [["Goal"], ["Age", "Gender", "Blood Type"], ["Weight", "Height", "BMI"]]
     let userHealthProfile = UserHealthProfile()
     
     private enum ProfileDataError: Error {
@@ -54,6 +54,7 @@ class UserProfileViewController: UIViewController {
     }
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         tableView.separatorStyle = .none
         activityIndicator.startAnimating()
@@ -355,12 +356,12 @@ class UserProfileViewController: UIViewController {
 //        })
 //    }
     
-    
     func fetchUserDetailsFromFirebase() {
         
         userDetails.removeAll()
         sampleTypes.removeAll()
         physicalData.removeAll()
+        
         let (status, userID) = FireBaseHelper.getUserID()
         guard status else {
             print(userID)
@@ -368,6 +369,7 @@ class UserProfileViewController: UIViewController {
         }
         let ref = Database.database().reference(fromURL: Urls.userurl).child(userID).child("userdetail")
         ref.observeSingleEvent(of: .value, with: { data in
+            
             self.tableView.isUserInteractionEnabled = false
             guard let userDetails = data.value as? NSDictionary else {
                 return
@@ -392,10 +394,11 @@ class UserProfileViewController: UIViewController {
             if let bmi = userDetails["Bmi"] as? String {
                 self.physicalData.append(bmi)
             }
-
+            
+            self.userDetails.append([">"])
             self.userDetails.append(self.sampleTypes)
             self.userDetails.append(self.physicalData)
-            self.userDetails.append([">"])
+            
             self.tableView.reloadData()
             self.tableView.isUserInteractionEnabled = true
         })
@@ -460,11 +463,11 @@ extension UserProfileViewController: UITableViewDelegate, UITableViewDataSource 
         
         let label = UILabel()
         if section == 0 {
-            label.text = "USER DETAILS"
-        } else if section == 1 {
-            label.text = "PHYSICAL DETAILS"
-        } else {
             label.text = "SET GOAL"
+        } else if section == 1 {
+            label.text = "USER DETAILS"
+        } else {
+            label.text = "PHYSICAL DETAILS"
         }
         
         label.backgroundColor = Colors.orange
@@ -480,7 +483,7 @@ extension UserProfileViewController: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if indexPath.section == 2 {
+        if indexPath.section == 0 {
             print(indexPath.section)
             let controller = storyboard?.instantiateViewController(withIdentifier: "SetGoalViewController") as? SetGoalViewController
             guard let unwrappedController = controller else {

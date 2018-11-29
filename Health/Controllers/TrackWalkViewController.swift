@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import CoreMotion
+import HealthKit
 
 class TrackWalkViewController: UIViewController {
 
@@ -21,7 +22,7 @@ class TrackWalkViewController: UIViewController {
     
     var ref: DatabaseReference?
     let activity = CMMotionActivityManager()
-    let pedometer = CMPedometer()
+    //let pedometer = CMPedometer()
     
     var time = 0
     var timer = Timer()
@@ -34,6 +35,8 @@ class TrackWalkViewController: UIViewController {
     let trackLayer = CAShapeLayer()
     var goal: Int = 200
     var thisInterval: Int = 0
+    var previousWalkDetails = 0
+    var previousStepDetails = 0
     
     let percentageLabel: UILabel = {
         
@@ -47,6 +50,7 @@ class TrackWalkViewController: UIViewController {
     }()
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         startButton.layer.borderWidth = 1.0
         startButton.layer.borderColor = Colors.orange.cgColor
@@ -57,13 +61,43 @@ class TrackWalkViewController: UIViewController {
         updateUIwithWalkDetails()
         doneButton.isEnabled = false
         doneButton.alpha = 0.5
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        setUpButton()
         updateUIwithWalkDetails()
         updateGoalLabel()
+        self.fetchSleepWalkDetails(activity: "Walk", property: "steps", completion: { stepCount in
+            self.previousStepDetails = stepCount
+        })
+        StepManager.sharedInstance.stepHandler = { stepCount in
+            
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+    }
+    
+    private func setUpButton() {
+        
+        if isStepCountStarted {
+            doneButton.alpha = 1
+            doneButton.isEnabled = true
+            startButton.backgroundColor = Colors.orange
+            startButton.setTitle("Stop", for: .normal)
+            startButton.setTitleColor(Colors.white, for: .normal)
+            
+        } else {
+            doneButton.alpha = 0.3
+            doneButton.isEnabled = false
+            startButton.backgroundColor = Colors.white
+            startButton.setTitleColor(Colors.orange, for: .normal)
+            startButton.setTitle("Start", for: .normal)
+        }
     }
     
     func updateGoalLabel() {
@@ -90,7 +124,7 @@ class TrackWalkViewController: UIViewController {
                 return
             }
             self.stepGoal.text = "Goal \(previousWalk) steps"
-            let percent = CGFloat(self.stepCount) / CGFloat(previousWalk)
+            let percent = CGFloat(self.stepCount + StepManager.sharedInstance.counter) / CGFloat(previousWalk)
             self.percentageLabel.text = "\(Int(percent * 100))%"
             self.shapeLayer.strokeEnd = percent
             self.goal = previousWalk
@@ -104,23 +138,25 @@ class TrackWalkViewController: UIViewController {
             print(message)
             return
         }
-        var previousWalkDetails = 0
+        
         let ref = Database.database().reference(fromURL: Urls.userurl)
         ref.child(message).child("Activities").child("Walk").observeSingleEvent(of: .value) { snapshot in
             
             if snapshot.hasChild(Date.getKeyFromDate()) {
                 let snapshotData = snapshot.childSnapshot(forPath: Date.getKeyFromDate())
                 guard let sleepDetails = snapshotData.value as? NSDictionary else { print("error"); return }
-                previousWalkDetails = sleepDetails["steps"] as? Int ?? 0
-                print("Inside \(previousWalkDetails)")
-                self.timeLabel.text = String(previousWalkDetails)
-                self.stepCount = previousWalkDetails
-                let percent = CGFloat(previousWalkDetails) / CGFloat(self.goal)
+                self.previousWalkDetails = sleepDetails["steps"] as? Int ?? 0
+                print("Inside \(self.previousWalkDetails)")
+                //self.timeLabel.text = String(self.previousWalkDetails)
+                self.stepCount = self.previousWalkDetails
+                self.timeLabel.text = "\(self.stepCount + StepManager.sharedInstance.counter)"
+                
+                let percent = CGFloat(self.previousWalkDetails + StepManager.sharedInstance.counter) / CGFloat(self.goal)
                 self.shapeLayer.strokeEnd = CGFloat(percent)
                 self.percentageLabel.text = "\(Int(percent * 100))%"
                 return
             } else {
-                self.timeLabel.text = String(previousWalkDetails)
+                self.timeLabel.text = "\(StepManager.sharedInstance.counter)"
                 return
             }
         }
@@ -148,27 +184,124 @@ class TrackWalkViewController: UIViewController {
     }
     
     private func startCountingSteps() {
-        pedometer.startUpdates(from: Date()) { [weak self] pedometerData, error in
-            guard let pedometerData = pedometerData, error == nil else {
-                print("error updating step count")
+        
+//        pedometer.startUpdates(from: Date()) { [weak self] pedometerData, error in
+//            guard let pedometerData = pedometerData, error == nil else {
+//                print("error updating step count")
+//                return
+//            }
+//            let str = pedometerData.numberOfSteps.stringValue
+//            DispatchQueue.main.async {
+//                if let steps = Int(str) {
+//                    self!.thisInterval += steps
+//                    self?.timeLabel.text = "\(steps + self!.stepCount)"
+//                    let percent = CGFloat(steps + self!.stepCount) / CGFloat(self!.goal)
+//                    self?.shapeLayer.strokeEnd = CGFloat(percent)
+//                    self?.percentageLabel.text = "\(Int(percent * 100))%"
+//                }
+//            }
+//            if let steps = Int(str) {
+//                if steps == self!.goal {
+//                    self!.addRewardPoints(points: 20)
+//                }
+//            }
+//        }
+
+//        StepManager.startUpdates { stepCount in
+//
+//            self.timeLabel.text = "\(stepCount)"
+//        }
+
+            StepManager.sharedInstance.startPadameterUpdates()
+            StepManager.sharedInstance.stepHandler = { stepCount in
+                debugPrint("step count =", stepCount)
+                StepManager.sharedInstance.counter = Int(stepCount)
+                
+                //self.timeLabel.text = "\(StepManager.sharedInstance.counter + self.previousWalkDetails)"
+                guard let unwrappedtimeLabel = self.timeLabel.text else {
+                    return
+                }
+                if let integerValue = Int(unwrappedtimeLabel) {
+                    var totalCount = self.previousStepDetails + StepManager.sharedInstance.counter
+                    self.timeLabel.text = "\(self.previousStepDetails + StepManager.sharedInstance.counter)"
+                    self.shapeLayer.strokeEnd = CGFloat(Float(totalCount) / Float(self.goal))
+                    self.percentageLabel.text = "\(Int((Float(totalCount) / Float(self.goal))*100))%"
+                }
+            }
+        
+    }
+    
+    func fetchSleepWalkDetails(activity: String, property: String, completion: @escaping (Int) -> Void) {
+        
+        var previousWalkDetails = 0
+        
+        let (status, message) = FireBaseHelper.getUserID()
+        guard status else {
+            print(message)
+            return
+        }
+        
+        let ref = Database.database().reference(fromURL: "https://health-d776c.firebaseio.com/Users")
+        ref.child(message).child("Activities").child(activity).observeSingleEvent(of: .value) { snapshot in
+            
+            if snapshot.hasChild(Date.getKeyFromDate()) {
+                let snapshotData = snapshot.childSnapshot(forPath: Date.getKeyFromDate())
+                guard let sleepDetails = snapshotData.value as? NSDictionary else { print("error"); return }
+                previousWalkDetails = sleepDetails[property] as? Int ?? 0
+                completion(previousWalkDetails)
                 return
-            }
-            let str = pedometerData.numberOfSteps.stringValue
-            DispatchQueue.main.async {
-                if let steps = Int(str) {
-                    self!.thisInterval += steps
-                    self?.timeLabel.text = "\(steps + self!.stepCount)"
-                    let percent = CGFloat(steps + self!.stepCount) / CGFloat(self!.goal)
-                    self?.shapeLayer.strokeEnd = CGFloat(percent)
-                    self?.percentageLabel.text = "\(Int(percent * 100))%"
-                }
-            }
-            if let steps = Int(str) {
-                if steps == self!.goal {
-                    self!.addRewardPoints(points: 20)
-                }
+            } else {
+                completion(previousWalkDetails)
             }
         }
+        print("Outside \(previousWalkDetails)")
+        completion(previousWalkDetails)
+    }
+    
+    func getTodaysSteps(completion: @escaping (Double) -> Void) {
+        
+        let stepsQuantityType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
+        
+        let now = Date()
+        let startOfDay = Calendar.current.startOfDay(for: now)
+        let predicate = HKQuery.predicateForSamples(withStart: startOfDay, end: now, options: .strictStartDate)
+        
+        let query = HKStatisticsQuery(quantityType: stepsQuantityType, quantitySamplePredicate: predicate, options: .cumulativeSum) { (_, result, error) in
+            var resultCount = 0.0
+            guard let result = result else {
+                print("Failed to fetch steps rate")
+                completion(resultCount)
+                return
+            }
+            if let sum = result.sumQuantity() {
+                resultCount = sum.doubleValue(for: HKUnit.count())
+            }
+            
+            DispatchQueue.main.async {
+                completion(resultCount)
+            }
+        }
+        HKHealthStore().execute(query)
+    }
+    
+    @IBOutlet weak var totalSteps: UILabel!
+    @IBAction func getTotalSteps(_ sender: Any) {
+        
+        getTodaysSteps { result in
+            print("\(result)")
+            DispatchQueue.main.async {
+                self.totalSteps.text = "\(result)"
+            }
+        }
+    }
+    
+    private func updateDailyStepCount() {
+        
+        getTodaysSteps { (stepCount) in
+            
+            //self.timeLabel.text = "\(Int(stepCount))"
+        }
+        
     }
     
     func addRewardPoints(points: Int) {
@@ -225,28 +358,32 @@ class TrackWalkViewController: UIViewController {
 
     @IBAction private func startButtonTapped(_ sender: Any) {
         
-        doneButton.isEnabled = true
-        doneButton.alpha = 1
-        
-        if !isStart {
+        if !isStepCountStarted {
             startButton.backgroundColor = Colors.orange
             startButton.setTitle("Stop", for: .normal)
             startButton.setTitleColor(Colors.white, for: .normal)
             startUpdating()
-            isStart = !isStart
+            isStepCountStarted = !isStepCountStarted
+            doneButton.alpha = 1
+            doneButton.isEnabled = true
         } else {
             startButton.backgroundColor = Colors.white
             activity.stopActivityUpdates()
             startButton.setTitleColor(Colors.orange, for: .normal)
             startButton.setTitle("Start", for: .normal)
+            doneButton.alpha = 0.3
+            doneButton.isEnabled = false
             guard let unwrappedtimeLabel = timeLabel.text else {
                 return
             }
             if let integerValue = Int(unwrappedtimeLabel) {
                 stepCount = integerValue
             }
-            isStart = !isStart
             pedometer.stopUpdates()
+            StepManager.sharedInstance.counter = 0
+            isStepCountStarted = !isStepCountStarted
+            updateDatabase(stepCount: stepCount)
+            //pedometer.stopUpdates()
         }
     }
     
@@ -256,27 +393,27 @@ class TrackWalkViewController: UIViewController {
     }
     
     @IBAction private func cancelButtonTapped(_ sender: Any) {
-        pedometer.stopUpdates()
+        //pedometer.stopUpdates()
         navigationController?.popViewController(animated: true)
     }
     
-    @IBAction private func doneButtonTapped(_ sender: Any) {
-        
-        guard let unwrappedTimeLabel = timeLabel.text else {
-            return
-        }
-        if let integerValue = Int(unwrappedTimeLabel) {
-            stepCount = integerValue
-        }
-        timer.invalidate()
-        updateDatabase(stepCount: stepCount)
-        if stepCount >= goal {
-            
-        }
-        ProfileDataStore.saveStepCountSample(steps: thisInterval, date: Date())
-        pedometer.stopUpdates()
-        navigationController?.popViewController(animated: true)
-    }
+//    @IBAction private func doneButtonTapped(_ sender: Any) {
+//
+//        guard let unwrappedTimeLabel = timeLabel.text else {
+//            return
+//        }
+//        if let integerValue = Int(unwrappedTimeLabel) {
+//            stepCount = integerValue
+//        }
+//        timer.invalidate()
+//        updateDatabase(stepCount: stepCount)
+//        if stepCount >= goal {
+//
+//        }
+//        ProfileDataStore.saveStepCountSample(steps: thisInterval, date: Date())
+//        //pedometer.stopUpdates()
+//        navigationController?.popViewController(animated: true)
+//    }
     
     func getPreviousWalkCount() {
         
@@ -326,3 +463,4 @@ class TrackWalkViewController: UIViewController {
         })
     }
 }
+

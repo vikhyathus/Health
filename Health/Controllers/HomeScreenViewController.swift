@@ -26,6 +26,7 @@ class HomeScreenViewController: UIViewController {
     let shapeLayer = CAShapeLayer()
     let trackLayer = CAShapeLayer()
     let userHealthProfile = UserHealthProfile()
+    var collectionViewStepCount = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +51,16 @@ class HomeScreenViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         collectionView.reloadData()
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        StepManager.sharedInstance.stepHandler = { stepCount in
+            self.collectionViewStepCount = Int(truncating: stepCount)
+            self.collectionView.reloadData()
+        }
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -333,7 +344,7 @@ extension HomeScreenViewController: UICollectionViewDelegate, UICollectionViewDa
                 self.fetchSleepWalkDetails(activity: "Walk", property: "steps", completion: { stepCount in
                     let percent = CGFloat(stepCount) / CGFloat(walkGoal)
                     cell?.percentageLabel.text = "\(Int(percent * 100))%"
-                    cell?.sleepWalkCountLabel.text = "\(stepCount) steps"
+                    cell?.sleepWalkCountLabel.text = "\(StepManager.sharedInstance.counter + stepCount) steps"
                     cell?.shapeLayer.strokeEnd = percent
                 })
             }

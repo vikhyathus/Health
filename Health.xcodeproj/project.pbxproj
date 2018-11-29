@@ -40,6 +40,7 @@
 		DF52C40A21788D8B00978B07 /* EditProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF52C40921788D8B00978B07 /* EditProfileCell.swift */; };
 		DF5613382158DDC4009A48CD /* WalkTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF5613372158DDC4009A48CD /* WalkTask.swift */; };
 		DF56133A2158F123009A48CD /* TrackWalkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF5613392158F123009A48CD /* TrackWalkViewController.swift */; };
+		DF5E10C821AEC82D006DF4E3 /* StepsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF5E10C721AEC82D006DF4E3 /* StepsManager.swift */; };
 		DF869DBC215A324A006C10E5 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF869DBB215A324A006C10E5 /* Time.swift */; };
 		DF869DC0215A3847006C10E5 /* ActivityListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF869DBF215A3847006C10E5 /* ActivityListViewController.swift */; };
 		DF869DC5215A3AB2006C10E5 /* ActivityTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF869DC4215A3AB2006C10E5 /* ActivityTableCell.swift */; };
@@ -143,6 +144,7 @@
 		DF52C40921788D8B00978B07 /* EditProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileCell.swift; sourceTree = "<group>"; };
 		DF5613372158DDC4009A48CD /* WalkTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkTask.swift; sourceTree = "<group>"; };
 		DF5613392158F123009A48CD /* TrackWalkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackWalkViewController.swift; sourceTree = "<group>"; };
+		DF5E10C721AEC82D006DF4E3 /* StepsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepsManager.swift; sourceTree = "<group>"; };
 		DF869DBB215A324A006C10E5 /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
 		DF869DBF215A3847006C10E5 /* ActivityListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityListViewController.swift; sourceTree = "<group>"; };
 		DF869DC4215A3AB2006C10E5 /* ActivityTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityTableCell.swift; sourceTree = "<group>"; };
@@ -240,6 +242,7 @@
 		DF386ACD215376E90024814C /* Health */ = {
 			isa = PBXGroup;
 			children = (
+				DF5E10C621AEC800006DF4E3 /* ManagerClass */,
 				DF386AF0215377550024814C /* Health.entitlements */,
 				DF751D96216B2ADB001E2D9B /* Core Data Files */,
 				DF869DC3215A3A30006C10E5 /* View */,
@@ -274,6 +277,14 @@
 				DF386B0321537C720024814C /* ResearchKitTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		DF5E10C621AEC800006DF4E3 /* ManagerClass */ = {
+			isa = PBXGroup;
+			children = (
+				DF5E10C721AEC82D006DF4E3 /* StepsManager.swift */,
+			);
+			path = ManagerClass;
 			sourceTree = "<group>";
 		};
 		DF751D96216B2ADB001E2D9B /* Core Data Files */ = {
@@ -538,6 +549,7 @@
 				DF1F25182174D2F700004573 /* HomeScreenNavigationViewController.swift in Sources */,
 				DF251986216726C3000E58F7 /* AlertMessages.swift in Sources */,
 				DF52C40A21788D8B00978B07 /* EditProfileCell.swift in Sources */,
+				DF5E10C821AEC82D006DF4E3 /* StepsManager.swift in Sources */,
 				DF869DDF215B6F64006C10E5 /* HKGenderExtension.swift in Sources */,
 				DFB41A69216F5616002CADB4 /* HomeTabController.swift in Sources */,
 				DF869DC5215A3AB2006C10E5 /* ActivityTableCell.swift in Sources */,
@@ -627,7 +639,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Dealclan LLC";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -688,7 +700,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Dealclan LLC";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -718,20 +730,20 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Health/Health.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3RFXA3YHL9;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Dealclan LLC";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = NL3PRC58UN;
 				INFOPLIST_FILE = Health/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Ymedia.Health;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ymedialabs.enterprise.genericHealthKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = GenericHealthKitProfile;
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -742,20 +754,20 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Health/Health.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3RFXA3YHL9;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Dealclan LLC";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = NL3PRC58UN;
 				INFOPLIST_FILE = Health/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Ymedia.Health;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ymedialabs.enterprise.genericHealthKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = GenericHealthKitProfile;
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
